@@ -1,56 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GemRadar | Crypto Trends Dashboard</title>
+    <title>GemRadar</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="assets/favicon.ico">
-    <!-- TradingView Lightweight Charts -->
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <script src="app.js" defer></script>
 </head>
 <body>
-    <header>
-        <h1>GemRadar <span class="beta-badge">BETA</span></h1>
-        <p>Monitoriza memecoins, precios y noticias en tiempo real</p>
-    </header>
-
-    <main>
-        <!-- Sección Precios en Tiempo Real -->
-        <section id="prices">
-            <h2>📊 Precios en Tiempo Real</h2>
-            <div id="price-chart"></div>
-            <div id="crypto-grid"></div>
-        </section>
-
-        <!-- Sección Memecoin Radar -->
-        <section id="memecoin-radar">
-            <h2>🚀 Memecoin Radar (24h)</h2>
-            <div id="memecoins-container"></div>
-        </section>
-
-        <!-- Sección Noticias -->
-        <section id="news">
-            <h2>📰 Noticias Cripto</h2>
-            <div id="news-container"></div>
-        </section>
-    </main>
-
-    <!-- Donaciones (Bitso) -->
-    <footer>
-        <div class="donations-box">
-            <h3>☕ ¿Te gusta el proyecto?</h3>
-            <div id="bitso-qr"></div>
-            <div class="address-box">
-                <input type="text" value="TU_DIRECCION_BTC" id="bitso-address" readonly>
-                <button onclick="copyAddress()">Copiar</button>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="config.js"></script>
-    <script src="app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <h1>🚀 Crypto Trends Dashboard</h1>
+    <div id="price-chart"></div>
+    <div id="memecoins-container"></div>
 </body>
 </html>
