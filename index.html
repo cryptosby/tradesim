@@ -3,25 +3,699 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GemRadar | Crypto Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-    <!-- TradingView Charts -->
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <title>Crypto Trends Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6e48aa;
+            --secondary: #9d50bb;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #fd7e14;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .last-updated {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        main {
+            padding: 2rem 0;
+        }
+        
+        .section-title {
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        @media (min-width: 992px) {
+            .dashboard {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .refresh-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--light);
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .refresh-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .crypto-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .crypto-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .crypto-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .crypto-name {
+            font-weight: 600;
+        }
+        
+        .crypto-symbol {
+            opacity: 0.7;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+        
+        .crypto-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 5px 0;
+        }
+        
+        .price-change {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .positive {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: var(--success);
+        }
+        
+        .negative {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: var(--danger);
+        }
+        
+        .neutral {
+            background-color: rgba(253, 126, 20, 0.2);
+            color: var(--warning);
+        }
+        
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .news-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-title {
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        
+        .news-source {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            display: flex;
+            align-items: center;
+        }
+        
+        .news-source i {
+            margin-right: 5px;
+        }
+        
+        .news-date {
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        .error-message {
+            color: var(--danger);
+            background: rgba(220, 53, 69, 0.1);
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+    </style>
 </head>
 <body>
-    <header>...</header>
-    <main>
-        <!-- Sección de gráficos en tiempo real -->
-        <section id="price-chart"></section>
-        <!-- Memecoin Radar -->
-        <section id="memecoin-radar"></section>
-        <!-- Noticias -->
-        <section id="news-feed"></section>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    Crypto Trends
+                </a>
+                <div class="last-updated" id="lastUpdated">
+                    Última actualización: Cargando...
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="dashboard">
+            <div class="main-content">
+                <h2 class="section-title">Tendencias del Mercado</h2>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Top Criptomonedas</h3>
+                        <button class="refresh-btn" id="refreshCrypto">
+                            <i class="fas fa-sync-alt"></i> Actualizar
+                        </button>
+                    </div>
+                    <div id="cryptoContainer" class="crypto-grid">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="section-title">Noticias Recientes</h2>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Últimas Noticias</h3>
+                        <button class="refresh-btn" id="refreshNews">
+                            <i class="fas fa-sync-alt"></i> Actualizar
+                        </button>
+                    </div>
+                    <div id="newsContainer">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <h2 class="section-title">Estadísticas</h2>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Mercado Global</h3>
+                    </div>
+                    <div id="marketStats">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="section-title">Eventos</h2>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Próximos Eventos</h3>
+                    </div>
+                    <div id="eventsContainer">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
-    <!-- Donaciones con Bitso -->
-    <footer>...</footer>
-    <!-- Scripts -->
-    <script src="config.js"></script>
-    <script src="app.js"></script>
+    
+    <footer class="container">
+        <p>Crypto Trends Dashboard &copy; 2023 | Datos proporcionados por CoinGecko API y CryptoPanic RSS</p>
+    </footer>
+
+    <script>
+        // Configuración
+        const config = {
+            coinGeckoApi: 'https://api.coingecko.com/api/v3',
+            cryptoPanicRss: 'https://cryptopanic.com/news/rss/',
+            updateInterval: 300000, // 5 minutos
+            topCoinsCount: 12,
+            newsCount: 8
+        };
+
+        // Elementos del DOM
+        const elements = {
+            lastUpdated: document.getElementById('lastUpdated'),
+            cryptoContainer: document.getElementById('cryptoContainer'),
+            newsContainer: document.getElementById('newsContainer'),
+            marketStats: document.getElementById('marketStats'),
+            eventsContainer: document.getElementById('eventsContainer'),
+            refreshCrypto: document.getElementById('refreshCrypto'),
+            refreshNews: document.getElementById('refreshNews')
+        };
+
+        // Estado de la aplicación
+        const state = {
+            marketData: null,
+            newsData: null,
+            lastUpdate: null
+        };
+
+        // Funciones de utilidad
+        const utils = {
+            formatPrice: (price) => {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: price < 1 ? 4 : 2,
+                    maximumFractionDigits: price < 1 ? 6 : 2
+                }).format(price);
+            },
+            
+            formatPercent: (percent) => {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'percent',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(percent / 100);
+            },
+            
+            formatDate: (dateString) => {
+                const options = { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+                return new Date(dateString).toLocaleDateString('es-ES', options);
+            },
+            
+            getPriceChangeClass: (percent) => {
+                if (percent > 0) return 'positive';
+                if (percent < 0) return 'negative';
+                return 'neutral';
+            },
+            
+            fetchWithCorsProxy: async (url) => {
+                // Usamos un proxy CORS para GitHub Pages
+                const proxyUrl = 'https://api.allorigins.win/get?url=';
+                try {
+                    const response = await fetch(proxyUrl + encodeURIComponent(url));
+                    const data = await response.json();
+                    return data.contents;
+                } catch (error) {
+                    console.error('Error con proxy CORS:', error);
+                    throw error;
+                }
+            }
+        };
+
+        // Funciones para obtener datos
+        const dataFetchers = {
+            fetchMarketData: async () => {
+                try {
+                    // Obtener las criptomonedas más populares
+                    const coinsResponse = await fetch(
+                        `${config.coinGeckoApi}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${config.topCoinsCount}&page=1&sparkline=false&price_change_percentage=24h`
+                    );
+                    const coinsData = await coinsResponse.json();
+                    
+                    // Obtener datos del mercado global
+                    const globalResponse = await fetch(`${config.coinGeckoApi}/global`);
+                    const globalData = await globalResponse.json();
+                    
+                    return {
+                        coins: coinsData,
+                        global: globalData.data
+                    };
+                } catch (error) {
+                    console.error('Error al obtener datos del mercado:', error);
+                    throw error;
+                }
+            },
+            
+            fetchNewsData: async () => {
+                try {
+                    // Obtener noticias del feed RSS de CryptoPanic
+                    const rssText = await utils.fetchWithCorsProxy(config.cryptoPanicRss);
+                    
+                    // Parsear el XML
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(rssText, "text/xml");
+                    const items = xmlDoc.querySelectorAll('item');
+                    
+                    const newsItems = [];
+                    items.forEach((item, index) => {
+                        if (index < config.newsCount) {
+                            newsItems.push({
+                                title: item.querySelector('title').textContent,
+                                link: item.querySelector('link').textContent,
+                                source: 'CryptoPanic',
+                                date: item.querySelector('pubDate').textContent
+                            });
+                        }
+                    });
+                    
+                    return newsItems;
+                } catch (error) {
+                    console.error('Error al obtener noticias:', error);
+                    throw error;
+                }
+            },
+            
+            fetchEventsData: async () => {
+                try {
+                    // Obtener eventos próximos de CoinGecko
+                    const response = await fetch(`${config.coinGeckoApi}/events`);
+                    const data = await response.json();
+                    
+                    // Filtrar eventos próximos (próximas 2 semanas)
+                    const now = new Date();
+                    const twoWeeksLater = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+                    
+                    const upcomingEvents = data.data.filter(event => {
+                        const eventDate = new Date(event.date);
+                        return eventDate > now && eventDate <= twoWeeksLater;
+                    }).slice(0, 5); // Limitar a 5 eventos
+                    
+                    return upcomingEvents;
+                } catch (error) {
+                    console.error('Error al obtener eventos:', error);
+                    return []; // Devolver array vacío si hay error
+                }
+            }
+        };
+
+        // Funciones para renderizar datos
+        const renderers = {
+            renderMarketData: (data) => {
+                if (!data || !data.coins) {
+                    elements.cryptoContainer.innerHTML = `
+                        <div class="error-message">
+                            No se pudieron cargar los datos del mercado. Intenta actualizar la página.
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '';
+                data.coins.forEach(coin => {
+                    html += `
+                        <div class="crypto-card">
+                            <div class="crypto-header">
+                                <img src="${coin.image}" alt="${coin.name}" class="crypto-icon">
+                                <div>
+                                    <span class="crypto-name">${coin.name}</span>
+                                    <span class="crypto-symbol">${coin.symbol.toUpperCase()}</span>
+                                </div>
+                            </div>
+                            <div class="crypto-price">${utils.formatPrice(coin.current_price)}</div>
+                            <div class="price-change ${utils.getPriceChangeClass(coin.price_change_percentage_24h)}">
+                                ${utils.formatPercent(coin.price_change_percentage_24h)}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                elements.cryptoContainer.innerHTML = html;
+            },
+            
+            renderNewsData: (newsItems) => {
+                if (!newsItems || newsItems.length === 0) {
+                    elements.newsContainer.innerHTML = `
+                        <div class="error-message">
+                            No se pudieron cargar las noticias. Intenta actualizar la página.
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '<div class="news-list">';
+                newsItems.forEach(news => {
+                    html += `
+                        <div class="news-item">
+                            <a href="${news.link}" target="_blank" rel="noopener" class="news-title">${news.title}</a>
+                            <div class="news-source">
+                                <i class="fas fa-newspaper"></i> ${news.source}
+                            </div>
+                            <div class="news-date">${utils.formatDate(news.date)}</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                
+                elements.newsContainer.innerHTML = html;
+            },
+            
+            renderGlobalStats: (globalData) => {
+                if (!globalData) {
+                    elements.marketStats.innerHTML = `
+                        <div class="error-message">
+                            No se pudieron cargar las estadísticas globales.
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const { total_market_cap, total_volume, market_cap_percentage } = globalData;
+                const btcDominance = market_cap_percentage.btc.toFixed(2);
+                const ethDominance = market_cap_percentage.eth.toFixed(2);
+                
+                elements.marketStats.innerHTML = `
+                    <div style="display: grid; gap: 1rem;">
+                        <div>
+                            <div style="font-size: 0.9rem; opacity: 0.8;">Capitalización de Mercado</div>
+                            <div style="font-size: 1.4rem; font-weight: 600;">${utils.formatPrice(total_market_cap.usd)}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.9rem; opacity: 0.8;">Volumen 24h</div>
+                            <div style="font-size: 1.4rem; font-weight: 600;">${utils.formatPrice(total_volume.usd)}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.9rem; opacity: 0.8;">Dominancia</div>
+                            <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                                <span>BTC: ${btcDominance}%</span>
+                                <span>ETH: ${ethDominance}%</span>
+                            </div>
+                            <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-top: 5px; overflow: hidden;">
+                                <div style="height: 100%; width: ${btcDominance}%; background: #f7931a; display: inline-block;"></div>
+                                <div style="height: 100%; width: ${ethDominance}%; background: #627eea; display: inline-block;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+            
+            renderEvents: (events) => {
+                if (!events || events.length === 0) {
+                    elements.eventsContainer.innerHTML = `
+                        <div style="text-align: center; opacity: 0.7;">
+                            No hay eventos próximos en las próximas 2 semanas.
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '<div style="display: grid; gap: 1rem;">';
+                events.forEach(event => {
+                    html += `
+                        <div>
+                            <div style="font-weight: 600;">${event.title}</div>
+                            <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 3px;">
+                                ${utils.formatDate(event.date)} • ${event.type}
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                
+                elements.eventsContainer.innerHTML = html;
+            },
+            
+            updateLastUpdated: () => {
+                const now = new Date();
+                state.lastUpdate = now;
+                elements.lastUpdated.textContent = `Última actualización: ${utils.formatDate(now)}`;
+            }
+        };
+
+        // Función principal para actualizar todos los datos
+        const updateAllData = async () => {
+            try {
+                // Mostrar estados de carga
+                elements.cryptoContainer.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                elements.newsContainer.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                elements.marketStats.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                elements.eventsContainer.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                
+                // Obtener datos en paralelo
+                const [marketData, newsData, eventsData] = await Promise.all([
+                    dataFetchers.fetchMarketData(),
+                    dataFetchers.fetchNewsData(),
+                    dataFetchers.fetchEventsData()
+                ]);
+                
+                // Actualizar el estado
+                state.marketData = marketData;
+                state.newsData = newsData;
+                
+                // Renderizar los datos
+                renderers.renderMarketData(marketData);
+                renderers.renderNewsData(newsData);
+                renderers.renderGlobalStats(marketData.global);
+                renderers.renderEvents(eventsData);
+                renderers.updateLastUpdated();
+                
+            } catch (error) {
+                console.error('Error al actualizar datos:', error);
+                renderers.updateLastUpdated();
+            }
+        };
+
+        // Event listeners
+        elements.refreshCrypto.addEventListener('click', updateAllData);
+        elements.refreshNews.addEventListener('click', updateAllData);
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAllData();
+            
+            // Actualizar automáticamente cada X tiempo
+            setInterval(updateAllData, config.updateInterval);
+        });
+    </script>
 </body>
 </html>
