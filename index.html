@@ -3,136 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GemRadar - Mercado Cripto</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Crypto Arbitrage Opportunity Spotter (Educativo)</title>
+    <meta name="description" content="Descubre oportunidades teóricas de arbitraje en criptomonedas y aprende sobre sus mecánicas y riesgos. Herramienta gratuita y educativa.">
+    <meta name="keywords" content="criptomonedas, arbitraje, bitcoin, ethereum, blockchain, educacion financiera, crypto, trading">
     <style>
-        :root {
-            --primary: #6e48aa;
-            --secondary: #9d50bb;
-            --dark: #1a1a2e;
-            --light: #f8f9fa;
-            --success: #28a745;
-            --danger: #dc3545;
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #2c3e50; text-align: center; }
+        .opportunity { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background-color: #e9f7ef; }
+        .opportunity.negative { background-color: #f9e9e9; } /* Para mostrar si no hay oportunidad */
+        .opportunity p { margin: 5px 0; }
+        .important { color: #e74c3c; font-weight: bold; }
+        .config, .donations, .ads, .telegram-section { margin-top: 30px; padding: 15px; background-color: #ecf0f1; border-radius: 5px; }
+        .donation-buttons img { width: 32px; height: 32px; margin-right: 10px; vertical-align: middle; }
+        .qr-code { max-width: 150px; display: block; margin: 10px auto; }
+        #lastUpdated { text-align: center; font-style: italic; margin-bottom: 20px; }
+        /* Estilos para placeholders de anuncios */
+        .ad-placeholder-leaderboard { width: 728px; height: 90px; background-color: #ccc; margin: 20px auto; text-align: center; line-height: 90px; }
+        .ad-placeholder-sidebar { width: 300px; height: 250px; background-color: #ccc; margin: 20px auto; text-align: center; line-height: 250px; }
+         /* Responsive simple */
+        @media (max-width: 768px) {
+            .ad-placeholder-leaderboard { width: 320px; height: 50px; line-height: 50px;}
         }
-        body {
-            background-color: var(--dark);
-            color: var(--light);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .crypto-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        .crypto-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 1rem;
-            border-left: 4px solid var(--primary);
-        }
-        .loading {
-            display: flex;
-            justify-content: center;
-            padding: 2rem;
-        }
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <nav>
-                <a href="#" class="logo">
-                    <i class="fas fa-chart-line"></i>
-                    GemRadar
-                </a>
-                <div id="lastUpdated">Cargando...</div>
-            </nav>
-        </div>
-    </header>
+    <div class="container">
+        <h1>Spotter de Oportunidades de Arbitraje en Cripto (Modo Educativo)</h1>
+        <p id="lastUpdated">Actualizando...</p>
 
-    <main class="container">
-        <div id="cryptoContainer">
-            <div class="loading">
-                <div class="spinner"></div>
+        <div class="ad-placeholder-leaderboard">Espacio Publicitario (728x90 o responsive)</div>
+
+        <div class="info">
+            <h2>¿Qué es esto?</h2>
+            <p>Esta herramienta escanea los precios de criptomonedas seleccionadas en diferentes exchanges para identificar <strong class="important">oportunidades teóricas de arbitraje</strong>. El objetivo es puramente <strong>educativo</strong>, para entender cómo funciona el arbitraje y los factores a considerar.</p>
+            <p><strong class="important">IMPORTANTE:</strong> Los datos mostrados son brutos y NO consideran fees de transacción de los exchanges, costos de retiro, tiempos de transferencia de red, ni la volatilidad del mercado. El arbitraje real es complejo y arriesgado. ¡No inviertas basándote únicamente en esta información!</p>
+        </div>
+
+        <div id="opportunitiesContainer">
+            </div>
+
+        <div class="ad-placeholder-sidebar">Espacio Publicitario (300x250)</div>
+
+        <div class="donations">
+            <h2>Apoya este Proyecto Gratuito</h2>
+            <p>Si esta herramienta te parece útil y educativa, considera hacer una donación para ayudar a mantenerla y mejorarla.</p>
+            <div>
+                <strong>PayPal:</strong>
+                <a href="TU_LINK_DE_PAYPAL_ME" target="_blank" rel="noopener noreferrer">Donar con PayPal</a>
+            </div>
+            <div class="donation-buttons">
+                <p><strong>Donar Criptomonedas (vía Bitso - escanea el QR o copia la dirección):</strong></p>
+                <div>
+                    <img src="URL_A_ICONO_BTC" alt="BTC icon"> Bitcoin (BTC): TU_DIRECCION_BTC_BITSO
+                    <img src="URL_A_TU_QR_BTC_BITSO" alt="QR Code BTC Bitso" class="qr-code">
+                </div>
+                <div>
+                    <img src="URL_A_ICONO_ETH" alt="ETH icon"> Ethereum (ETH): TU_DIRECCION_ETH_BITSO
+                    <img src="URL_A_TU_QR_ETH_BITSO" alt="QR Code ETH Bitso" class="qr-code">
+                </div>
+                <div>
+                    <img src="URL_A_ICONO_LTC" alt="LTC icon"> Litecoin (LTC): TU_DIRECCION_LTC_BITSO
+                    <img src="URL_A_TU_QR_LTC_BITSO" alt="QR Code LTC Bitso" class="qr-code">
+                </div>
             </div>
         </div>
-    </main>
+
+        <div class="affiliates">
+            <h2>Recursos Recomendados (Afiliados)</h2>
+            <p>Si estás aprendiendo sobre criptomonedas, estos recursos pueden serte útiles:</p>
+            <ul>
+                <li><a href="TU_LINK_AFILIADO_AMAZON_LIBRO_CRYPTO" target="_blank" rel="noopener noreferrer">Libro: Introducción a las Criptomonedas (Amazon)</a></li>
+                <li><a href="TU_LINK_AFILIADO_AMAZON_HARDWARE_WALLET" target="_blank" rel="noopener noreferrer">Consigue una Hardware Wallet para asegurar tus activos (Amazon)</a></li>
+                </ul>
+            <p><small>Al comprar a través de estos enlaces, recibo una pequeña comisión sin costo adicional para ti, lo que ayuda a mantener este sitio.</small></p>
+        </div>
+
+        <div class="telegram-section">
+            <h2>Únete a Nuestra Comunidad en Telegram</h2>
+            <p>Discute sobre oportunidades, estrategias (con precaución), y el futuro de esta herramienta.</p>
+            <a href="TU_LINK_A_GRUPO_O_CANAL_DE_TELEGRAM" target="_blank" rel="noopener noreferrer">Unirse al Grupo/Canal de Telegram</a>
+        </div>
+
+    </div>
 
     <script>
-        // Configuración
-        const WORKER_URL = "https://gemradar-proxy.alvaroalverdi-cloudflare.workers.dev/"; // ⚠️ Reemplaza con tu URL real
+        // --- CONFIGURACIÓN ---
+        const PAIRS_TO_WATCH = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']; // Pares para Binance (ejemplo)
+        // Para Kraken, los pares son diferentes, ej: XBTUSD, ETHUSD, ADAUSD
+        // Para CoinGecko, los IDs son: bitcoin, ethereum, cardano
+        const EXCHANGES_APIS = [
+            { name: 'Binance', url: (pair) => `https://api.binance.com/api/v3/ticker/price?symbol=${pair}`, pricePath: 'price' },
+            { name: 'Kraken', url: (pair) => `https://api.kraken.com/0/public/Ticker?pair=${mapPairToKraken(pair)}`, pricePath: (data, krakenPair) => data.result[krakenPair].c[0] }, // Kraken tiene una estructura más compleja
+            // Podrías añadir CoinGecko como una fuente general para comparar o como fallback
+            // { name: 'CoinGecko', url: (id) => `https://api.coingecko.com/api/v3/simple/price?ids=${mapPairToCoinGecko(id)}&vs_currencies=usd`, pricePath: (data, coinGeckoId) => data[coinGeckoId].usd }
+        ];
+        const REFRESH_INTERVAL_MS = 60000; // Actualizar cada 60 segundos
+        const MIN_PERCENTAGE_DIFFERENCE = 0.1; // Mínima diferencia para mostrar (ej. 0.1%)
 
-        // Elementos DOM
-        const cryptoContainer = document.getElementById('cryptoContainer');
-        const lastUpdated = document.getElementById('lastUpdated');
+        const opportunitiesContainer = document.getElementById('opportunitiesContainer');
+        const lastUpdatedElement = document.getElementById('lastUpdated');
 
-        // Formatear precio
-        const formatPrice = (price) => {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2
-            }).format(price);
-        };
+        // --- FUNCIONES AUXILIARES ---
+        function mapPairToKraken(binancePair) {
+            // Mapeo simple, necesitarás expandirlo
+            if (binancePair === 'BTCUSDT') return 'XBTUSD';
+            if (binancePair === 'ETHUSDT') return 'ETHUSD';
+            if (binancePair === 'ADAUSDT') return 'ADAUSD';
+            return binancePair; // Fallback
+        }
+        
+        // function mapPairToCoinGecko(binancePair) { ... } // Similar para CoinGecko si lo usas
 
-        // Obtener datos
-        async function fetchCryptoData() {
+        async function fetchPrice(exchangeConfig, pair) {
             try {
-                const response = await fetch(WORKER_URL);
-                const { data } = await response.json();
-                renderCryptoData(data);
-                lastUpdated.textContent = `Actualizado: ${new Date().toLocaleTimeString()}`;
+                const response = await fetch(exchangeConfig.url(pair));
+                if (!response.ok) {
+                    console.error(`Error fetching from ${exchangeConfig.name} for ${pair}: ${response.status}`);
+                    return null;
+                }
+                const data = await response.json();
+                if (typeof exchangeConfig.pricePath === 'function') {
+                    const krakenPair = mapPairToKraken(pair); // Necesario para la función de pricePath de Kraken
+                    return parseFloat(exchangeConfig.pricePath(data, krakenPair));
+                }
+                return parseFloat(data[exchangeConfig.pricePath]);
             } catch (error) {
-                cryptoContainer.innerHTML = `
-                    <div class="error" style="color: var(--danger); text-align: center;">
-                        Error al cargar datos. Recarga la página.
-                    </div>
-                `;
+                console.error(`Error fetching or parsing from ${exchangeConfig.name} for ${pair}:`, error);
+                return null;
             }
         }
 
-        // Renderizar datos
-        function renderCryptoData(cryptos) {
-            let html = '<div class="crypto-grid">';
-            
-            cryptos.slice(0, 100).forEach(crypto => { // Muestra las primeras 100
-                const changeClass = crypto.changePercent24Hr >= 0 ? 'positive' : 'negative';
-                html += `
-                    <div class="crypto-card">
-                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <img src="https://cryptologos.cc/logos/${crypto.id}-${crypto.symbol.toLowerCase()}-logo.png" 
-                                 alt="${crypto.name}" 
-                                 style="width: 24px; height: 24px; margin-right: 10px;"
-                                 onerror="this.src='https://cryptologos.cc/logos/default-logo.png'">
-                            <div>
-                                <strong>${crypto.name}</strong>
-                                <span style="opacity: 0.7;">${crypto.symbol}</span>
-                            </div>
-                        </div>
-                        <div style="font-size: 1.2rem; margin: 5px 0;">${formatPrice(crypto.priceUsd)}</div>
-                        <span class="${changeClass}" style="padding: 2px 8px; border-radius: 4px;">
-                            ${parseFloat(crypto.changePercent24Hr).toFixed(2)}%
-                        </span>
-                    </div>
-                `;
-            });
-            
-            html += '</div>';
-            cryptoContainer.innerHTML = html;
+        async function findArbitrageOpportunities() {
+            opportunitiesContainer.innerHTML = '<p>Buscando oportunidades...</p>';
+            let opportunitiesFound = 0;
+
+            for (const pair of PAIRS_TO_WATCH) {
+                const prices = [];
+                for (const exchange of EXCHANGES_APIS) {
+                    const price = await fetchPrice(exchange, pair);
+                    if (price !== null) {
+                        prices.push({ exchangeName: exchange.name, price: price });
+                    }
+                    await new Promise(resolve => setTimeout(resolve, 200)); // Pequeña pausa para no saturar APIs
+                }
+
+                if (prices.length < 2) continue;
+
+                // Lógica de arbitraje simple (comparar todos contra todos)
+                for (let i = 0; i < prices.length; i++) {
+                    for (let j = 0; j < prices.length; j++) {
+                        if (i === j) continue;
+
+                        const exchangeBuy = prices[i];
+                        const exchangeSell = prices[j];
+
+                        // Queremos comprar barato y vender caro
+                        if (exchangeBuy.price < exchangeSell.price) {
+                            const diff = exchangeSell.price - exchangeBuy.price;
+                            const percentageDiff = (diff / exchangeBuy.price) * 100;
+
+                            if (percentageDiff >= MIN_PERCENTAGE_DIFFERENCE) {
+                                if (opportunitiesFound === 0) opportunitiesContainer.innerHTML = ''; // Limpiar "Buscando..."
+                                opportunitiesFound++;
+                                const opportunityDiv = document.createElement('div');
+                                opportunityDiv.className = 'opportunity';
+                                opportunityDiv.innerHTML = `
+                                    <p><strong>Par:</strong> ${pair.replace('USDT', '/USD')}</p>
+                                    <p><strong>Comprar en:</strong> ${exchangeBuy.exchangeName} (Precio: $${exchangeBuy.price.toFixed(2)})</p>
+                                    <p><strong>Vender en:</strong> ${exchangeSell.exchangeName} (Precio: $${exchangeSell.price.toFixed(2)})</p>
+                                    <p><strong>Diferencia Bruta:</strong> $${diff.toFixed(2)} (${percentageDiff.toFixed(2)}%)</p>
+                                    <p class="important">Recordatorio: Este cálculo es teórico y NO incluye comisiones, tiempos, ni otros costos y riesgos.</p>
+                                `;
+                                opportunitiesContainer.appendChild(opportunityDiv);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (opportunitiesFound === 0 && opportunitiesContainer.innerHTML.includes('Buscando...')) {
+                 opportunitiesContainer.innerHTML = '<p>No se encontraron oportunidades de arbitraje significativas en este momento para los pares y exchanges configurados.</p>';
+            }
+            lastUpdatedElement.textContent = `Última actualización: ${new Date().toLocaleTimeString()}`;
         }
 
-        // Iniciar
-        fetchCryptoData();
+        // --- INICIALIZACIÓN ---
+        findArbitrageOpportunities(); // Carga inicial
+        setInterval(findArbitrageOpportunities, REFRESH_INTERVAL_MS);
+
     </script>
 </body>
 </html>
