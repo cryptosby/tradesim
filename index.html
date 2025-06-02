@@ -1,32 +1,32 @@
-<!doctype html> 
-<html> 
-<cabeza> 
-<título>Chat de Socket.IO</título> 
-<estilo> 
-*{margen: 0;relleno: 0; dimensionamiento de la caja:cuadro de borde; } 
-cuerpo fuente: 13píxeles Helvética, Arial; } 
-forma{fondo: #000; relleno: 3píxeles; posición: fijado; abajo: 0; ancho: 100%; } 
-forma aporte borde: 0; relleno: 10píxeles; ancho: 90%; margen derecho: .5%; } 
-forma botón ancho: 9%; fondo: RGB(130, 224, 255); borde: ninguno; relleno: 10píxeles; } 
-#mensajes{tipo de estilo de lista: ninguno; margen: 0; relleno: 0; } 
-#mensajes yo{relleno: 5píxeles 10píxeles; } 
-#mensajes yo:enésimo hijo (extraño) (fondo: #eee; } 
-</estilo> 
-</cabeza> 
-<cuerpo> 
-<ul identificación "mensajes"></ul> 
-<guion origen="/socket.io/socket.io.js"></guion> 
-<guion origen="https://code.jquery.com/jquery-1.11.1.js"></guion> 
-<guion> 
-$(función () { 
-variedad enchufe = yo(); 
-enchufe.en('noticias', función (datos) { 
-$('#mensajes').vacío(); 
-para(variedad i datos.longitud-1; i >= 0; i--) { 
-$('#mensajes').añadir($('<li>').texto(datos[i])); 
-} 
-}); 
-}); 
-</guion> 
-</cuerpo> 
+<!doctype html>
+<html>
+<head>
+<title>Socket.IO Chat</title>
+<style>
+*{margin: 0; padding: 0; box-sizing: border-box;}
+body font: 13px Helvetica, Arial;}
+shape {background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%;}
+shape input border: 0; padding: 10px; width: 90%; margin-right: 0.5%;}
+shape button width: 9%; background: RGB(130, 224, 255); border: none; padding: 10px;}
+#messages {list-style type: none; margin: 0; padding: 0; }
+#messages yo{padding: 5pixels 10pixels; }
+#messages me:nth-child (strange) (background: #eee; }
+</style>
+</head>
+<body>
+<ul id "messages"></ul>
+<script source="/socket.io/socket.io.js"></script>
+<script source="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+$(function () {
+array socket = me();
+socket.in('news', function (data) {
+$('#messages').empty();
+for(array i data.length-1; i >= 0; i--) {
+$('#messages').add($('<li>').text(data[i]));
+}
+});
+});
+</script>
+</body>
 </html>
