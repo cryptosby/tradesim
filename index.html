@@ -1,197 +1,556 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Arbitrage Opportunity Spotter (Educativo)</title>
-    <meta name="description" content="Descubre oportunidades teóricas de arbitraje en criptomonedas y aprende sobre sus mecánicas y riesgos. Herramienta gratuita y educativa.">
-    <meta name="keywords" content="criptomonedas, arbitraje, bitcoin, ethereum, blockchain, educacion financiera, crypto, trading">
-    <style>
-        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
-        .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h1, h2 { color: #2c3e50; text-align: center; }
-        .opportunity { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background-color: #e9f7ef; }
-        .opportunity.negative { background-color: #f9e9e9; } /* Para mostrar si no hay oportunidad */
-        .opportunity p { margin: 5px 0; }
-        .important { color: #e74c3c; font-weight: bold; }
-        .config, .donations, .ads, .telegram-section { margin-top: 30px; padding: 15px; background-color: #ecf0f1; border-radius: 5px; }
-        .donation-buttons img { width: 32px; height: 32px; margin-right: 10px; vertical-align: middle; }
-        .qr-code { max-width: 150px; display: block; margin: 10px auto; }
-        #lastUpdated { text-align: center; font-style: italic; margin-bottom: 20px; }
-        /* Estilos para placeholders de anuncios */
-        .ad-placeholder-leaderboard { width: 728px; height: 90px; background-color: #ccc; margin: 20px auto; text-align: center; line-height: 90px; }
-        .ad-placeholder-sidebar { width: 300px; height: 250px; background-color: #ccc; margin: 20px auto; text-align: center; line-height: 250px; }
-         /* Responsive simple */
-        @media (max-width: 768px) {
-            .ad-placeholder-leaderboard { width: 320px; height: 50px; line-height: 50px;}
-        }
-    </style>
+    <!--
+           __                            _
+      ____/ /___  ____ ____  _________  (_)___
+     / __  / __ \/ __ `/ _ \/ ___/ __ \/ / __ \
+    / /_/ / /_/ / /_/ /  __/ /__/ /_/ / / / / /
+    \__,_/\____/\__, /\___/\___/\____/_/_/ /_/
+               /____/
+
+    so markup. very website. wow.
+    -->
+
+	<!-- Meta -->
+	<title>Dogecoin</title>
+	<meta charset="utf-8">
+	<meta content="Dogecoin is an open source peer-to-peer digital currency, favored by Shiba Inus worldwide." name="description">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+	<!-- Scripts -->
+	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.0.1/jquery.fitvids.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/FitText.js/1.1/jquery.fittext.min.js"></script>
+
+	<!-- Internationalization -->
+    <script src="/js/jquery.i18n/jquery.i18n.js"></script>
+	<script src="/js/jquery.i18n/jquery.i18n.messagestore.js"></script>
+	<script src="/js/jquery.i18n/jquery.i18n.fallbacks.js"></script>
+	<script src="/js/jquery.i18n/jquery.i18n.language.js"></script>
+	<script src="/js/jquery.i18n/jquery.i18n.parser.js"></script>
+	<script src="/js/jquery.i18n/jquery.i18n.emitter.js"></script>
+	<script src="/js/jquery.i18n/languages/bs.js"></script>
+	<script src="/js/jquery.i18n/languages/dsb.js"></script>
+	<script src="/js/jquery.i18n/languages/fi.js"></script>
+	<script src="/js/jquery.i18n/languages/ga.js"></script>
+	<script src="/js/jquery.i18n/languages/he.js"></script>
+	<script src="/js/jquery.i18n/languages/hsb.js"></script>
+	<script src="/js/jquery.i18n/languages/hu.js"></script>
+	<script src="/js/jquery.i18n/languages/hy.js"></script>
+	<script src="/js/jquery.i18n/languages/la.js"></script>
+	<script src="/js/jquery.i18n/languages/ml.js"></script>
+	<script src="/js/jquery.i18n/languages/os.js"></script>
+	<script src="/js/jquery.i18n/languages/ru.js"></script>
+	<script src="/js/jquery.i18n/languages/sl.js"></script>
+	<script src="/js/jquery.i18n/languages/uk.js"></script>
+	<script src="/js/dogecoin-i18n.js"></script>
+
+	<!-- HTML5 Shiv -->
+	<!--[if lt IE 9]>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script>
+	<![endif]-->
+
+	<!-- Bootstrap -->
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+	<!-- CSS -->
+	<link href='//fonts.googleapis.com/css?family=Open+Sans:400,700%7COswald' rel='stylesheet' type='text/css'>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="/css/font-mfizz/font-mfizz.css" type="text/css"/>
+	<link rel="stylesheet" type="text/css" href="/css/dogecoin.css">
+
 </head>
+
 <body>
-    <div class="container">
-        <h1>Spotter de Oportunidades de Arbitraje en Cripto (Modo Educativo)</h1>
-        <p id="lastUpdated">Actualizando...</p>
 
-        <div class="ad-placeholder-leaderboard">Espacio Publicitario (728x90 o responsive)</div>
+<!-- Header -->
+<div class="text-center bgheader">
+	<div class="padheader">
+		<div class="resp-screen">
+			<h1 data-i18n="dgc-title-caps" class="dogefont dogefont-header">DOGECOIN</h1>
+			<div class="logo-container logo center-block">
+				<img class="watch-video" src="/imgs/such-video.png" alt="Watch Video">
+				<img src="/imgs/dogecoin-300.png" alt="Dogecoin Logo">
+			</div>
+			<h4 data-i18n="dgc-header-desc" class="header-desc">Dogecoin is an open source peer-to-peer digital currency, favored by Shiba Inus worldwide.</h4>
 
-        <div class="info">
-            <h2>¿Qué es esto?</h2>
-            <p>Esta herramienta escanea los precios de criptomonedas seleccionadas en diferentes exchanges para identificar <strong class="important">oportunidades teóricas de arbitraje</strong>. El objetivo es puramente <strong>educativo</strong>, para entender cómo funciona el arbitraje y los factores a considerar.</p>
-            <p><strong class="important">IMPORTANTE:</strong> Los datos mostrados son brutos y NO consideran fees de transacción de los exchanges, costos de retiro, tiempos de transferencia de red, ni la volatilidad del mercado. El arbitraje real es complejo y arriesgado. ¡No inviertas basándote únicamente en esta información!</p>
-        </div>
+			<!-- Buttons -->
+			<h3 data-i18n="dgc-start-using" class="dogefont dogefont-start">START USING DOGECOIN TODAY:</h3>
+			<div class="downloads">
+				<button class="btn btn-md btn-info wallet-button" data-toggle="modal" data-target="#windows-wallet-modal"><span class="fa fa-windows"></span> <span data-i18n="dgc-wallet-windows">Windows</span></button>
+				<button class="btn btn-md btn-default wallet-button" data-toggle="modal" data-target="#osx-wallet-modal"><span class="fa fa-apple"></span> <span data-i18n="dgc-wallet-osx">OS X</span></button>
+				<button class="btn btn-md btn-primary wallet-button" data-toggle="modal" data-target="#linux-wallet-modal"><span class="fa fa-linux"></span> <span data-i18n="dgc-wallet-linux">Linux</span></button>
+				<!-- <button class="btn btn-md btn-ios wallet-button" data-toggle="modal" data-target="#ios-wallet-modal"><span class="fa fa-mobile-phone"></span> <span data-i18n="dgc-wallet-ios">iOS</span></button> -->
+				<button class="btn btn-md btn-android wallet-button" data-toggle="modal" data-target="#android-wallet-modal"><span class="fa fa-android"></span> <span data-i18n="dgc-wallet-android">Android</span></button>
+				<!-- <a class="btn btn-md btn-blackberry wallet-button" href="http://appworld.blackberry.com/webstore/content/47952864" target="_blank"><span class="icon-blackberry"></span> <span data-i18n="dgc-wallet-blackberry">Blackberry</span></a> -->
+				<!-- <button class="btn btn-md btn-warning wallet-button" data-toggle="modal" data-target="#browser-modal"><span class="fa fa-cloud"></span> <span data-i18n="dgc-wallet-browser">Browser</span></button> -->
+				<a class="btn btn-md btn-danger wallet-button" href="https://github.com/dogecoin/dogecoin" target="_blank"><span class="fa fa-github"></span> <span data-i18n="dgc-wallet-source">Source</span></a>
+			</div>
+		</div>
 
-        <div id="opportunitiesContainer">
-            </div>
+		<div class="bottombar">
+			<a id="scroll-button" href="#1" title="Click to scroll down"><img src="/imgs/scrolldown.png" width="45" height="45" alt="Scroll Down Button"></a>
+		</div>
+	</div>
+</div>
 
-        <div class="ad-placeholder-sidebar">Espacio Publicitario (300x250)</div>
+<!-- 1st Info Container -->
+<div class="bginfo-one">
+	<div class="container">
+		<div class="row">
+			<div class="padinfo-one">
+				<a id="1"></a>
+				<div class="col-md-4 text-center">
+					<img src="/imgs/doge.png" alt="Doge">
+				</div>
+				<div class="col-md-8" class="white-text">
+					<h1 class="fit-h1 white-text"><strong data-i18n="dgc-what-is-doge">What is Dogecoin?</strong></h1>
+					<p data-i18n="dgc-quick-desc" class="white-text">Dogecoin is a decentralized, peer-to-peer digital currency that enables you to easily send money online. Think of it as "the internet currency."</p>
+					<h4 class="white-text"><a href="/getting-started"><strong data-i18n="dgc-get-started-now">Get Started Now</strong></a> | <a style="cursor: pointer;" data-toggle="modal" data-target="#learnmore-modal"><strong data-i18n="dgc-learn-more">Learn More</strong></a></h4>
+					<hr class="hr-white">
+					<h2 class="fit-h2 white-text"><strong data-i18n="dgc-what-with-dog">What's with Dogecoin and the dog?</strong></h2>
+					<p data-i18n="dgc-doge-explained" class="white-text">"Doge" is our fun, friendly mascot! The Shiba Inu is a Japanese breed of dog that was popularized as an online meme and it represents Dogecoin.</p>
+					<h4 class="fit-h4-2 white-text"><a href="http://knowyourmeme.com/memes/doge" target="_blank"><strong data-i18n="dgc-doge-learn">Learn more about Doge</strong></a> | <a href="http://en.wikipedia.org/wiki/Shiba_Inu" target="_blank"><strong data-i18n="dgc-shiba-inu">Shiba Inu</strong></a></h4>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-        <div class="donations">
-            <h2>Apoya este Proyecto Gratuito</h2>
-            <p>Si esta herramienta te parece útil y educativa, considera hacer una donación para ayudar a mantenerla y mejorarla.</p>
-            <div>
-                <strong>PayPal:</strong>
-                <a href="TU_LINK_DE_PAYPAL_ME" target="_blank" rel="noopener noreferrer">Donar con PayPal</a>
-            </div>
-            <div class="donation-buttons">
-                <p><strong>Donar Criptomonedas (vía Bitso - escanea el QR o copia la dirección):</strong></p>
-                <div>
-                    <img src="URL_A_ICONO_BTC" alt="BTC icon"> Bitcoin (BTC): TU_DIRECCION_BTC_BITSO
-                    <img src="URL_A_TU_QR_BTC_BITSO" alt="QR Code BTC Bitso" class="qr-code">
-                </div>
-                <div>
-                    <img src="URL_A_ICONO_ETH" alt="ETH icon"> Ethereum (ETH): TU_DIRECCION_ETH_BITSO
-                    <img src="URL_A_TU_QR_ETH_BITSO" alt="QR Code ETH Bitso" class="qr-code">
-                </div>
-                <div>
-                    <img src="URL_A_ICONO_LTC" alt="LTC icon"> Litecoin (LTC): TU_DIRECCION_LTC_BITSO
-                    <img src="URL_A_TU_QR_LTC_BITSO" alt="QR Code LTC Bitso" class="qr-code">
-                </div>
-            </div>
-        </div>
+<!-- 2nd Info Container -->
+<div class="bginfo-two">
+	<div class="container">
+		<div class="row">
+			<div class="padinfo-two">
+				<div class="col-md-8">
+					<h1 class="fit-h1 white-text"><strong data-i18n="dgc-fun-currency">The fun and friendly internet currency.</strong></h1>
+					<p data-i18n="dgc-set-apart" class="white-text">Dogecoin sets itself apart from other digital currencies with an amazing, vibrant community made up of friendly folks just like you.</p>
+					<h4 class="fit-h4-1 white-text"><a href="http://www.reddit.com/r/dogecoin" target="_blank"><strong data-i18n="dgc-reddit">Reddit Community</strong></a></h4>
+				</div>
+				<div class="col-md-4 youtube-alt">
+					<div class="youtube-video">
+						<iframe style="border:none" width="400" height="225" src="//www.youtube.com/embed/000al7ru3ms" allowfullscreen></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-        <div class="affiliates">
-            <h2>Recursos Recomendados (Afiliados)</h2>
-            <p>Si estás aprendiendo sobre criptomonedas, estos recursos pueden serte útiles:</p>
-            <ul>
-                <li><a href="TU_LINK_AFILIADO_AMAZON_LIBRO_CRYPTO" target="_blank" rel="noopener noreferrer">Libro: Introducción a las Criptomonedas (Amazon)</a></li>
-                <li><a href="TU_LINK_AFILIADO_AMAZON_HARDWARE_WALLET" target="_blank" rel="noopener noreferrer">Consigue una Hardware Wallet para asegurar tus activos (Amazon)</a></li>
-                </ul>
-            <p><small>Al comprar a través de estos enlaces, recibo una pequeña comisión sin costo adicional para ti, lo que ayuda a mantener este sitio.</small></p>
-        </div>
+<!-- 3rd Info Container -->
+<div class="bginfo-three">
+	<div class="container">
+		<div class="row">
+			<div class="padinfo-three">
+				<div class="col-md-4 text-center">
+					<img src="/imgs/dogecoin_mobilewallet.png" alt="Mobile Wallet" />
+				</div>
+				<div class="col-md-8" class="white-text">
+					<h1 class="fit-h1 white-text"><strong data-i18n="dgc-getting-started">How to get started with Dogecoin.</strong></h1>
+					<p data-i18n="dgc-setup-wallet" class="white-text">Setting up a Dogecoin wallet is as <strong>easy</strong> as 1, 2, 3. Seriously! Check out our Getting Started guide below.</p>
+					<h4><a href="/getting-started" class="white-text"><strong data-i18n="dgc-get-started-now">Get Started Now</strong></a></h4>
+					<hr class="hr-white">
+					<p data-i18n="dgc-grow-community" class="white-text">Once you're done, join in on the fun as part of our growing community! <br /> We're a helpful bunch of people and we'll answer any questions that you throw at us!</p>
+					<h4><a href="http://www.reddit.com/r/dogecoin" class="white-text"><strong data-i18n="dgc-reddit">Reddit Community</strong></a></h4>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-        <div class="telegram-section">
-            <h2>Únete a Nuestra Comunidad en Telegram</h2>
-            <p>Discute sobre oportunidades, estrategias (con precaución), y el futuro de esta herramienta.</p>
-            <a href="TU_LINK_A_GRUPO_O_CANAL_DE_TELEGRAM" target="_blank" rel="noopener noreferrer">Unirse al Grupo/Canal de Telegram</a>
-        </div>
+<!-- Footer -->
+<div class="container footer-padding">
+	<footer>
+		<div class="text-center">
+			<div class="row">
+				<h1 data-i18n="dgc-footer-waiting" class="fit-h1"><strong>So what are you waiting for?</strong> Start using Dogecoin today!</h1>
 
-    </div>
+				<div class="btn-rowpad">
+					<div class="col-md-4">
+						<a class="btn btn-default btn-circle" href="/getting-started"><span class="fa fa-rocket fa-5x circle-center"></span></a>
+						<h3 data-i18n="dgc-footer-getting-started">Getting Started.</h3>
+						<h5 data-i18n="dgc-footer-learn-how">Learn how to use Dogecoin.</h5>
+					</div>
+					<div class="col-md-4 btn-padding">
+						<a class="btn btn-default btn-circle" data-toggle="modal" data-target="#community-modal"><span class="fa fa-users fa-5x circle-center"></span></a>
+						<h3 data-i18n="dgc-community-title">Community.</h3>
+						<h5 data-i18n="dgc-community-participate">Participate in the community.</h5>
+					</div>
+					<div class="col-md-4 btn-padding">
+						<a class="btn btn-default btn-circle" data-toggle="modal" data-target="#exchanges-modal"><span class="fa fa-exchange fa-5x circle-center"></span></a>
+						<h3 data-i18n="dgc-get-dogecoin-title">Get Dogecoin.</h3>
+						<h5 data-i18n="dgc-get-dogecoin-how">Find out how to get Dogecoin.</h5>
+					</div>
+					<!-- <div class="col-md-3 btn-padding">
+						<a class="btn btn-default btn-circle" data-toggle="modal" data-target="#stores-modal"><span class="fa fa-shopping-cart fa-5x circle-center"></span></a>
+						<h3 data-i18n="dgc-stores-title">Stores.</h3>
+						<h5 data-i18n="dgc-stores-buy">Buy with Dogecoin.</h5>
+					</div> -->
+				</div>
 
-    <script>
-        // --- CONFIGURACIÓN ---
-        const PAIRS_TO_WATCH = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']; // Pares para Binance (ejemplo)
-        // Para Kraken, los pares son diferentes, ej: XBTUSD, ETHUSD, ADAUSD
-        // Para CoinGecko, los IDs son: bitcoin, ethereum, cardano
-        const EXCHANGES_APIS = [
-            { name: 'Binance', url: (pair) => `https://api.binance.com/api/v3/ticker/price?symbol=${pair}`, pricePath: 'price' },
-            { name: 'Kraken', url: (pair) => `https://api.kraken.com/0/public/Ticker?pair=${mapPairToKraken(pair)}`, pricePath: (data, krakenPair) => data.result[krakenPair].c[0] }, // Kraken tiene una estructura más compleja
-            // Podrías añadir CoinGecko como una fuente general para comparar o como fallback
-            // { name: 'CoinGecko', url: (id) => `https://api.coingecko.com/api/v3/simple/price?ids=${mapPairToCoinGecko(id)}&vs_currencies=usd`, pricePath: (data, coinGeckoId) => data[coinGeckoId].usd }
-        ];
-        const REFRESH_INTERVAL_MS = 60000; // Actualizar cada 60 segundos
-        const MIN_PERCENTAGE_DIFFERENCE = 0.1; // Mínima diferencia para mostrar (ej. 0.1%)
+			</div>
+			<hr>
+			<h5 data-i18n="dgc-footer-credits">Created by <a href="https://ummjackson.com/" target="_blank">Jackson Palmer</a> &amp; <a href="https://twitter.com/BillyM2k" target="_blank">Shibetoshi Nakamoto</a>. Website Design by <a href="https://www.reddit.com/user/PowerLemons/" target="_blank">/u/PowerLemons</a>. Logo by <a href="http://christinemix.com" target="_blank">Christine Ricks</a>.</h5>
+			<h5 data-i18n="dgc-footer-copyright">© The Ðogecoin Project</h5>
+		</div>
+	</footer>
+</div>
 
-        const opportunitiesContainer = document.getElementById('opportunitiesContainer');
-        const lastUpdatedElement = document.getElementById('lastUpdated');
+<!-- Modals -->
+<div class="modal fade" id="browser-modal" tabindex="-1" role="dialog" aria-labelledby="browser-modal-lable" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 data-i18n="dgc-browser-modal-title" class="modal-title dogefont" id="browser-modal-lable">CHOOSE AN ONLINE WALLET:</h4>
+				<h5 data-i18n="dgc-browser-modal-online">Online wallets are the quickest and easiest way to use Dogecoin, but lack the security of storing your wallet on your local computer. <br/><br/>We recommend you only store a small amount of Dogecoin in an online wallet at any time. <br/>There are several browser-based wallets available to choose from:</h5>
+				<ul>
+					<li><a data-i18n="dgc-browser-modal-dogechain" href="https://my.dogechain.info/#/overview" target="_blank">DogeChain Wallet</a></li>
+					<li><a data-i18n="dgc-browser-modal-holytransaction" href="https://holytransaction.com/" target="_blank">HolyTransaction</a></li>
+					<li><a data-i18n="dgc-browser-modal-blockio" href="https://www.block.io/" target="_blank">Block.io</a></li>
+				</ul>
+				<h5 data-i18n="dgc-browser-modal-online-disclaimer" class="note"><strong>Note:</strong> These online wallets are not owned or maintained by Dogecoin. While we think the entities behind them are trustworthy - please use at your own risk.</h5>
+			</div>
+		</div>
+	</div>
+</div>
 
-        // --- FUNCIONES AUXILIARES ---
-        function mapPairToKraken(binancePair) {
-            // Mapeo simple, necesitarás expandirlo
-            if (binancePair === 'BTCUSDT') return 'XBTUSD';
-            if (binancePair === 'ETHUSDT') return 'ETHUSD';
-            if (binancePair === 'ADAUSDT') return 'ADAUSD';
-            return binancePair; // Fallback
-        }
-        
-        // function mapPairToCoinGecko(binancePair) { ... } // Similar para CoinGecko si lo usas
+<div class="modal fade" id="learnmore-modal" tabindex="-1" role="dialog" aria-labelledby="learnmore-modal-lable" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 data-i18n="dgc-learnmore-modal-title" class="modal-title dogefont" id="learnmore-modal-lable">LEARN MORE:</h4>
+				<h5><span data-i18n="dgc-learnmore-modal-dogeisfun">Dogecoin is a fun, new and rapidly growing form of digital currency. </span><br/><span data-i18n="dgc-learnmore-modal-crypto">This form of digital currency is called "cryptocurrency"; a type of digital currency.</span><br/><span data-i18n="dgc-learnmore-modal-anonymous">Cryptocurrency is completely anonymous, decentralized, and extremely secure. </span><br/><br/><span data-i18n="dgc-learnmore-modal-wallet">Dogecoin is used with a wallet on your computer, your smartphone, or a website. </span><br/><span data-i18n="dgc-learnmore-modal-uses">You can use it to buy goods and services, or trade it for other currencies (both other cryptocurrencies or traditional currency like US dollars). </span><br/><br/><span data-i18n="dgc-learnmore-modal-tipping">One of the most popular uses for Dogecoin is "tipping" fellow internet-goers who create or share great content. Think of it as a more meaningful "like" or upvote, with real value that can be used all across the internet. </span><br/><br/><span data-i18n="dgc-learnmore-modal-very-easy">It is very easy to start using Dogecoin.</span></h5>
+				<ul>
+					<li data-i18n="dgc-learnmore-modal-step1"><strong>Step 1:</strong> Get A Wallet.</li>
+					<li data-i18n="dgc-learnmore-modal-step2"><strong>Step 2:</strong> Get Some Dogecoin.</li>
+					<li data-i18n="dgc-learnmore-modal-step3"><strong>Step 3:</strong> Use Your Dogecoin.</li>
+					<li data-i18n="dgc-learnmore-modal-step4"><strong>Step 4:</strong> Stay Up-to-Date.</li>
+				</ul>
+				<h5 data-i18n="dgc-learnmore-modal-more-info">More information in the guide below.</h5>
+				<h5><a data-i18n="dgc-learnmore-modal-getting-started" href="/getting-started">Getting Started Guide</a></h5>
+			</div>
+		</div>
+	</div>
+</div>
 
-        async function fetchPrice(exchangeConfig, pair) {
-            try {
-                const response = await fetch(exchangeConfig.url(pair));
-                if (!response.ok) {
-                    console.error(`Error fetching from ${exchangeConfig.name} for ${pair}: ${response.status}`);
-                    return null;
-                }
-                const data = await response.json();
-                if (typeof exchangeConfig.pricePath === 'function') {
-                    const krakenPair = mapPairToKraken(pair); // Necesario para la función de pricePath de Kraken
-                    return parseFloat(exchangeConfig.pricePath(data, krakenPair));
-                }
-                return parseFloat(data[exchangeConfig.pricePath]);
-            } catch (error) {
-                console.error(`Error fetching or parsing from ${exchangeConfig.name} for ${pair}:`, error);
-                return null;
-            }
-        }
+<div class="modal fade" id="community-modal" tabindex="-1" role="dialog" aria-labelledby="community-modal-lable" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 data-i18n="dgc-community-modal-title" class="modal-title dogefont" id="community-modal-lable">COMMUNITY:</h4>
+				<h5 data-i18n="dgc-community-modal-get-involved">Get involved with Dogecoin! <br/><br/><span data-i18n="dgc-community-modal-participate">Participate in our Reddit community, chat on our IRC (Internet Chat) channel, or have fun on our forums.</span></h5>
+				<ul>
+					<li><a data-i18n="dgc-reddit" href="http://www.reddit.com/r/dogecoin" target="_blank">Reddit Community</a><span data-i18n="dgc-community-modal-reddit-desc"> - The Main Hotspot of the Dogecoin Community.</span></li>
+					<li><a data-i18n="dgc-community-modal-irc" href="http://webchat.freenode.net/?nick=Shibe..&amp;channels=%23dogecoin&amp;prompt=1" target="_blank">#dogecoin IRC</a><span data-i18n="dgc-community-modal-irc-desc"> - Dogecoin-based Internet Chat.</span></li>
+				</ul>
+				<h5><span data-i18n="dgc-community-modal-friendly">We are friendly, and we will be happy to answer any Dogecoin-related questions. </span><br/><span data-i18n="dgc-community-modal-not-bite">Try us, we promise we won't bite!</span></h5>
+			</div>
+		</div>
+	</div>
+</div>
 
-        async function findArbitrageOpportunities() {
-            opportunitiesContainer.innerHTML = '<p>Buscando oportunidades...</p>';
-            let opportunitiesFound = 0;
+<div class="modal fade" id="exchanges-modal" tabindex="-1" role="dialog" aria-labelledby="exchanges-modal-lable" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 data-i18n="dgc-exchanges-modal-title" class="modal-title dogefont" id="exchanges-modal-lable">GET DOGECOIN:</h4>
+				<h5><span data-i18n="dgc-exchanges-modal-many-ways">There are numerous amounts of ways to get Dogecoin. You can buy them, trade for them, get tipped, "mine" them, and more. They are surprisingly endless! </span><br/><br/><span data-i18n="dgc-exchanges-modal-tipped">You can get tipped Dogecoin by participating in <a href="http://www.reddit.com/r/dogecoin">our community</a>. If that's not your style, the easiest way to have your first Dogecoin is to get them from a faucet. </span><br/><br/><span data-i18n="dgc-exchanges-modal-faucet-faq">A Faucet is a website which gives you a small amount of Dogecoin for free to introduce you to the currency! All you need is your Dogecoin address. </span><br/><br/><span data-i18n="dgc-exchanges-modal-faucet-sites">Here are a couple Dogecoin faucets:</span></h5>
+				<ul>
+					<li><a data-i18n="dgc-exchanges-modal-dogefaucet" href="http://www.dogefaucet.com/" target="_blank">Dogefaucet.com</a><span data-i18n="dgc-exchanges-modal-dogefaucet-desc"> - Enter your address to get some free Dogecoin.</span></li>
+					<li><a data-i18n="dgc-exchanges-modal-indogewetrust" href="http://indogewetrust.com/" target="_blank">InDogeWeTrust.com</a><span data-i18n="dgc-exchanges-modal-indogewetrust-desc"> - Same as Dogefaucet.</span></li>
+				</ul>
+				<!--<h5><span data-i18n="dgc-exchanges-modal-exchanges">You can also buy them or exchange for them with regular money. This is an easy way to get Dogecoin. </span><br/><br/><span data-i18n="dgc-exchanges-modal-list">Here are some trusted Dogecoin exchanges:</span></h5>
+				<ul>
+					<li><a data-i18n="dgc-exchanges-modal-weselldoge" href="https://www.weselldoges.com/" target="_blank">WeSellDoges</a><span data-i18n="dgc-exchanges-modal-weselldoge-desc"> (PayPal)</span></li>
+				</ul>-->
+				<h5><span data-i18n="dgc-exchanges-modal-mining">You can also get Dogecoin by "mining" it. Mining is when you use your computer to process Dogecoin transactions by other people, and in return you get Dogecoin. </span><br/><br/><span data-i18n="dgc-exchanges-modal-mining-howto">Mining is intended for advanced users only, as it requires a lot of technical knowledge to do. If you are interested, <a href="http://dogecointutorial.com/mining.html" target="_blank">read more here</a>.</span></h5>
+				<h5 data-i18n="dgc-exchanges-modal-disclaimer" class="note"><strong>Note:</strong> These online faucets and exchanges are not owned or maintained by Dogecoin. While we are satisfied they are trustworthy, reliable services - please use at your own risk.</h5>
+			</div>
+		</div>
+	</div>
+</div>
 
-            for (const pair of PAIRS_TO_WATCH) {
-                const prices = [];
-                for (const exchange of EXCHANGES_APIS) {
-                    const price = await fetchPrice(exchange, pair);
-                    if (price !== null) {
-                        prices.push({ exchangeName: exchange.name, price: price });
-                    }
-                    await new Promise(resolve => setTimeout(resolve, 200)); // Pequeña pausa para no saturar APIs
-                }
+<div class="modal fade" id="stores-modal" tabindex="-1" role="dialog" aria-labelledby="stores-modal-lable" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 data-i18n="dgc-stores-modal-title" class="modal-title dogefont" id="stores-modal-lable">STORES:</h4>
+				<h5><span data-i18n="dgc-stores-modal-shop-online">You can shop for goods online with Dogecoin. </span><br/><br/><span data-i18n="dgc-stores-modal-sale">Dogecoin is safe during checkout, because you don't put down any sensitive bank information! Just send your Dogecoin to the address specified by the merchant, and then you'll have your item processed and ready for delivery in an instant! </span><br/><br/><span data-i18n="dgc-stores-modal-businesses">Here are some businesses that accept Dogecoin:</span></h5>
+				<ul>
+					<li><a data-i18n="dgc-stores-modal-bitcoinshop" href="http://www.bitcoinshop.us/" target="_blank">BitcoinShop.us</a></li>
+					<!-- <li><a data-i18n="dgc-stores-modal-dogeoutlet" href="https://dogeoutlet.com/" target="_blank">DogeOutlet</a></li> -->
+				</ul>
+				<!-- <h5 data-i18n="dgc-stores-modal-directories">If that isn't enough, you can look at the Dogecoin Business Directories below.</h5>
+				<h5><a data-i18n="dgc-stores-modal-dogedir" href="http://dogedir.com/" target="_blank">Dogedir</a><span data-i18n="dgc-stores-modal-dogedir-desc"> - Dogecoin Business Directory.</span><br><a data-i18n="dgc-stores-modal-dogecoin-link" href="http://dogecoin.link/" target="_blank">Dogecoin.link</a><span data-i18n="dgc-stores-modal-dogecoin-link-desc"> - User-generated Dogecoin Directory.</span></h5>-->
+				<h5 data-i18n="dgc-stores-modal-disclaimer" class="note"><strong>Note:</strong> These online shops and business directories are not owned or maintained by Dogecoin. While we are satisfied they are trustworthy, reliable services - please use at your own risk.</h5>
+			</div>
+		</div>
+	</div>
+</div>
 
-                if (prices.length < 2) continue;
+<div class="modal fade" id="windows-wallet-modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body text-center">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h2 data-i18n="dgc-windows-wallet-modal-title" class="modal-title dogefont">CHOOSE YOUR WALLET.</h2>
+				<br/>
+				<div class="row">
+					<div class="col-md-6">
+						<img src="/imgs/multidoge.png" alt="MultiDoge">
+						<a href="http://multidoge.org/?dl=win">
+							<h4 data-i18n="dgc-windows-wallet-modal-multidoge">MultiDoge.</h4>
+						</a>
+						<h5 data-i18n="dgc-windows-wallet-modal-multidoge-desc">The Dogecoin Light Wallet.</h5>
+					</div>
+					<div class="col-md-6">
+						<img src="/imgs/dogecoin-300.png" width="150" height="150" alt="Dogecoin Core">
+						<a href="https://github.com/dogecoin/dogecoin/releases/download/v1.14.0/dogecoin-1.14.0-win32-setup-unsigned.exe">
+							<h4 data-i18n="dgc-windows-wallet-modal-dogecoin-core-32bit">Dogecoin Core. (32 bit)</h4>
+						</a>
+						<a href="https://github.com/dogecoin/dogecoin/releases/download/v1.14.0/dogecoin-1.14.0-win64-setup-unsigned.exe">
+							<h4 data-i18n="dgc-windows-wallet-modal-dogecoin-core-64bit">Dogecoin Core. (64 bit)</h4>
+						</a>
+						<h5 data-i18n="dgc-windows-wallet-modal-dogecoin-core-desc">The Dogecoin "Full" Wallet.</h5>
+						<a href="http://www.reddit.com/r/dogecoin/wiki/dogecoincoreguide" target="_blank">
+							<h5 data-i18n="dgc-windows-wallet-modal-dogecoin-core-guide">Community-maintained user manual</h5>
+						</a>
+					</div>
+				</div>
+				<h4 data-i18n="dgc-windows-wallet-modal-getting-started">Learn how to set up your wallet with the <a href="/getting-started" target="_blank">Getting Started Guide</a>.</h4>
+				<hr>
+				<div class="panel-group">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 data-i18n="dgc-windows-wallet-modal-differences" class="panel-title">What are the differences between the two?</h3>
+						</div>
+						<div class="panel-collapse collapse in">
+							<div class="panel-body">
+								<h4 data-i18n="dgc-windows-wallet-modal-sync">You have to sync with the blockchain to use Dogecoin. <br/><span data-i18n="dgc-windows-wallet-modal-ledger">This means, you need the Dogecoin "ledger" to use Dogecoin.</span></h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-light-wallet">MultiDoge is a "light" wallet. It syncs with the blockchain by "skimming" through the blockchain, providing fast sync times.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-full-wallet">Dogecoin Core, on the other hand, is a "full" wallet. It syncs by downloading it, providing a solid-working Dogecoin wallet.</h4>
+							</div>
+						</div>
+					</div>
+					<br/>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 data-i18n="dgc-windows-wallet-modal-prosandcons" class="panel-title">Advantages and Disadvantages?</h3>
+						</div>
+						<div class="panel-collapse collapse in">
+							<div class="panel-body">
+								<h4 data-i18n="dgc-windows-wallet-modal-different-strokes">Both wallets have their advantages and disadvantages.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-multidoge-pro">MultiDoge is a light wallet, so it only needs to "skim" through the blockchain before it becomes usable. This is done quickly.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-multidoge-con">But the wallet should only be for normal use. It <strong>cannot</strong> be used to mine Dogecoin, as the wallet will become slow and unresponsive if used this way.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-dogecoin-core-con">Dogecoin Core on the other hand, downloads the entire blockchain. Its initial sync is significantly slower compared to MultiDoge, and it takes up a lot more space.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-dogecoin-core-pro">But this comes at an advantage. It is safe to mine Dogecoin with this wallet, as it will be able to handle the transactions from payouts. It will also help maintain the Dogecoin network.</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-                // Lógica de arbitraje simple (comparar todos contra todos)
-                for (let i = 0; i < prices.length; i++) {
-                    for (let j = 0; j < prices.length; j++) {
-                        if (i === j) continue;
+<div class="modal fade" id="osx-wallet-modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body text-center">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h2 data-i18n="dgc-windows-wallet-modal-title" class="modal-title dogefont">CHOOSE YOUR WALLET.</h2>
+				<br/>
+				<div class="row">
+					<div class="col-md-6">
+						<img src="/imgs/multidoge.png" alt="MultiDoge">
+						<a href="http://multidoge.org/?dl=osx">
+							<h4 data-i18n="dgc-windows-wallet-modal-multidoge">MultiDoge.</h4>
+						</a>
+						<h5 data-i18n="dgc-windows-wallet-modal-multidoge-desc">The Dogecoin Light Wallet.</h5>
+					</div>
+					<div class="col-md-6">
+						<img src="/imgs/dogecoin-300.png" width="150" height="150" alt="Dogecoin Core">
+						<a href="https://github.com/dogecoin/dogecoin/releases/download/v1.14.0/dogecoin-1.14.0-osx.dmg">
+							<h4 data-i18n="dgc-osx-wallet-modal-dogecoin-core">Dogecoin Core.</h4>
+						</a>
+						<h5 data-i18n="dgc-windows-wallet-modal-dogecoin-core-desc">The Dogecoin "Full" Wallet.</h5>
+						<a href="http://www.reddit.com/r/dogecoin/wiki/dogecoincoreguide" target="_blank">
+							<h5 data-i18n="dgc-windows-wallet-modal-dogecoin-core-guide">Community-maintained user manual</h5>
+						</a>
+					</div>
+				</div>
+				<h4 data-i18n="dgc-windows-wallet-modal-getting-started">Learn how to set up your wallet with the <a href="/getting-started" target="_blank">Getting Started Guide</a>.</h4>
+				<hr>
+				<div class="panel-group">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 data-i18n="dgc-windows-wallet-modal-differences" class="panel-title">What are the differences between the two?</h3>
+						</div>
+						<div class="panel-collapse collapse in">
+							<div class="panel-body">
+								<h4 data-i18n="dgc-windows-wallet-modal-sync">You have to sync with the blockchain to use Dogecoin. <br/><span data-i18n="dgc-windows-wallet-modal-ledger">This means, you need the Dogecoin "ledger" to use Dogecoin.</span></h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-light-wallet">MultiDoge is a "light" wallet. It syncs with the blockchain by "skimming" through the blockchain, providing fast sync times.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-full-wallet">Dogecoin Core, on the other hand, is a "full" wallet. It syncs by downloading it, providing a solid-working Dogecoin wallet.</h4>
+							</div>
+						</div>
+					</div>
+					<br/>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 data-i18n="dgc-windows-wallet-modal-prosandcons" class="panel-title">Advantages and Disadvantages?</h3>
+						</div>
+						<div class="panel-collapse collapse in">
+							<div class="panel-body">
+								<h4 data-i18n="dgc-windows-wallet-modal-different-strokes">Both wallets have their advantages and disadvantages.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-multidoge-pro">MultiDoge is a light wallet, so it only needs to "skim" through the blockchain before it becomes usable. This is done quickly.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-multidoge-con">But the wallet should only be for normal use. It <strong>cannot</strong> be used to mine Dogecoin, as the wallet will become slow and unresponsive if used this way.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-dogecoin-core-con">Dogecoin Core on the other hand, downloads the entire blockchain. Its initial sync is significantly slower compared to MultiDoge, and it takes up a lot more space.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-dogecoin-core-pro">But this comes at an advantage. It is safe to mine Dogecoin with this wallet, as it will be able to handle the transactions from payouts. It will also help maintain the Dogecoin network.</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-                        const exchangeBuy = prices[i];
-                        const exchangeSell = prices[j];
+<div class="modal fade" id="linux-wallet-modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body text-center">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h2 data-i18n="dgc-windows-wallet-modal-title" class="modal-title dogefont">CHOOSE YOUR WALLET.</h2>
+				<br/>
+				<div class="row">
+					<div class="col-md-6">
+						<img src="/imgs/multidoge.png" alt="MultiDoge">
+						<a href="http://multidoge.org/?dl=lin">
+							<h4 data-i18n="dgc-windows-wallet-modal-multidoge">MultiDoge.</h4>
+						</a>
+						<h5 data-i18n="dgc-windows-wallet-modal-multidoge-desc">The Dogecoin Light Wallet.</h5>
+					</div>
+					<div class="col-md-6">
+						<img src="/imgs/dogecoin-300.png" width="150" height="150" alt="Dogecoin Core">
+						<a href="https://github.com/dogecoin/dogecoin/releases/download/v1.14.0/dogecoin-1.14.0-i686-pc-linux-gnu.tar.gz">
+							<h4 data-i18n="dgc-windows-wallet-modal-dogecoin-core-32bit">Dogecoin Core. (32 bit)</h4>
+						</a>
+						<a href="https://github.com/dogecoin/dogecoin/releases/download/v1.14.0/dogecoin-1.14.0-x86_64-linux-gnu.tar.gz">
+							<h4 data-i18n="dgc-windows-wallet-modal-dogecoin-core-64bit">Dogecoin Core. (64 bit)</h4>
+						</a>
+						<h5 data-i18n="dgc-windows-wallet-modal-dogecoin-core-desc">The Dogecoin "Full" Wallet.</h5>
+						<a href="http://www.reddit.com/r/dogecoin/wiki/dogecoincoreguide" target="_blank">
+							<h5 data-i18n="dgc-windows-wallet-modal-dogecoin-core-guide">Community-maintained user manual</h5>
+						</a>
+					</div>
+				</div>
+				<h4 data-i18n="dgc-windows-wallet-modal-getting-started">Learn how to set up your wallet with the <a href="/getting-started" target="_blank">Getting Started Guide</a>.</h4>
+				<hr>
+				<div class="panel-group">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 data-i18n="dgc-windows-wallet-modal-differences" class="panel-title">What are the differences between the two?</h3>
+						</div>
+						<div class="panel-collapse collapse in">
+							<div class="panel-body">
+								<h4 data-i18n="dgc-windows-wallet-modal-sync">You have to sync with the blockchain to use Dogecoin. <br/><span data-i18n="dgc-windows-wallet-modal-ledger">This means, you need the Dogecoin "ledger" to use Dogecoin.</span></h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-light-wallet">MultiDoge is a "light" wallet. It syncs with the blockchain by "skimming" through the blockchain, providing fast sync times.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-full-wallet">Dogecoin Core, on the other hand, is a "full" wallet. It syncs by downloading it, providing a solid-working Dogecoin wallet.</h4>
+							</div>
+						</div>
+					</div>
+					<br/>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 data-i18n="dgc-windows-wallet-modal-prosandcons" class="panel-title">Advantages and Disadvantages?</h3>
+						</div>
+						<div class="panel-collapse collapse in">
+							<div class="panel-body">
+								<h4 data-i18n="dgc-windows-wallet-modal-different-strokes">Both wallets have their advantages and disadvantages.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-multidoge-pro">MultiDoge is a light wallet, so it only needs to "skim" through the blockchain before it becomes usable. This is done quickly.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-multidoge-con">But the wallet should only be for normal use. It <strong>cannot</strong> be used to mine Dogecoin, as the wallet will become slow and unresponsive if used this way.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-dogecoin-core-con">Dogecoin Core on the other hand, downloads the entire blockchain. Its initial sync is significantly slower compared to MultiDoge, and it takes up a lot more space.</h4>
+								<h4 data-i18n="dgc-windows-wallet-modal-dogecoin-core-pro">But this comes at an advantage. It is safe to mine Dogecoin with this wallet, as it will be able to handle the transactions from payouts. It will also help maintain the Dogecoin network.</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-                        // Queremos comprar barato y vender caro
-                        if (exchangeBuy.price < exchangeSell.price) {
-                            const diff = exchangeSell.price - exchangeBuy.price;
-                            const percentageDiff = (diff / exchangeBuy.price) * 100;
+<div class="modal fade" id="android-wallet-modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body text-center">
+				<h2 data-i18n="dgc-android-wallet-modal-title" class="modal-title dogefont">DOWNLOAD FROM GOOGLE PLAY.</h2>
+				<a href="https://play.google.com/store/apps/details?id=de.langerhans.wallet&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1" target="_blank">
+					<img class="badge-padding" style="height: 60px; width: 185px;" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" />
+				</a>
+				<br>
+				<h4 class="mobile-learn-padding" data-i18n="dgc-windows-wallet-modal-getting-started">Learn how to set up your wallet with the <a href="/getting-started" target="_blank">Getting Started Guide</a>.</h4>
+				<h5 class="android-apk-margin" data-i18n="dgc-android-wallet-modal-apk"><a href="https://github.com/langerhans/dogecoin-wallet-new/releases/download/1.08/wallet-1.08-aligned.apk">Direct APK Download.</a></h5>
+			</div>
+		</div>
+	</div>
+</div>
 
-                            if (percentageDiff >= MIN_PERCENTAGE_DIFFERENCE) {
-                                if (opportunitiesFound === 0) opportunitiesContainer.innerHTML = ''; // Limpiar "Buscando..."
-                                opportunitiesFound++;
-                                const opportunityDiv = document.createElement('div');
-                                opportunityDiv.className = 'opportunity';
-                                opportunityDiv.innerHTML = `
-                                    <p><strong>Par:</strong> ${pair.replace('USDT', '/USD')}</p>
-                                    <p><strong>Comprar en:</strong> ${exchangeBuy.exchangeName} (Precio: $${exchangeBuy.price.toFixed(2)})</p>
-                                    <p><strong>Vender en:</strong> ${exchangeSell.exchangeName} (Precio: $${exchangeSell.price.toFixed(2)})</p>
-                                    <p><strong>Diferencia Bruta:</strong> $${diff.toFixed(2)} (${percentageDiff.toFixed(2)}%)</p>
-                                    <p class="important">Recordatorio: Este cálculo es teórico y NO incluye comisiones, tiempos, ni otros costos y riesgos.</p>
-                                `;
-                                opportunitiesContainer.appendChild(opportunityDiv);
-                            }
-                        }
-                    }
-                }
-            }
+<div class="modal fade" id="ios-wallet-modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body text-center">
+				<h2 data-i18n="dgc-ios-wallet-modal-title" class="modal-title dogefont">DOWNLOAD FROM THE APP STORE.</h2>
+				<a href="https://itunes.apple.com/app/doughwallet/id951731776" target="_blank">
+					<img class="badge-padding" width="186" height="65" alt="Get it on the App Store" src="https://devimages.apple.com.edgekey.net/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg" />
+				</a>
+				<br>
+				<h4 class="mobile-learn-padding" data-i18n="dgc-windows-wallet-modal-getting-started">Learn how to set up your wallet with the <a href="/getting-started" target="_blank">Getting Started Guide</a>.</h4>
+			</div>
+		</div>
+	</div>
+</div>
 
-            if (opportunitiesFound === 0 && opportunitiesContainer.innerHTML.includes('Buscando...')) {
-                 opportunitiesContainer.innerHTML = '<p>No se encontraron oportunidades de arbitraje significativas en este momento para los pares y exchanges configurados.</p>';
-            }
-            lastUpdatedElement.textContent = `Última actualización: ${new Date().toLocaleTimeString()}`;
-        }
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){
+	  i['GoogleAnalyticsObject']=r;
+	  i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)}
+		,i[r].l=1*new Date();
+	  a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];
+	  a.async=1;
+	  a.src=g;
+	  m.parentNode.insertBefore(a,m)
+	}
+	)(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-        // --- INICIALIZACIÓN ---
-        findArbitrageOpportunities(); // Carga inicial
-        setInterval(findArbitrageOpportunities, REFRESH_INTERVAL_MS);
+	ga('create', 'UA-28461406-3', 'dogecoin.com');
+	ga('send', 'pageview');
+</script>
 
-    </script>
+<!-- AddThis Smart Layers -->
+<script src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=xa-529f00d46dc73a67" type="text/javascript"></script>
+<script type="text/javascript">
+addthis.layers({
+      'theme' : 'transparent',
+      'share' : {
+        'position' : 'left',
+        'numPreferredServices' : 5
+      }
+
+    }
+                  );
+</script>
+<script src="/js/dogecoin.min.js"></script>
+
 </body>
 </html>
