@@ -3,123 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CryptoDirectorio - Tu Guía Esencial de Criptomonedas</title>
+    <title>Crypto Tools for Traders</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    </head>
+</head>
 <body>
     <header>
-        <h1>CryptoDirectorio</h1>
-        <p>Tu guía esencial para el mundo de las criptomonedas</p>
-        <nav>
-            <ul>
-                <li><a href="#exchanges">Exchanges</a></li>
-                <li><a href="#noticias">Noticias Relevantes</a></li>
-                <li><a href="#proyectos">Proyectos Blockchain</a></li>
-                <li><a href="#recursos">Recursos Educativos</a></li>
-                <li><a href="#contacto">Contacto</a></li>
-            </ul>
-        </nav>
+        <h1>🚀 Crypto Trading Tools</h1>
     </header>
 
-    <main>
-        <section id="introduccion" class="hero">
-            <h2>Explora el Universo Cripto</h2>
-            <p>Descubre los mejores exchanges, las noticias más frescas y proyectos innovadores en un solo lugar.</p>
-            <div class="cta-buttons">
-                <a href="#exchanges" class="button primary">Ver Exchanges</a>
-                <a href="#noticias" class="button secondary">Últimas Noticias</a>
+    <div class="container">
+        <!-- Tool 1: Gas Fee Calculator -->
+        <section class="tool-card">
+            <h2>⛽ Gas Fee Calculator (Ethereum)</h2>
+            <div class="input-group">
+                <input type="number" id="gas-limit" placeholder="Gas Limit (ej: 21000)">
+                <input type="number" id="gas-price" placeholder="Gas Price (Gwei)">
+                <button onclick="calculateGasFee()">Calcular</button>
             </div>
-            </section>
-
-        <section id="exchanges" class="category-section">
-            <h2>📊 Exchanges de Criptomonedas</h2>
-            <p>Encuentra las plataformas más seguras y confiables para comprar, vender e intercambiar tus criptomonedas.</p>
-            <div class="filters">
-                <input type="text" id="exchangeSearch" placeholder="Buscar exchange..." onkeyup="filterContent('exchanges')">
-                <select id="exchangeFilter" onchange="filterContent('exchanges')">
-                    <option value="all">Todos</option>
-                    <option value="global">Global</option>
-                    <option value="regional">Regional</option>
-                    </select>
-            </div>
-            <div class="grid-container" id="exchangesGrid">
-                </div>
+            <p id="gas-result">Costo: 0 ETH / 0 USD</p>
         </section>
 
-        <section id="noticias" class="category-section">
-            <h2>📰 Noticias Relevantes</h2>
-            <p>Mantente al día con los últimos acontecimientos y tendencias del mercado cripto.</p>
-            <div class="filters">
-                <input type="text" id="newsSearch" placeholder="Buscar noticia..." onkeyup="filterContent('noticias')">
-            </div>
-            <div class="list-container" id="noticiasList">
-                </div>
-        </section>
-
-        <section id="proyectos" class="category-section">
-            <h2>🚀 Proyectos Blockchain Innovadores</h2>
-            <p>Descubre proyectos prometedores, tecnologías emergentes y ecosistemas descentralizados.</p>
-            <div class="filters">
-                <input type="text" id="projectSearch" placeholder="Buscar proyecto..." onkeyup="filterContent('proyectos')">
-                <select id="projectFilter" onchange="filterContent('proyectos')">
-                    <option value="all">Todos</option>
-                    <option value="defi">DeFi</option>
-                    <option value="nft">NFT</option>
-                    <option value="gaming">Gaming</option>
-                    <option value="infraestructura">Infraestructura</option>
+        <!-- Tool 2: Crypto Converter -->
+        <section class="tool-card">
+            <h2>🔁 Crypto Converter</h2>
+            <div class="input-group">
+                <input type="number" id="crypto-amount" placeholder="Cantidad">
+                <select id="crypto-from">
+                    <option value="bitcoin">BTC</option>
+                    <option value="ethereum">ETH</option>
                 </select>
+                <select id="crypto-to">
+                    <option value="usd">USD</option>
+                    <option value="eur">EUR</option>
+                </select>
+                <button onclick="convertCrypto()">Convertir</button>
             </div>
-            <div class="grid-container" id="proyectosGrid">
-                </div>
+            <p id="conversion-result">Resultado: -</p>
         </section>
 
-        <section id="recursos" class="category-section">
-            <h2>📚 Recursos Educativos y Herramientas</h2>
-            <p>Aprende sobre criptomonedas, blockchain y finanzas descentralizadas. ¡El conocimiento es poder!</p>
-            <div class="list-container" id="recursosList">
-                </div>
+        <!-- Tool 3: TradingView Chart -->
+        <section class="tool-card">
+            <h2>📊 Gráfico BTC/USD (TradingView)</h2>
+            <div class="tradingview-widget">
+                <!-- Widget de TradingView -->
+                <div id="tradingview-chart" style="height: 300px;"></div>
+            </div>
         </section>
-
-        <section id="contacto" class="category-section contact-section">
-            <h2>✉️ Contáctanos</h2>
-            <p>¿Tienes sugerencias o quieres listar tu proyecto? ¡Envíanos un mensaje!</p>
-            <form id="contactForm">
-                <div class="form-group">
-                    <label for="name">Nombre:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Mensaje:</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
-                </div>
-                <button type="submit" class="button primary">Enviar Mensaje</button>
-                <p class="form-note">Nota: Este formulario no envía correos directamente. Puedes incluir tu email de contacto o un enlace a tus redes sociales aquí.</p>
-            </form>
-            <div class="social-links">
-                <h3>Síguenos:</h3>
-                <a href="https://t.me/TuCanalDeTelegram" target="_blank" class="social-button telegram">Telegram</a>
-                <a href="#" target="_blank" class="social-button twitter">X (Twitter)</a>
-                </div>
-        </section>
-
-        </main>
+    </div>
 
     <footer>
-        <p>&copy; 2025 CryptoDirectorio. Todos los derechos reservados.</p>
-        <p>Desarrollado con ❤️ y código.</p>
-        <div class="footer-links">
-            <a href="#">Política de Privacidad</a>
-            <a href="#">Términos y Condiciones</a>
-            <a href="#">Aviso Legal</a>
-            <a href="https://www.amazon.com/your-affiliate-link" target="_blank">Libros de Cripto en Amazon</a>
-        </div>
+        <p>© 2023 - Sube este proyecto a <a href="https://github.com/" target="_blank">GitHub</a>.</p>
     </footer>
 
+    <!-- Scripts -->
     <script src="script.js"></script>
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 </body>
 </html>
