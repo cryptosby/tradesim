@@ -3,60 +3,274 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Tools for Traders</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Herramientas Crypto Esenciales para Traders</title>
+    <!-- Incluir Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Fuentes personalizadas */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Fondo claro */
+            color: #333; /* Color de texto principal */
+        }
+        /* Estilos personalizados para tarjetas y botones */
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .btn-primary {
+            background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(106, 17, 203, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(106, 17, 203, 0.6);
+        }
+        .section-title {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60%;
+            height: 4px;
+            background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+            border-radius: 2px;
+        }
+    </style>
 </head>
-<body>
-    <header>
-        <h1>🚀 Crypto Trading Tools</h1>
+<body class="antialiased">
+    <header class="bg-white shadow-sm py-6">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-gray-800">
+                <span class="text-blue-600">Crypto</span><span class="text-purple-700">Tools</span>
+            </h1>
+            <nav>
+                <a href="#herramientas" class="btn-primary">Ver Herramientas</a>
+            </nav>
+        </div>
     </header>
 
-    <div class="container">
-        <!-- Tool 1: Gas Fee Calculator -->
-        <section class="tool-card">
-            <h2>⛽ Gas Fee Calculator (Ethereum)</h2>
-            <div class="input-group">
-                <input type="number" id="gas-limit" placeholder="Gas Limit (ej: 21000)">
-                <input type="number" id="gas-price" placeholder="Gas Price (Gwei)">
-                <button onclick="calculateGasFee()">Calcular</button>
-            </div>
-            <p id="gas-result">Costo: 0 ETH / 0 USD</p>
+    <main class="container mx-auto px-4 py-12">
+        <section id="intro" class="text-center mb-16">
+            <h2 class="text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+                Potencia tu Trading de Criptomonedas
+            </h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+                Descubre una selección de las 30 mejores herramientas y widgets esenciales para traders de criptomonedas.
+                Maximiza tu rendimiento con recursos gratuitos, automáticos y fáciles de usar.
+            </p>
+            <a href="#herramientas" class="btn-primary text-xl inline-block">Explorar Ahora</a>
         </section>
 
-        <!-- Tool 2: Crypto Converter -->
-        <section class="tool-card">
-            <h2>🔁 Crypto Converter</h2>
-            <div class="input-group">
-                <input type="number" id="crypto-amount" placeholder="Cantidad">
-                <select id="crypto-from">
-                    <option value="bitcoin">BTC</option>
-                    <option value="ethereum">ETH</option>
-                </select>
-                <select id="crypto-to">
-                    <option value="usd">USD</option>
-                    <option value="eur">EUR</option>
-                </select>
-                <button onclick="convertCrypto()">Convertir</button>
+        <section id="herramientas" class="mb-16">
+            <h3 class="text-4xl font-bold text-gray-800 mb-10 section-title">
+                Nuestras Herramientas Recomendadas
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Tarjeta de ejemplo para una herramienta -->
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">1. Precios en Tiempo Real</h4>
+                    <p class="text-gray-600">Muestra los precios actuales de tus criptomonedas favoritas (Bitcoin, Ethereum, etc.) actualizados al instante. Esencial para tomar decisiones rápidas.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Busca widgets de CoinGecko o CryptoCompare.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">2. Gráficos de Precios Interactivos</h4>
+                    <p class="text-gray-600">Visualiza el historial de precios con indicadores técnicos personalizables. Imprescindible para el análisis técnico.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Widgets de TradingView son los más populares.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">3. Capitalización de Mercado Global</h4>
+                    <p class="text-gray-600">Muestra la capitalización de mercado total y la dominancia de las principales criptomonedas. Te da una visión general del mercado.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs o widgets de CoinMarketCap o CoinGecko.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">4. Volumen de Trading (24h)</h4>
+                    <p class="text-gray-600">Monitorea el volumen de trading de las últimas 24 horas para identificar la actividad del mercado y la liquidez.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Proveedores de datos de mercado como CoinGecko.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">5. Feed de Noticias Crypto</h4>
+                    <p class="text-gray-600">Mantente informado con las últimas noticias y titulares del ecosistema cripto. Las noticias mueven el mercado.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de noticias o feeds RSS de sitios como CoinDesk, Cointelegraph.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">6. Convertidor de Monedas</h4>
+                    <p class="text-gray-600">Convierte fácilmente entre diferentes criptomonedas y monedas fiduciarias. Útil para cálculos rápidos.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Widgets de CoinGecko o CryptoCompare.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">7. Calculadora de Ganancias/Pérdidas</h4>
+                    <p class="text-gray-600">Estima tus posibles ganancias o pérdidas en base a los precios de entrada y salida. Para planificación de trades.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Requiere lógica JavaScript simple o un widget pre-construido.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">8. Calendario de Eventos Crypto</h4>
+                    <p class="text-gray-600">Sigue los próximos eventos importantes como halvings, lanzamientos de proyectos, actualizaciones de red, etc.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Sitios como CoinMarketCal ofrecen feeds.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">9. Índice de Miedo y Codicia</h4>
+                    <p class="text-gray-600">Un indicador clave del sentimiento del mercado, que ayuda a entender si el mercado está en pánico o eufórico.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Widget oficial de Alternative.me.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">10. Alertas de Precio Personalizables</h4>
+                    <p class="text-gray-600">Recibe notificaciones cuando una criptomoneda alcanza un precio específico. Ideal para no perder oportunidades.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Servicios como CoinGecko o TradingView ofrecen APIs para esto.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">11. Lista de Seguimiento (Watchlist)</h4>
+                    <p class="text-gray-600">Crea y gestiona una lista personalizada de tus criptomonedas de interés para un seguimiento rápido.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Requiere almacenamiento local (localStorage) y JS.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">12. Widgets de Minería</h4>
+                    <p class="text-gray-600">Información sobre la rentabilidad actual de la minería para diferentes criptomonedas y hardware.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Sitios como WhatToMine ofrecen datos.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">13. Widgets de Staking/DeFi APY</h4>
+                    <p class="text-gray-600">Muestra los rendimientos porcentuales anuales (APY) de diferentes protocolos de staking y DeFi.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de plataformas DeFi o agregadores.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">14. Explorador de Blockchain</h4>
+                    <p class="text-gray-600">Permite buscar transacciones, direcciones y bloques en diferentes blockchains (Ej. Etherscan para Ethereum).</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Enlaces directos o iframes de exploradores populares.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">15. Noticias de Airdrops</h4>
+                    <p class="text-gray-600">Mantente al tanto de los próximos airdrops de tokens y cómo participar para obtener criptomonedas gratis.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Feeds de sitios especializados en airdrops.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">16. Precios Mínimos de NFT</h4>
+                    <p class="text-gray-600">Monitorea los precios mínimos (floor prices) y volúmenes de las colecciones de NFT más populares.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de OpenSea o agregadores de datos NFT.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">17. Tarifas de Gas de Ethereum</h4>
+                    <p class="text-gray-600">Muestra las tarifas de gas actuales en la red Ethereum (Gwei) para transacciones rápidas, estándar y lentas.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs como Etherscan Gas Tracker.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">18. Detector de Arbitraje</h4>
+                    <p class="text-gray-600">Identifica diferencias de precios para una misma criptomoneda entre diferentes exchanges, buscando oportunidades de arbitraje.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Requiere APIs de múltiples exchanges y lógica compleja.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">19. Mapa de Calor de Criptomonedas</h4>
+                    <p class="text-gray-600">Una representación visual de las ganancias y pérdidas de las criptomonedas, mostrando rápidamente el rendimiento del mercado.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Widgets de Coin360 o TradingView.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">20. Dominancia de BTC/ETH</h4>
+                    <p class="text-gray-600">Muestra el porcentaje de la capitalización de mercado total que representa Bitcoin o Ethereum.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de CoinMarketCap o CoinGecko.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">21. Precios de Derivados (Futuros/Opciones)</h4>
+                    <p class="text-gray-600">Datos en tiempo real de contratos de futuros y opciones de criptomonedas.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de exchanges de derivados como Binance Futures, Bybit.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">22. Indicadores de Liquidez</h4>
+                    <p class="text-gray-600">Información sobre la profundidad del libro de órdenes y la liquidez en diferentes pares de trading.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de exchanges.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">23. Listados de ICO/IDO</h4>
+                    <p class="text-gray-600">Información sobre las próximas Ofertas Iniciales de Monedas (ICO) y Ofertas Iniciales de DEX (IDO).</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Feeds de sitios como CoinList, Polkastarter.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">24. Calculadora de Rendimiento de Portafolio</h4>
+                    <p class="text-gray-600">Permite al usuario ingresar sus holdings para calcular el valor total y el rendimiento de su portafolio.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Requiere lógica JavaScript y posiblemente APIs de precios.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">25. Indicadores Técnicos Clave</h4>
+                    <p class="text-gray-600">Widgets que muestran el estado de indicadores como RSI, MACD, Bandas de Bollinger para una cripto específica.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: TradingView o bibliotecas de gráficos con cálculo de indicadores.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">26. Análisis de Sentimiento en Redes Sociales</h4>
+                    <p class="text-gray-600">Mide el sentimiento general sobre una criptomoneda en plataformas como Twitter, Reddit, etc.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de proveedores de análisis de sentimiento como LunarCrush.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">27. Noticias Macroeconómicas Relevantes</h4>
+                    <p class="text-gray-600">Noticias económicas globales que pueden influir en el mercado de criptomonedas (inflación, tasas de interés).</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Feeds de noticias económicas generales.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">28. Comparador de Exchanges</h4>
+                    <p class="text-gray-600">Compara tarifas de trading, pares disponibles y métodos de depósito/retiro entre diferentes exchanges.</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Requiere APIs de exchanges y lógica de comparación.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">29. Historial de Precios Detallado</h4>
+                    <p class="text-gray-600">Acceso a datos históricos de precios con diferentes granularidades (por hora, día, semana, etc.).</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de CoinGecko, CryptoCompare.</em></p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">30. Enlaces a Carteras Populares</h4>
+                    <p class="text-gray-600">Proporciona enlaces rápidos a las páginas de descarga o información de carteras de criptomonedas populares (MetaMask, Ledger, Trust Wallet).</p>
+                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Simplemente enlaces HTML.</em></p>
+                </div>
             </div>
-            <p id="conversion-result">Resultado: -</p>
         </section>
 
-        <!-- Tool 3: TradingView Chart -->
-        <section class="tool-card">
-            <h2>📊 Gráfico BTC/USD (TradingView)</h2>
-            <div class="tradingview-widget">
-                <!-- Widget de TradingView -->
-                <div id="tradingview-chart" style="height: 300px;"></div>
-            </div>
+        <section id="integracion" class="text-center py-12 bg-blue-50 rounded-lg shadow-inner">
+            <h3 class="text-3xl font-bold text-gray-800 mb-6">
+                ¿Cómo integrar estos widgets?
+            </h3>
+            <p class="text-lg text-gray-700 max-w-2xl mx-auto mb-6">
+                Para implementar estas herramientas, la mayoría de los proveedores de datos cripto (como CoinGecko, CryptoCompare, TradingView) ofrecen widgets gratuitos que puedes incrustar directamente en tu página usando un simple código HTML (generalmente un `<iframe>` o un `<div>` con JavaScript).
+                Alternativamente, puedes usar sus APIs públicas para construir tus propios widgets personalizados con JavaScript.
+            </p>
+            <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+                ¡Explora sus sitios web para encontrar los códigos de incrustación y comienza a potenciar tu trading!
+            </p>
         </section>
-    </div>
+    </main>
 
-    <footer>
-        <p>© 2023 - Sube este proyecto a <a href="https://github.com/" target="_blank">GitHub</a>.</p>
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 CryptoTools. Todos los derechos reservados.</p>
+            <p class="text-sm mt-2">Diseñado para traders, con ❤️.</p>
+        </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="script.js"></script>
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script>
+        // JavaScript simple si necesitas alguna interactividad futura.
+        // Por ahora, la página es principalmente estática y responsiva gracias a Tailwind.
+
+        // Ejemplo de cómo podrías añadir un desplazamiento suave al hacer clic en enlaces de navegación
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
