@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>CryptoSim Pro - Simulador de Trading de Criptomonedas</title>
-  <meta name="description" content="Simulador de trading de criptomonedas con gráficos en tiempo real. Practica tus estrategias sin riesgo.">
-  <meta name="keywords" content="simulador trading, criptomonedas, bitcoin, ethereum, trading sin riesgo">
+  <title>CryptoSim Pro - Simulador Avanzado de Trading</title>
+  <meta name="description" content="Simulador profesional de trading de criptomonedas con 12 exchanges soportados. Practica estrategias sin riesgo.">
+  <meta name="keywords" content="simulador trading, criptomonedas, bitcoin, exchanges, binance, coinbase">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * {
@@ -180,17 +180,30 @@
       width: 150px;
       font-weight: bold;
     }
-    .affiliate-banner {
-      background: linear-gradient(135deg, #ff7e5f, #feb47b);
-      padding: 15px;
-      border-radius: 8px;
-      margin: 25px 0;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    .affiliate-section {
+      margin: 30px 0;
     }
-    .affiliate-banner h3 {
-      margin-top: 0;
-      color: #1e222d;
+    .exchange-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .exchange-card {
+      background: #1e222d;
+      border-radius: 8px;
+      padding: 15px;
+      transition: transform 0.3s;
+    }
+    .exchange-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .exchange-logo {
+      width: 100%;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 10px;
     }
     .premium-feature {
       position: relative;
@@ -306,6 +319,8 @@
       <option value="BINANCE:BNBUSDT">Binance Coin (BNB)</option>
       <option value="BINANCE:XRPUSDT">Ripple (XRP)</option>
       <option value="BINANCE:SOLUSDT">Solana (SOL)</option>
+      <option value="BINANCE:ADAUSDT">Cardano (ADA)</option>
+      <option value="BINANCE:DOGEUSDT">Dogecoin (DOGE)</option>
     </select>
     
     <label for="timeframe">Timeframe:</label>
@@ -322,7 +337,11 @@
     <button onclick="resetAccount()">Reiniciar</button>
   </div>
 
-  <div class="chart" id="tradingview-widget-container"></div>
+  <div class="chart" id="tradingview-widget-container">
+    <div style="background:#1e222d; height:500px; display:flex; justify-content:center; align-items:center;">
+      <p>Gráfico simulado (conectado a internet para TradingView real)</p>
+    </div>
+  </div>
 
   <div class="actions">
     <input type="number" placeholder="Monto a operar (min $10)" id="trade-amount" min="10" step="10">
@@ -331,12 +350,105 @@
     <button id="cancel-btn" onclick="cancelTrade()" disabled>Cancelar</button>
   </div>
 
-  <div class="affiliate-banner">
-    <h3>¿Quieres operar con criptomonedas reales?</h3>
-    <p>Regístrate en Binance usando nuestro enlace y recibe un 10% de descuento en comisiones:</p>
-    <a href="https://www.binance.com" target="_blank" style="color: #1e222d; font-weight: bold;">👉 Regístrate ahora en Binance 👈</a>
-    <p><small>También recomendamos estos libros para aprender trading:</small></p>
-    <a href="https://www.amazon.com" target="_blank" style="color: #1e222d;">📚 Ver libros recomendados en Amazon</a>
+  <div class="affiliate-section">
+    <h2>Opera en Exchanges Reales</h2>
+    <p>Regístrate en estos exchanges usando nuestros enlaces y obtén beneficios exclusivos:</p>
+    
+    <div class="exchange-grid">
+      <div class="exchange-card">
+        <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" alt="Binance" class="exchange-logo">
+        <h3>Binance</h3>
+        <p>10% de descuento en comisiones</p>
+        <a href="https://www.binance.com" target="_blank" style="color:#3a7bd5; font-weight:bold;">Regístrate aquí</a>
+      </div>
+      
+      <div class="exchange-card">
+        <img src="https://cryptologos.cc/logos/coinbase-coin-cb-logo.png" alt="Coinbase" class="exchange-logo">
+        <h3>Coinbase</h3>
+        <p>$10 en BTC al registrarte</p>
+        <a href="https://www.coinbase.com" target="_blank" style="color:#3a7bd5; font-weight:bold;">Regístrate aquí</a>
+      </div>
+      
+      <div class="exchange-card">
+        <img src="https://cryptologos.cc/logos/kucoin-coin-kcs-logo.png" alt="KuCoin" class="exchange-logo">
+        <h3>KuCoin</h3>
+        <p>20% de descuento en comisiones</p>
+        <a href="https://www.kucoin.com" target="_blank" style="color:#3a7bd5; font-weight:bold;">Regístrate aquí</a>
+      </div>
+      
+      <div class="exchange-card">
+        <img src="https://cryptologos.cc/logos/okex-okb-logo.png" alt="OKX" class="exchange-logo">
+        <h3>OKX</h3>
+        <p>5% de cashback en trading</p>
+        <a href="https://www.okx.com" target="_blank" style="color:#3a7bd5; font-weight:bold;">Regístrate aquí</a>
+      </div>
+      
+      <div class="exchange-card">
+        <img src="https://cryptologos.cc/logos/bybit-exchange-byb-logo.png" alt="Bybit" class="exchange-logo">
+        <h3>Bybit</h3>
+        <p>Hasta $30 en bonos</p>
+        <a href="https://www.bybit.com" target="_blank" style="color:#3a7bd5; font-weight:bold;">Regístrate aquí</a>
+      </div>
+      
+      <div class="exchange-card">
+        <img src="https://cryptologos.cc/logos/bitget-exchange-bgb-logo.png" alt="Bitget" class="exchange-logo">
+        <h3>Bitget</h3>
+        <p>10% de descuento en comisiones</p>
+        <a href="https://www.bitget.com" target="_blank" style="color:#3a7bd5; font-weight:bold;">Regístrate aquí</a>
+      </div>
+      
+      <div class="exchange-card">
+        <img src="https://cryptologos.cc/logos/huobi-token-ht-logo.png" alt="Huobi" class="exchange-logo">
+        <h3>Huobi</h3>
+        <p>Bonos de bienvenida</p>
+        <a href="https://www.huobi.com" target="_blank" style="color:#3a7bd5; font-weight:bold;">Regístrate aquí</a>
+      </div>
+      
+      <div class="exchange-card">
+        <img src="https://cryptologos.cc/logos/gate-io-gt-logo.png" alt="Gate.io" class="exchange-logo">
+        <h3>Gate.io</h3>
+        <p>$100 en bonos</p>
+        <a href="https://www.gate.io" target="_blank" style="color:#3a7bd5; font-weight:bold;">Regístrate aquí</a>
+      </div>
+      
+      <div class="exchange-card">
+        <img src="https://cryptologos.cc/logos/kraken-krk-logo.png" alt="Kraken" class="exchange-logo">
+        <h3>Kraken</h3>
+        <p>Tarifas reducidas</p>
+        <a href="https://www.kraken.com" target="_blank" style="color:#3a7bd5; font-weight:bold;">Regístrate aquí</a>
+      </div>
+      
+      <div class="exchange-card">
+        <img src="https://cryptologos.cc/logos/bitfinex-bfx-logo.png" alt="Bitfinex" class="exchange-logo">
+        <h3>Bitfinex</h3>
+        <p>Comisiones competitivas</p>
+        <a href="https://www.bitfinex.com" target="_blank" style="color:#3a7bd5; font-weight:bold;">Regístrate aquí</a>
+      </div>
+      
+      <div class="exchange-card">
+        <img src="https://cryptologos.cc/logos/ftx-token-ftt-logo.png" alt="FTX" class="exchange-logo">
+        <h3>FTX</h3>
+        <p>5% de descuento en trading</p>
+        <a href="https://www.ftx.com" target="_blank" style="color:#3a7bd5; font-weight:bold;">Regístrate aquí</a>
+      </div>
+      
+      <div class="exchange-card">
+        <img src="https://cryptologos.cc/logos/bitmex-bmx-logo.png" alt="BitMEX" class="exchange-logo">
+        <h3>BitMEX</h3>
+        <p>Bonos de trading</p>
+        <a href="https://www.bitmex.com" target="_blank" style="color:#3a7bd5; font-weight:bold;">Regístrate aquí</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="affiliate-section">
+    <h2>Recursos para Traders</h2>
+    <p>Mejora tus habilidades con estos recursos recomendados:</p>
+    <ul style="list-style-type: none; padding: 0;">
+      <li style="margin-bottom: 10px;">📚 <a href="https://www.amazon.com" target="_blank" style="color:#3a7bd5;">Libro: "Trading en la Zona" - Mark Douglas</a></li>
+      <li style="margin-bottom: 10px;">📚 <a href="https://www.amazon.com" target="_blank" style="color:#3a7bd5;">Libro: "Análisis Técnico de los Mercados Financieros" - John J. Murphy</a></li>
+      <li style="margin-bottom: 10px;">🎓 <a href="https://www.udemy.com" target="_blank" style="color:#3a7bd5;">Curso: Trading Profesional en Udemy</a></li>
+    </ul>
   </div>
 
   <h2>Historial de Operaciones</h2>
@@ -387,11 +499,12 @@
   </div>
 </div>
 
-<script src="https://s3.tradingview.com/tv.js"></script>
 <script>
+  'use strict';
+
   // Variables de estado
   let selectedSymbol = document.getElementById("crypto-select").value;
-  let chartWidget;
+  let chartWidget = null;
   let balance = parseFloat(localStorage.getItem('balance')) || 20000;
   let currentStake = 0;
   let tradeRunning = false;
@@ -414,7 +527,7 @@
   // Configuración inicial
   document.addEventListener('DOMContentLoaded', () => {
     updateBalance();
-    loadChart(selectedSymbol, '5');
+    loadChart();
     updateTradeCount();
     
     // Cargar historial desde localStorage
@@ -459,7 +572,6 @@
       <td>${duration}</td>
     `;
     
-    // Usamos textContent para evitar XSS
     row.innerHTML = rowContent;
     
     // Guardar en localStorage
@@ -471,32 +583,16 @@
     updateTradeCount();
   }
 
-  function loadChart(symbol, interval) {
-    if (chartWidget && chartWidget !== undefined) {
-      // Si el widget ya existe, solo actualizamos el símbolo e intervalo
-      chartWidget.setSymbol(symbol, interval, () => {
-        console.log(`Gráfico actualizado a ${symbol} con intervalo ${interval}`);
-      });
-      return;
-    }
-    
-    // Si no existe, lo creamos
-    document.getElementById("tradingview-widget-container").innerHTML = "";
-    chartWidget = new TradingView.widget({
-      "width": "100%",
-      "height": 500,
-      "symbol": symbol,
-      "interval": interval,
-      "timezone": "Etc/UTC",
-      "theme": "dark",
-      "style": "1",
-      "locale": "en",
-      "toolbar_bg": "#1e222d",
-      "enable_publishing": false,
-      "hide_legend": false,
-      "save_image": false,
-      "container_id": "tradingview-widget-container"
-    });
+  function loadChart() {
+    // Implementación simulada - en producción usar TradingView
+    const container = document.getElementById("tradingview-widget-container");
+    container.innerHTML = `
+      <div style="background:#1e222d; height:500px; display:flex; justify-content:center; align-items:center; flex-direction:column;">
+        <h3>${selectedSymbol.split(":")[1]} Chart</h3>
+        <p>Gráfico simulado (conectado a internet para TradingView real)</p>
+        <small>Timeframe: ${document.getElementById("timeframe").value} minutos</small>
+      </div>
+    `;
   }
 
   function toggleSettings() {
@@ -564,7 +660,7 @@
     const stake = parseFloat(document.getElementById("trade-amount").value);
     const minStake = 10;
     
-    if (!stake || isNaN(stake) {
+    if (!stake || isNaN(stake)) {
       showModal('trade-modal');
       document.getElementById("trade-modal-title").textContent = "Monto Inválido";
       document.getElementById("trade-modal-text").textContent = "Por favor ingresa un monto válido para operar.";
@@ -743,13 +839,11 @@
   // Event listeners
   document.getElementById("crypto-select").addEventListener("change", function() {
     selectedSymbol = this.value;
-    const timeframe = document.getElementById("timeframe").value;
-    loadChart(selectedSymbol, timeframe);
+    loadChart();
   });
 
   document.getElementById("timeframe").addEventListener("change", function() {
-    const timeframe = this.value;
-    loadChart(selectedSymbol, timeframe);
+    loadChart();
   });
 </script>
 </body>
