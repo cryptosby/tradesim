@@ -1,276 +1,756 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Herramientas Crypto Esenciales para Traders</title>
-    <!-- Incluir Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Fuentes personalizadas */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5; /* Fondo claro */
-            color: #333; /* Color de texto principal */
-        }
-        /* Estilos personalizados para tarjetas y botones */
-        .card {
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: transform 0.2s ease-in-out;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        .btn-primary {
-            background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(106, 17, 203, 0.4);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(106, 17, 203, 0.6);
-        }
-        .section-title {
-            position: relative;
-            display: inline-block;
-            padding-bottom: 8px;
-        }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 60%;
-            height: 4px;
-            background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
-            border-radius: 2px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>CryptoSim Pro - Simulador de Trading de Criptomonedas</title>
+  <meta name="description" content="Simulador de trading de criptomonedas con gráficos en tiempo real. Practica tus estrategias sin riesgo.">
+  <meta name="keywords" content="simulador trading, criptomonedas, bitcoin, ethereum, trading sin riesgo">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      background: #0e1116;
+      color: #fff;
+      line-height: 1.6;
+    }
+    header {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      padding: 1em;
+      text-align: center;
+      font-size: 1.8em;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .controls, .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #1e2228;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    select, input, button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+    select, input {
+      background: #2c313a;
+      color: #fff;
+      border: 1px solid #3a434c;
+    }
+    button {
+      background: linear-gradient(to right, #3a7bd5, #00d2ff);
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      min-width: 100px;
+    }
+    button:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .chart {
+      width: 100%;
+      height: 500px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+    .stat-box {
+      background: #1e222d;
+      padding: 15px;
+      border-radius: 8px;
+      min-width: 200px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .profit { color: #00ff9f; }
+    .loss { color: #ff4d4d; }
+    .neutral { color: #aaa; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      background: #1e222d;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border: 1px solid #333;
+    }
+    th {
+      background: linear-gradient(135deg, #2c3e50, #4ca1af);
+      font-weight: bold;
+    }
+    tr:nth-child(even) {
+      background: #252a34;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: #1e222d;
+      padding: 25px;
+      border-radius: 10px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+    }
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+    .loader {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #3a7bd5;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .settings-panel {
+      background: #1e222d;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .settings-panel h3 {
+      margin-top: 0;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+    }
+    .settings-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    .settings-label {
+      width: 150px;
+      font-weight: bold;
+    }
+    .affiliate-banner {
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 25px 0;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .affiliate-banner h3 {
+      margin-top: 0;
+      color: #1e222d;
+    }
+    .premium-feature {
+      position: relative;
+    }
+    .premium-badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: gold;
+      color: #000;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 0.7em;
+      font-weight: bold;
+    }
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: help;
+    }
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 200px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -100px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
 </head>
-<body class="antialiased">
-    <header class="bg-white shadow-sm py-6">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <h1 class="text-3xl font-bold text-gray-800">
-                <span class="text-blue-600">Crypto</span><span class="text-purple-700">Tools</span>
-            </h1>
-            <nav>
-                <a href="#herramientas" class="btn-primary">Ver Herramientas</a>
-            </nav>
+<body>
+<header>CryptoSim Pro</header>
+
+<div class="container">
+  <div class="stats">
+    <div class="stat-box">
+      <div>Balance</div>
+      <div class="balance">$<span id="balance">20000.00</span></div>
+    </div>
+    <div class="stat-box">
+      <div>Ganancias/Pérdidas</div>
+      <div class="profit-loss neutral" id="profit-loss">+$0.00</div>
+    </div>
+    <div class="stat-box">
+      <div>Tiempo Restante</div>
+      <div class="timer" id="timer">0s</div>
+    </div>
+    <div class="stat-box">
+      <div>Operaciones</div>
+      <div id="trade-count">0</div>
+    </div>
+  </div>
+
+  <button id="settings-toggle" onclick="toggleSettings()">⚙️ Configuración</button>
+  
+  <div class="settings-panel" id="settings-panel">
+    <h3>Configuración de Simulación</h3>
+    <div class="settings-row">
+      <div class="settings-label">Volatilidad:</div>
+      <select id="volatility">
+        <option value="0.1">Baja (10%)</option>
+        <option value="0.2" selected>Media (20%)</option>
+        <option value="0.4">Alta (40%)</option>
+        <option value="0.6">Extrema (60%)</option>
+      </select>
+    </div>
+    <div class="settings-row">
+      <div class="settings-label">Duración Operación:</div>
+      <select id="trade-duration">
+        <option value="5">5 segundos</option>
+        <option value="10" selected>10 segundos</option>
+        <option value="30">30 segundos</option>
+        <option value="60">1 minuto</option>
+      </select>
+    </div>
+    <div class="settings-row">
+      <div class="settings-label">Probabilidad de Éxito:</div>
+      <select id="win-probability">
+        <option value="0.4">40%</option>
+        <option value="0.5" selected>50%</option>
+        <option value="0.6">60%</option>
+        <option value="0.7">70%</option>
+      </select>
+    </div>
+    <div class="settings-row">
+      <div class="settings-label premium-feature">
+        <span>Modo Realista <span class="premium-badge">PREMIUM</span></span>
+        <div class="tooltip">?
+          <span class="tooltiptext">Simula spreads y slippage como en mercados reales</span>
         </div>
-    </header>
+      </div>
+      <input type="checkbox" id="realistic-mode" disabled>
+    </div>
+  </div>
 
-    <main class="container mx-auto px-4 py-12">
-        <section id="intro" class="text-center mb-16">
-            <h2 class="text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
-                Potencia tu Trading de Criptomonedas
-            </h2>
-            <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
-                Descubre una selección de las 30 mejores herramientas y widgets esenciales para traders de criptomonedas.
-                Maximiza tu rendimiento con recursos gratuitos, automáticos y fáciles de usar.
-            </p>
-            <a href="#herramientas" class="btn-primary text-xl inline-block">Explorar Ahora</a>
-        </section>
+  <div class="controls">
+    <label for="crypto-select">Seleccionar Cripto:</label>
+    <select id="crypto-select">
+      <option value="BINANCE:BTCUSDT">Bitcoin (BTC)</option>
+      <option value="BINANCE:ETHUSDT">Ethereum (ETH)</option>
+      <option value="BINANCE:BNBUSDT">Binance Coin (BNB)</option>
+      <option value="BINANCE:XRPUSDT">Ripple (XRP)</option>
+      <option value="BINANCE:SOLUSDT">Solana (SOL)</option>
+    </select>
+    
+    <label for="timeframe">Timeframe:</label>
+    <select id="timeframe">
+      <option value="1">1 minuto</option>
+      <option value="3">3 minutos</option>
+      <option value="5" selected>5 minutos</option>
+      <option value="15">15 minutos</option>
+      <option value="60">1 hora</option>
+    </select>
+    
+    <button onclick="showModal('deposit-modal')">Depositar</button>
+    <button onclick="showModal('withdraw-modal')">Retirar</button>
+    <button onclick="resetAccount()">Reiniciar</button>
+  </div>
 
-        <section id="herramientas" class="mb-16">
-            <h3 class="text-4xl font-bold text-gray-800 mb-10 section-title">
-                Nuestras Herramientas Recomendadas
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Tarjeta de ejemplo para una herramienta -->
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">1. Precios en Tiempo Real</h4>
-                    <p class="text-gray-600">Muestra los precios actuales de tus criptomonedas favoritas (Bitcoin, Ethereum, etc.) actualizados al instante. Esencial para tomar decisiones rápidas.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Busca widgets de CoinGecko o CryptoCompare.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">2. Gráficos de Precios Interactivos</h4>
-                    <p class="text-gray-600">Visualiza el historial de precios con indicadores técnicos personalizables. Imprescindible para el análisis técnico.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Widgets de TradingView son los más populares.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">3. Capitalización de Mercado Global</h4>
-                    <p class="text-gray-600">Muestra la capitalización de mercado total y la dominancia de las principales criptomonedas. Te da una visión general del mercado.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs o widgets de CoinMarketCap o CoinGecko.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">4. Volumen de Trading (24h)</h4>
-                    <p class="text-gray-600">Monitorea el volumen de trading de las últimas 24 horas para identificar la actividad del mercado y la liquidez.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Proveedores de datos de mercado como CoinGecko.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">5. Feed de Noticias Crypto</h4>
-                    <p class="text-gray-600">Mantente informado con las últimas noticias y titulares del ecosistema cripto. Las noticias mueven el mercado.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de noticias o feeds RSS de sitios como CoinDesk, Cointelegraph.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">6. Convertidor de Monedas</h4>
-                    <p class="text-gray-600">Convierte fácilmente entre diferentes criptomonedas y monedas fiduciarias. Útil para cálculos rápidos.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Widgets de CoinGecko o CryptoCompare.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">7. Calculadora de Ganancias/Pérdidas</h4>
-                    <p class="text-gray-600">Estima tus posibles ganancias o pérdidas en base a los precios de entrada y salida. Para planificación de trades.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Requiere lógica JavaScript simple o un widget pre-construido.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">8. Calendario de Eventos Crypto</h4>
-                    <p class="text-gray-600">Sigue los próximos eventos importantes como halvings, lanzamientos de proyectos, actualizaciones de red, etc.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Sitios como CoinMarketCal ofrecen feeds.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">9. Índice de Miedo y Codicia</h4>
-                    <p class="text-gray-600">Un indicador clave del sentimiento del mercado, que ayuda a entender si el mercado está en pánico o eufórico.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Widget oficial de Alternative.me.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">10. Alertas de Precio Personalizables</h4>
-                    <p class="text-gray-600">Recibe notificaciones cuando una criptomoneda alcanza un precio específico. Ideal para no perder oportunidades.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Servicios como CoinGecko o TradingView ofrecen APIs para esto.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">11. Lista de Seguimiento (Watchlist)</h4>
-                    <p class="text-gray-600">Crea y gestiona una lista personalizada de tus criptomonedas de interés para un seguimiento rápido.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Requiere almacenamiento local (localStorage) y JS.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">12. Widgets de Minería</h4>
-                    <p class="text-gray-600">Información sobre la rentabilidad actual de la minería para diferentes criptomonedas y hardware.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Sitios como WhatToMine ofrecen datos.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">13. Widgets de Staking/DeFi APY</h4>
-                    <p class="text-gray-600">Muestra los rendimientos porcentuales anuales (APY) de diferentes protocolos de staking y DeFi.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de plataformas DeFi o agregadores.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">14. Explorador de Blockchain</h4>
-                    <p class="text-gray-600">Permite buscar transacciones, direcciones y bloques en diferentes blockchains (Ej. Etherscan para Ethereum).</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Enlaces directos o iframes de exploradores populares.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">15. Noticias de Airdrops</h4>
-                    <p class="text-gray-600">Mantente al tanto de los próximos airdrops de tokens y cómo participar para obtener criptomonedas gratis.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Feeds de sitios especializados en airdrops.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">16. Precios Mínimos de NFT</h4>
-                    <p class="text-gray-600">Monitorea los precios mínimos (floor prices) y volúmenes de las colecciones de NFT más populares.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de OpenSea o agregadores de datos NFT.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">17. Tarifas de Gas de Ethereum</h4>
-                    <p class="text-gray-600">Muestra las tarifas de gas actuales en la red Ethereum (Gwei) para transacciones rápidas, estándar y lentas.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs como Etherscan Gas Tracker.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">18. Detector de Arbitraje</h4>
-                    <p class="text-gray-600">Identifica diferencias de precios para una misma criptomoneda entre diferentes exchanges, buscando oportunidades de arbitraje.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Requiere APIs de múltiples exchanges y lógica compleja.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">19. Mapa de Calor de Criptomonedas</h4>
-                    <p class="text-gray-600">Una representación visual de las ganancias y pérdidas de las criptomonedas, mostrando rápidamente el rendimiento del mercado.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Widgets de Coin360 o TradingView.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">20. Dominancia de BTC/ETH</h4>
-                    <p class="text-gray-600">Muestra el porcentaje de la capitalización de mercado total que representa Bitcoin o Ethereum.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de CoinMarketCap o CoinGecko.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">21. Precios de Derivados (Futuros/Opciones)</h4>
-                    <p class="text-gray-600">Datos en tiempo real de contratos de futuros y opciones de criptomonedas.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de exchanges de derivados como Binance Futures, Bybit.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">22. Indicadores de Liquidez</h4>
-                    <p class="text-gray-600">Información sobre la profundidad del libro de órdenes y la liquidez en diferentes pares de trading.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de exchanges.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">23. Listados de ICO/IDO</h4>
-                    <p class="text-gray-600">Información sobre las próximas Ofertas Iniciales de Monedas (ICO) y Ofertas Iniciales de DEX (IDO).</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Feeds de sitios como CoinList, Polkastarter.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">24. Calculadora de Rendimiento de Portafolio</h4>
-                    <p class="text-gray-600">Permite al usuario ingresar sus holdings para calcular el valor total y el rendimiento de su portafolio.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Requiere lógica JavaScript y posiblemente APIs de precios.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">25. Indicadores Técnicos Clave</h4>
-                    <p class="text-gray-600">Widgets que muestran el estado de indicadores como RSI, MACD, Bandas de Bollinger para una cripto específica.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: TradingView o bibliotecas de gráficos con cálculo de indicadores.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">26. Análisis de Sentimiento en Redes Sociales</h4>
-                    <p class="text-gray-600">Mide el sentimiento general sobre una criptomoneda en plataformas como Twitter, Reddit, etc.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de proveedores de análisis de sentimiento como LunarCrush.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">27. Noticias Macroeconómicas Relevantes</h4>
-                    <p class="text-gray-600">Noticias económicas globales que pueden influir en el mercado de criptomonedas (inflación, tasas de interés).</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Feeds de noticias económicas generales.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">28. Comparador de Exchanges</h4>
-                    <p class="text-gray-600">Compara tarifas de trading, pares disponibles y métodos de depósito/retiro entre diferentes exchanges.</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Requiere APIs de exchanges y lógica de comparación.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">29. Historial de Precios Detallado</h4>
-                    <p class="text-gray-600">Acceso a datos históricos de precios con diferentes granularidades (por hora, día, semana, etc.).</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: APIs de CoinGecko, CryptoCompare.</em></p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="text-xl font-semibold text-gray-800 mb-3">30. Enlaces a Carteras Populares</h4>
-                    <p class="text-gray-600">Proporciona enlaces rápidos a las páginas de descarga o información de carteras de criptomonedas populares (MetaMask, Ledger, Trust Wallet).</p>
-                    <p class="text-sm text-gray-500 mt-3"><em>Integración: Simplemente enlaces HTML.</em></p>
-                </div>
-            </div>
-        </section>
+  <div class="chart" id="tradingview-widget-container"></div>
 
-        <section id="integracion" class="text-center py-12 bg-blue-50 rounded-lg shadow-inner">
-            <h3 class="text-3xl font-bold text-gray-800 mb-6">
-                ¿Cómo integrar estos widgets?
-            </h3>
-            <p class="text-lg text-gray-700 max-w-2xl mx-auto mb-6">
-                Para implementar estas herramientas, la mayoría de los proveedores de datos cripto (como CoinGecko, CryptoCompare, TradingView) ofrecen widgets gratuitos que puedes incrustar directamente en tu página usando un simple código HTML (generalmente un `<iframe>` o un `<div>` con JavaScript).
-                Alternativamente, puedes usar sus APIs públicas para construir tus propios widgets personalizados con JavaScript.
-            </p>
-            <p class="text-lg text-gray-700 max-w-2xl mx-auto">
-                ¡Explora sus sitios web para encontrar los códigos de incrustación y comienza a potenciar tu trading!
-            </p>
-        </section>
-    </main>
+  <div class="actions">
+    <input type="number" placeholder="Monto a operar (min $10)" id="trade-amount" min="10" step="10">
+    <button id="buy-btn" onclick="buy()">Comprar (LONG)</button>
+    <button id="sell-btn" onclick="sell()">Vender (SHORT)</button>
+    <button id="cancel-btn" onclick="cancelTrade()" disabled>Cancelar</button>
+  </div>
 
-    <footer class="bg-gray-800 text-white py-8 mt-12">
-        <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2025 CryptoTools. Todos los derechos reservados.</p>
-            <p class="text-sm mt-2">Diseñado para traders, con ❤️.</p>
-        </div>
-    </footer>
+  <div class="affiliate-banner">
+    <h3>¿Quieres operar con criptomonedas reales?</h3>
+    <p>Regístrate en Binance usando nuestro enlace y recibe un 10% de descuento en comisiones:</p>
+    <a href="https://www.binance.com" target="_blank" style="color: #1e222d; font-weight: bold;">👉 Regístrate ahora en Binance 👈</a>
+    <p><small>También recomendamos estos libros para aprender trading:</small></p>
+    <a href="https://www.amazon.com" target="_blank" style="color: #1e222d;">📚 Ver libros recomendados en Amazon</a>
+  </div>
 
-    <script>
-        // JavaScript simple si necesitas alguna interactividad futura.
-        // Por ahora, la página es principalmente estática y responsiva gracias a Tailwind.
+  <h2>Historial de Operaciones</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Cripto</th>
+        <th>Monto</th>
+        <th>Resultado</th>
+        <th>Estado</th>
+        <th>Hora</th>
+        <th>Duración</th>
+      </tr>
+    </thead>
+    <tbody id="history-table">
+      <!-- Historial se llena dinámicamente -->
+    </tbody>
+  </table>
+</div>
 
-        // Ejemplo de cómo podrías añadir un desplazamiento suave al hacer clic en enlaces de navegación
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
+<!-- Modales -->
+<div id="deposit-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="hideModal('deposit-modal')">&times;</span>
+    <h2>Depositar Fondos</h2>
+    <p>Ingresa la cantidad que deseas depositar a tu cuenta de simulación:</p>
+    <input type="number" id="deposit-amount" placeholder="Monto (min $100)" min="100">
+    <button onclick="deposit()">Confirmar Depósito</button>
+  </div>
+</div>
+
+<div id="withdraw-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="hideModal('withdraw-modal')">&times;</span>
+    <h2>Retirar Fondos</h2>
+    <p>Ingresa la cantidad que deseas retirar de tu cuenta de simulación:</p>
+    <input type="number" id="withdraw-amount" placeholder="Monto disponible" min="10">
+    <button onclick="withdraw()">Confirmar Retiro</button>
+  </div>
+</div>
+
+<div id="trade-modal" class="modal">
+  <div class="modal-content">
+    <div class="loader"></div>
+    <h2 id="trade-modal-title">Procesando Operación</h2>
+    <p id="trade-modal-text">Por favor espera...</p>
+  </div>
+</div>
+
+<script src="https://s3.tradingview.com/tv.js"></script>
+<script>
+  // Variables de estado
+  let selectedSymbol = document.getElementById("crypto-select").value;
+  let chartWidget;
+  let balance = parseFloat(localStorage.getItem('balance')) || 20000;
+  let currentStake = 0;
+  let tradeRunning = false;
+  let profitOrLoss = 0;
+  let tradeId = parseInt(localStorage.getItem('tradeId')) || 1;
+  let timerInterval = null;
+  let secondsLeft = 0;
+  let tradeStartTime = null;
+  let tradeCount = parseInt(localStorage.getItem('tradeCount')) || 0;
+
+  // Elementos del DOM
+  const balanceDisplay = document.getElementById("balance");
+  const profitLossDisplay = document.getElementById("profit-loss");
+  const timerDisplay = document.getElementById("timer");
+  const tradeCountDisplay = document.getElementById("trade-count");
+  const buyBtn = document.getElementById("buy-btn");
+  const sellBtn = document.getElementById("sell-btn");
+  const cancelBtn = document.getElementById("cancel-btn");
+
+  // Configuración inicial
+  document.addEventListener('DOMContentLoaded', () => {
+    updateBalance();
+    loadChart(selectedSymbol, '5');
+    updateTradeCount();
+    
+    // Cargar historial desde localStorage
+    const savedHistory = localStorage.getItem('tradeHistory');
+    if (savedHistory) {
+      document.getElementById("history-table").innerHTML = savedHistory;
+    }
+  });
+
+  // Funciones de utilidad
+  function updateBalance() {
+    balanceDisplay.textContent = balance.toFixed(2);
+    localStorage.setItem('balance', balance);
+  }
+
+  function updateTradeCount() {
+    tradeCountDisplay.textContent = tradeCount;
+    localStorage.setItem('tradeCount', tradeCount);
+  }
+
+  function showProfitLoss(text, isProfit = null) {
+    profitLossDisplay.textContent = text;
+    profitLossDisplay.className = "profit-loss " + 
+      (isProfit === true ? "profit" : 
+       isProfit === false ? "loss" : "neutral");
+  }
+
+  function addHistory(status) {
+    const table = document.getElementById("history-table");
+    const row = table.insertRow(0);
+    
+    const duration = tradeStartTime ? 
+      Math.floor((new Date() - tradeStartTime) / 1000) + 's' : 'N/A';
+    
+    const rowContent = `
+      <td>${tradeId}</td>
+      <td>${selectedSymbol.split(":")[1]}</td>
+      <td>$${currentStake.toFixed(2)}</td>
+      <td>${profitOrLoss >= 0 ? '+' : '-'}$${Math.abs(profitOrLoss).toFixed(2)}</td>
+      <td>${status}</td>
+      <td>${new Date().toLocaleTimeString()}</td>
+      <td>${duration}</td>
+    `;
+    
+    // Usamos textContent para evitar XSS
+    row.innerHTML = rowContent;
+    
+    // Guardar en localStorage
+    localStorage.setItem('tradeHistory', table.innerHTML);
+    localStorage.setItem('tradeId', tradeId + 1);
+    
+    tradeId++;
+    tradeCount++;
+    updateTradeCount();
+  }
+
+  function loadChart(symbol, interval) {
+    if (chartWidget && chartWidget !== undefined) {
+      // Si el widget ya existe, solo actualizamos el símbolo e intervalo
+      chartWidget.setSymbol(symbol, interval, () => {
+        console.log(`Gráfico actualizado a ${symbol} con intervalo ${interval}`);
+      });
+      return;
+    }
+    
+    // Si no existe, lo creamos
+    document.getElementById("tradingview-widget-container").innerHTML = "";
+    chartWidget = new TradingView.widget({
+      "width": "100%",
+      "height": 500,
+      "symbol": symbol,
+      "interval": interval,
+      "timezone": "Etc/UTC",
+      "theme": "dark",
+      "style": "1",
+      "locale": "en",
+      "toolbar_bg": "#1e222d",
+      "enable_publishing": false,
+      "hide_legend": false,
+      "save_image": false,
+      "container_id": "tradingview-widget-container"
+    });
+  }
+
+  function toggleSettings() {
+    const panel = document.getElementById("settings-panel");
+    panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function showModal(modalId) {
+    document.getElementById(modalId).style.display = 'flex';
+  }
+
+  function hideModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+  }
+
+  function showTradeModal(title, text) {
+    document.getElementById("trade-modal-title").textContent = title;
+    document.getElementById("trade-modal-text").textContent = text;
+    document.getElementById("trade-modal").style.display = 'flex';
+  }
+
+  function hideTradeModal() {
+    document.getElementById("trade-modal").style.display = 'none';
+  }
+
+  function startTimer(seconds, callback) {
+    clearInterval(timerInterval);
+    secondsLeft = seconds;
+    timerDisplay.textContent = `${secondsLeft}s`;
+    tradeStartTime = new Date();
+
+    timerInterval = setInterval(() => {
+      secondsLeft--;
+      timerDisplay.textContent = `${secondsLeft}s`;
+      if (secondsLeft <= 0) {
+        clearInterval(timerInterval);
+        callback();
+      }
+    }, 1000);
+  }
+
+  function calculateTradeResult(stake) {
+    const volatility = parseFloat(document.getElementById("volatility").value);
+    const winProbability = parseFloat(document.getElementById("win-probability").value);
+    
+    const isWin = Math.random() < winProbability;
+    const randomFactor = 0.5 + Math.random() * 0.5; // Entre 0.5 y 1.0
+    
+    if (isWin) {
+      return stake * volatility * randomFactor; // Ganancia
+    } else {
+      return -stake * volatility * randomFactor * 1.2; // Pérdida (20% mayor que ganancia potencial)
+    }
+  }
+
+  // Funciones principales
+  function buy() {
+    if (tradeRunning) {
+      showModal('trade-modal');
+      document.getElementById("trade-modal-title").textContent = "Operación en Curso";
+      document.getElementById("trade-modal-text").textContent = "Ya tienes una operación activa. Finalízala antes de abrir otra.";
+      return;
+    }
+    
+    const stake = parseFloat(document.getElementById("trade-amount").value);
+    const minStake = 10;
+    
+    if (!stake || isNaN(stake) {
+      showModal('trade-modal');
+      document.getElementById("trade-modal-title").textContent = "Monto Inválido";
+      document.getElementById("trade-modal-text").textContent = "Por favor ingresa un monto válido para operar.";
+      return;
+    }
+    
+    if (stake < minStake) {
+      showModal('trade-modal');
+      document.getElementById("trade-modal-title").textContent = "Monto Mínimo";
+      document.getElementById("trade-modal-text").textContent = `El monto mínimo para operar es $${minStake}.`;
+      return;
+    }
+    
+    if (stake > balance) {
+      showModal('trade-modal');
+      document.getElementById("trade-modal-title").textContent = "Fondos Insuficientes";
+      document.getElementById("trade-modal-text").textContent = "No tienes suficiente saldo para esta operación.";
+      return;
+    }
+
+    currentStake = stake;
+    balance -= stake;
+    updateBalance();
+
+    showProfitLoss("Operación en progreso...", null);
+    tradeRunning = true;
+    buyBtn.disabled = true;
+    sellBtn.disabled = true;
+    cancelBtn.disabled = false;
+
+    const duration = parseInt(document.getElementById("trade-duration").value);
+    showTradeModal("Ejecutando Compra", `Operación LONG en ${selectedSymbol.split(":")[1]} por $${stake.toFixed(2)}`);
+
+    setTimeout(() => {
+      hideTradeModal();
+      profitOrLoss = calculateTradeResult(stake);
+      showProfitLoss(`Operación lista. Puedes Cerrar o Cancelar ahora.`, profitOrLoss >= 0);
+      sellBtn.disabled = false;
+    }, 2000);
+
+    startTimer(duration, () => {
+      if (tradeRunning) {
+        showProfitLoss(`Tiempo agotado! Cierra o cancela la operación.`, null);
+      }
+    });
+  }
+
+  function sell() {
+    if (!tradeRunning) {
+      showModal('trade-modal');
+      document.getElementById("trade-modal-title").textContent = "Sin Operación";
+      document.getElementById("trade-modal-text").textContent = "No hay ninguna operación activa para cerrar.";
+      return;
+    }
+
+    clearInterval(timerInterval);
+    timerDisplay.textContent = "0s";
+
+    const result = currentStake + profitOrLoss;
+    balance += result;
+    updateBalance();
+
+    const resultText = profitOrLoss >= 0 
+      ? `Ganancia: +$${profitOrLoss.toFixed(2)}`
+      : `Pérdida: -$${Math.abs(profitOrLoss).toFixed(2)}`;
+    
+    showProfitLoss(resultText, profitOrLoss >= 0);
+    addHistory("Cerrada");
+
+    showTradeModal("Operación Cerrada", resultText);
+    setTimeout(hideTradeModal, 2000);
+
+    currentStake = 0;
+    profitOrLoss = 0;
+    tradeRunning = false;
+    buyBtn.disabled = false;
+    sellBtn.disabled = true;
+    cancelBtn.disabled = true;
+  }
+
+  function cancelTrade() {
+    if (!tradeRunning) {
+      showModal('trade-modal');
+      document.getElementById("trade-modal-title").textContent = "Sin Operación";
+      document.getElementById("trade-modal-text").textContent = "No hay ninguna operación activa para cancelar.";
+      return;
+    }
+
+    clearInterval(timerInterval);
+    timerDisplay.textContent = "0s";
+
+    let resultText;
+    if (profitOrLoss === 0) {
+      balance += currentStake;
+      resultText = "Operación cancelada. Monto reembolsado.";
+      showProfitLoss(resultText, null);
+    } else {
+      const result = currentStake + profitOrLoss;
+      balance += result;
+      resultText = profitOrLoss >= 0 
+        ? `Ganancia (al cancelar): +$${profitOrLoss.toFixed(2)}`
+        : `Pérdida (al cancelar): -$${Math.abs(profitOrLoss).toFixed(2)}`;
+      showProfitLoss(resultText, profitOrLoss >= 0);
+    }
+
+    updateBalance();
+    addHistory("Cancelada");
+
+    showTradeModal("Operación Cancelada", resultText);
+    setTimeout(hideTradeModal, 2000);
+
+    currentStake = 0;
+    profitOrLoss = 0;
+    tradeRunning = false;
+    buyBtn.disabled = false;
+    sellBtn.disabled = true;
+    cancelBtn.disabled = true;
+  }
+
+  function deposit() {
+    const amount = parseFloat(document.getElementById("deposit-amount").value);
+    if (!amount || amount < 100) {
+      showModal('trade-modal');
+      document.getElementById("trade-modal-title").textContent = "Monto Inválido";
+      document.getElementById("trade-modal-text").textContent = "El monto mínimo para depósito es $100.";
+      return;
+    }
+
+    balance += amount;
+    updateBalance();
+    hideModal('deposit-modal');
+
+    showTradeModal("Depósito Exitoso", `Se depositaron $${amount.toFixed(2)} en tu cuenta.`);
+    setTimeout(hideTradeModal, 2000);
+  }
+
+  function withdraw() {
+    const amount = parseFloat(document.getElementById("withdraw-amount").value);
+    if (!amount || amount < 10) {
+      showModal('trade-modal');
+      document.getElementById("trade-modal-title").textContent = "Monto Inválido";
+      document.getElementById("trade-modal-text").textContent = "El monto mínimo para retiro es $10.";
+      return;
+    }
+
+    if (amount > balance) {
+      showModal('trade-modal');
+      document.getElementById("trade-modal-title").textContent = "Fondos Insuficientes";
+      document.getElementById("trade-modal-text").textContent = "No tienes suficiente saldo para este retiro.";
+      return;
+    }
+
+    balance -= amount;
+    updateBalance();
+    hideModal('withdraw-modal');
+
+    showTradeModal("Retiro Exitoso", `Se retiraron $${amount.toFixed(2)} de tu cuenta.`);
+    setTimeout(hideTradeModal, 2000);
+  }
+
+  function resetAccount() {
+    if (confirm("¿Estás seguro de que quieres reiniciar tu cuenta? Perderás todo tu historial y saldo.")) {
+      balance = 20000;
+      tradeId = 1;
+      tradeCount = 0;
+      document.getElementById("history-table").innerHTML = "";
+      updateBalance();
+      updateTradeCount();
+      localStorage.clear();
+      
+      showTradeModal("Cuenta Reiniciada", "Tu cuenta ha sido restablecida a los valores iniciales.");
+      setTimeout(hideTradeModal, 2000);
+    }
+  }
+
+  // Event listeners
+  document.getElementById("crypto-select").addEventListener("change", function() {
+    selectedSymbol = this.value;
+    const timeframe = document.getElementById("timeframe").value;
+    loadChart(selectedSymbol, timeframe);
+  });
+
+  document.getElementById("timeframe").addEventListener("change", function() {
+    const timeframe = this.value;
+    loadChart(selectedSymbol, timeframe);
+  });
+</script>
 </body>
 </html>
