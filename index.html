@@ -444,11 +444,10 @@
     <div class="exchange-grid">
         <!-- Ordered as requested -->
         <div class="exchange-card">
-            <img src="https://cryptologos.cc/logos/binance-usd-busd-logo.svg" alt="Binance" class="exchange-logo">
+            <img src="https://cryptologos.cc/logos/binance-usd-busd-logo.svg" class="exchange-logo">
             <div class="exchange-name">Binance</div>
             <div class="exchange-fiat">USD, EUR, GBP, BRL +8 more</div>
-            <div class="exchange-signup">Sign Up</div>
-            <a href="https://www.binance.com/" target="_blank">Sign Up</a>
+            <a href="https://www.binance.com" target="_blank" style="color:##ffffff; font-weight:bold;">Sign Up</a>
         </div>
         <div class="exchange-card">
             <img src="https://cryptologos.cc/logos/bybit-exchange-byb-logo.png" alt="Bybit" class="exchange-logo">
@@ -548,16 +547,16 @@
         </div>
     </div>
 
-   <!-- News Button -->
+    <!-- News Button -->
         <div class="news-container">
-            <button class="news-btn" onclick="openNewsPopup()">📰 Latest Crypto News & Market Updates 📰</button>
+            <button class="news-btn" onclick="openNewsPopup()">📰 Latest Crypto News & Market Updates</button>
         </div>
 
         <!-- News Popup -->
         <div class="overlay" id="news-overlay" onclick="closeNewsPopup()"></div>
         <div class="news-popup" id="news-popup">
             <span class="close-popup" onclick="closeNewsPopup()">&times;</span>
-            <h3>Today's Crypto Market & Analysis</h3>
+            <h3>Today's Crypto Market Update & Analysis</h3>
             
             <div class="news-item">
                 <h4>Bitcoin Breaks Key Resistance Level</h4>
@@ -598,7 +597,9 @@
         </script>
     </div>
 
-    <table>
+    <!-- Trading History Table -->
+        <h2>Trading History</h2>
+        <table style="width: 100 %; border-collapse: collapse;">
         <thead>
             <tr>
                 <th>#</th>
