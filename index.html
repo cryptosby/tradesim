@@ -1,364 +1,822 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>CryptoSim Pro - Simulador de Trading</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-    body {
-      margin: 0;
-      background: #0e1116;
-      color: #fff;
-    }
-    header {
-      background-color: #1e2228;
-      padding: 1em;
-      text-align: center;
-      font-size: 1.5em;
-      font-weight: bold;
-    }
-    .container {
-      padding: 20px;
-    }
-    .controls, .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    select, input, button {
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-    }
-    button {
-      background-color: #3a8dd8;
-      color: #fff;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #337ac4;
-    }
-    .chart {
-      width: 100%;
-      height: 500px;
-      margin-bottom: 30px;
-    }
-    .balance, .profit-loss, .timer {
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: 1.2em;
-    }
-    .profit { color: #00ff9f; }
-    .loss { color: #ff4d4d; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 30px;
-      background: #1e222d;
-    }
-    th, td {
-      padding: 10px;
-      text-align: center;
-      border: 1px solid #333;
-    }
-    th {
-      background-color: #2c313a;
-    }
-    .exchange-links {
-      margin: 20px 0;
-      padding: 15px;
-      background: #1e2228;
-      border-radius: 5px;
-    }
-    .exchange-links h3 {
-      text-align: center;
-    }
-    .exchange-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 10px;
-      margin-top: 15px;
-    }
-    .exchange-card {
-      background: #2c313a;
-      padding: 10px;
-      border-radius: 5px;
-      text-align: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>CryptoSim Pro - Advanced Crypto Trading Simulator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            margin: 0;
+            background: #0e1116;
+            color: #fff;
+        }
+        header {
+            background-color: #1e2228;
+            padding: 1em;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            position: relative;
+        }
+        .container {
+            padding: 20px;
+        }
+        .controls, .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        select, input, button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        button {
+            background-color: #3a8dd8;
+            color: #fff;
+            cursor: pointer;
+            min-width: 80px;
+        }
+        button:hover {
+            background-color: #337ac4;
+        }
+        #buy-btn {
+            background-color: #00aa5e;
+        }
+        #sell-btn {
+            background-color: #ff4d4d;
+        }
+        .chart {
+            width: 100%;
+            height: 500px;
+            margin-bottom: 30px;
+        }
+        .balance, .profit-loss, .timer {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        .profit { color: #00ff9f; }
+        .loss { color: #ff4d4d; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background: #1e222d;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+        th {
+            background-color: #2c313a;
+        }
+        .exchange-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .exchange-card {
+            background: #1e2228;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .exchange-card:hover {
+            transform: translateY(-3px);
+        }
+        .exchange-logo {
+            height: 30px;
+            margin-bottom: 5px;
+        }
+        .news-popup {
+            position: relative;
+            display: inline-block;
+            margin: 20px auto;
+            text-align: center;
+            width: 100%;
+        }
+        .news-popup button {
+            background: linear-gradient(135deg, #3a8dd8, #2c5f9e);
+            padding: 12px 24px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(58, 141, 216, 0.3);
+            transition: all 0.3s ease;
+        }
+        .news-popup button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(58, 141, 216, 0.4);
+        }
+        .news-popup-content {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            background: #1e222d;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 1;
+        }
+        .news-popup:hover .news-popup-content {
+            display: block;
+        }
+        footer {
+            background: #1e2228;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .footer-links a {
+            color: #3a8dd8;
+            text-decoration: none;
+        }
+        .ad-banner {
+            width: 100%;
+            margin: 20px 0;
+            text-align: center;
+            background: #1e2228;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .header-banner {
+            height: 90px;
+        }
+        .top-banner {
+            height: 60px;
+        }
+        .middle-banner {
+            height: 90px;
+        }
+        .bottom-banner {
+            height: 90px;
+        }
+        .amazon-affiliate {
+            margin: 20px auto;
+            text-align: center;
+        }
+        .amazon-btn {
+            background: linear-gradient(135deg, #FF9900, #FFAC33);
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .amazon-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
+        }
+        .exchange-name {
+            color: #00b4ff;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .exchange-fiat {
+            color: #ffff00;
+            font-size: 0.8em;
+            margin: 5px 0;
+        }
+        .exchange-signup {
+            color: #fff;
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+    </style>
 </head>
 <body>
-<header>CryptoSim Pro</header>
+<header>
+    CryptoSim Pro
+    <div class="ad-banner header-banner">
+        <!-- Header Banner (728x90) -->
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+             crossorigin="anonymous"></script>
+        <!-- CryptoSim_Header -->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:728px;height:90px"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="XXXXXXXXXX"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+</header>
 
 <div class="container">
-  <div class="balance">Balance: $<span id="balance">20000.00</span></div>
-  <div class="timer" id="timer">Timer: 0s</div>
-
-  <div class="controls">
-    <label for="crypto-select">Choose Coin:</label>
-    <select id="crypto-select">
-      <option value="BINANCE:BTCUSDT">Bitcoin (BTC)</option>
-      <option value="BINANCE:ETHUSDT">Ethereum (ETH)</option>
-      <option value="BINANCE:BNBUSDT">Binance Coin (BNB)</option>
-      <option value="BINANCE:XRPUSDT">Ripple (XRP)</option>
-    </select>
-    <button onclick="deposit()">Deposit</button>
-    <button onclick="withdraw()">Withdraw</button>
-  </div>
-
-  <div class="chart" id="tradingview-widget-container"></div>
-
-  <div class="actions">
-    <input type="number" placeholder="Stake Amount (min $1)" id="trade-amount" min="1">
-    <button onclick="buy()">Buy</button>
-    <button onclick="sell()">Sell</button>
-    <button onclick="cancelTrade()">Cancel Trade</button>
-  </div>
-
-  <div class="profit-loss" id="profit-loss"></div>
-
-  <div class="exchange-links">
-    <h3>Opera en estos exchanges (Enlaces de afiliado):</h3>
-    <div class="exchange-grid">
-      <div class="exchange-card">
-        <a href="https://www.binance.com" target="_blank">Binance</a>
-      </div>
-      <div class="exchange-card">
-        <a href="https://www.coinbase.com" target="_blank">Coinbase</a>
-      </div>
-      <div class="exchange-card">
-        <a href="https://www.kraken.com" target="_blank">Kraken</a>
-      </div>
-      <div class="exchange-card">
-        <a href="https://www.kucoin.com" target="_blank">KuCoin</a>
-      </div>
-      <div class="exchange-card">
-        <a href="https://www.bybit.com" target="_blank">Bybit</a>
-      </div>
-      <div class="exchange-card">
-        <a href="https://www.okx.com" target="_blank">OKX</a>
-      </div>
-      <div class="exchange-card">
-        <a href="https://www.huobi.com" target="_blank">Huobi</a>
-      </div>
-      <div class="exchange-card">
-        <a href="https://www.gate.io" target="_blank">Gate.io</a>
-      </div>
-      <div class="exchange-card">
-        <a href="https://www.bitfinex.com" target="_blank">Bitfinex</a>
-      </div>
-      <div class="exchange-card">
-        <a href="https://www.bitmex.com" target="_blank">BitMEX</a>
-      </div>
-      <div class="exchange-card">
-        <a href="https://www.bitget.com" target="_blank">Bitget</a>
-      </div>
-      <div class="exchange-card">
-        <a href="https://www.phemex.com" target="_blank">Phemex</a>
-      </div>
+    <div class="ad-banner top-banner">
+        <!-- Top Content Banner (468x60) -->
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+             crossorigin="anonymous"></script>
+        <!-- CryptoSim_Top -->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:468px;height:60px"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="XXXXXXXXXX"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
-  </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Coin</th>
-        <th>Stake</th>
-        <th>Result</th>
-        <th>Status</th>
-        <th>Time</th>
-      </tr>
-    </thead>
-    <tbody id="history-table">
-      <!-- History rows go here -->
-    </tbody>
-  </table>
+    <div class="balance">Balance: $<span id="balance">100000.00</span></div>
+    <div class="profit-loss" id="profit-loss"></div>
+    <div class="timer" id="timer">Timer: 0s</div>
+
+    <div class="controls">
+        <label for="crypto-select">Select Coin:</label>
+        <select id="crypto-select">
+            <!-- Top 100 Cryptocurrencies by Market Cap -->
+            <option value="BINANCE:BTCUSDT">Bitcoin (BTC)</option>
+            <option value="BINANCE:ETHUSDT">Ethereum (ETH)</option>
+            <option value="BINANCE:BNBUSDT">Binance Coin (BNB)</option>
+            <option value="BINANCE:XRPUSDT">XRP (XRP)</option>
+            <option value="BINANCE:SOLUSDT">Solana (SOL)</option>
+            <option value="BINANCE:ADAUSDT">Cardano (ADA)</option>
+            <option value="BINANCE:DOGEUSDT">Dogecoin (DOGE)</option>
+            <option value="BINANCE:TRXUSDT">TRON (TRX)</option>
+            <option value="BINANCE:DOTUSDT">Polkadot (DOT)</option>
+            <option value="BINANCE:MATICUSDT">Polygon (MATIC)</option>
+            <option value="BINANCE:LTCUSDT">Litecoin (LTC)</option>
+            <option value="BINANCE:SHIBUSDT">Shiba Inu (SHIB)</option>
+            <option value="BINANCE:AVAXUSDT">Avalanche (AVAX)</option>
+            <option value="BINANCE:LINKUSDT">Chainlink (LINK)</option>
+            <option value="BINANCE:ATOMUSDT">Cosmos (ATOM)</option>
+            <option value="BINANCE:UNIUSDT">Uniswap (UNI)</option>
+            <option value="BINANCE:XLMUSDT">Stellar (XLM)</option>
+            <option value="BINANCE:XMRUSDT">Monero (XMR)</option>
+            <option value="BINANCE:ETCUSDT">Ethereum Classic (ETC)</option>
+            <option value="BINANCE:ICPUSDT">Internet Computer (ICP)</option>
+            <option value="BINANCE:FILUSDT">Filecoin (FIL)</option>
+            <option value="BINANCE:APTUSDT">Aptos (APT)</option>
+            <option value="BINANCE:HBARUSDT">Hedera (HBAR)</option>
+            <option value="BINANCE:NEARUSDT">NEAR Protocol (NEAR)</option>
+            <option value="BINANCE:VETUSDT">VeChain (VET)</option>
+            <option value="BINANCE:ARBUSDT">Arbitrum (ARB)</option>
+            <option value="BINANCE:OPUSDT">Optimism (OP)</option>
+            <option value="BINANCE:GRTUSDT">The Graph (GRT)</option>
+            <option value="BINANCE:AAVEUSDT">Aave (AAVE)</option>
+            <option value="BINANCE:ALGOUSDT">Algorand (ALGO)</option>
+            <option value="BINANCE:STXUSDT">Stacks (STX)</option>
+            <option value="BINANCE:QNTUSDT">Quant (QNT)</option>
+            <option value="BINANCE:EOSUSDT">EOS (EOS)</option>
+            <option value="BINANCE:FLOWUSDT">Flow (FLOW)</option>
+            <option value="BINANCE:THETAUSDT">Theta Network (THETA)</option>
+            <option value="BINANCE:XTZUSDT">Tezos (XTZ)</option>
+            <option value="BINANCE:AXSUSDT">Axie Infinity (AXS)</option>
+            <option value="BINANCE:RNDRUSDT">Render (RNDR)</option>
+            <option value="BINANCE:SNXUSDT">Synthetix (SNX)</option>
+            <option value="BINANCE:APEUSDT">ApeCoin (APE)</option>
+            <option value="BINANCE:CHZUSDT">Chiliz (CHZ)</option>
+            <option value="BINANCE:MANAUSDT">Decentraland (MANA)</option>
+            <option value="BINANCE:CRVUSDT">Curve DAO (CRV)</option>
+            <option value="BINANCE:KAVAUSDT">Kava (KAVA)</option>
+            <option value="BINANCE:IMXUSDT">Immutable X (IMX)</option>
+            <option value="BINANCE:1INCHUSDT">1inch (1INCH)</option>
+            <option value="BINANCE:COMPUSDT">Compound (COMP)</option>
+            <option value="BINANCE:ZECUSDT">Zcash (ZEC)</option>
+            <option value="BINANCE:GMTUSDT">STEPN (GMT)</option>
+            <option value="BINANCE:DASHUSDT">Dash (DASH)</option>
+            <option value="BINANCE:KLAYUSDT">Klaytn (KLAY)</option>
+            <option value="BINANCE:ENSUSDT">Ethereum Name Service (ENS)</option>
+            <option value="BINANCE:WAVESUSDT">Waves (WAVES)</option>
+            <option value="BINANCE:CVXUSDT">Convex Finance (CVX)</option>
+            <option value="BINANCE:GMXUSDT">GMX (GMX)</option>
+            <option value="BINANCE:GALAUSDT">Gala (GALA)</option>
+            <option value="BINANCE:LDOUSDT">Lido DAO (LDO)</option>
+            <option value="BINANCE:ROSEUSDT">Oasis Network (ROSE)</option>
+            <option value="BINANCE:MINAUSDT">Mina (MINA)</option>
+            <option value="BINANCE:API3USDT">API3 (API3)</option>
+            <option value="BINANCE:JASMYUSDT">JasmyCoin (JASMY)</option>
+            <option value="BINANCE:ICXUSDT">ICON (ICX)</option>
+            <option value="BINANCE:BATUSDT">Basic Attention Token (BAT)</option>
+            <option value="BINANCE:STORJUSDT">Storj (STORJ)</option>
+            <option value="BINANCE:ANKRUSDT">Ankr (ANKR)</option>
+            <option value="BINANCE:OCEANUSDT">Ocean Protocol (OCEAN)</option>
+            <option value="BINANCE:ZILUSDT">Zilliqa (ZIL)</option>
+            <option value="BINANCE:SKLUSDT">SKALE (SKL)</option>
+            <option value="BINANCE:QTUMUSDT">Qtum (QTUM)</option>
+            <option value="BINANCE:HOTUSDT">Holo (HOT)</option>
+            <option value="BINANCE:ONTUSDT">Ontology (ONT)</option>
+            <option value="BINANCE:RVNUSDT">Ravencoin (RVN)</option>
+            <option value="BINANCE:GLMRUSDT">Moonbeam (GLMR)</option>
+            <option value="BINANCE:IOTXUSDT">IoTeX (IOTX)</option>
+            <option value="BINANCE:ONEUSDT">Harmony (ONE)</option>
+            <option value="BINANCE:SCUSDT">Siacoin (SC)</option>
+            <option value="BINANCE:CELRUSDT">Celer Network (CELR)</option>
+            <option value="BINANCE:ACHUSDT">Alchemy Pay (ACH)</option>
+            <option value="BINANCE:STMXUSDT">StormX (STMX)</option>
+            <option value="BINANCE:ZENUSDT">Horizen (ZEN)</option>
+            <option value="BINANCE:RSRUSDT">Reserve Rights (RSR)</option>
+            <option value="BINANCE:YFIUSDT">yearn.finance (YFI)</option>
+            <option value="BINANCE:BLURUSDT">Blur (BLUR)</option>
+            <option value="BINANCE:PEOPLEUSDT">ConstitutionDAO (PEOPLE)</option>
+            <option value="BINANCE:PERPUSDT">Perpetual Protocol (PERP)</option>
+            <option value="BINANCE:UMAUSDT">UMA (UMA)</option>
+            <option value="BINANCE:IDUSDT">SPACE ID (ID)</option>
+            <option value="BINANCE:AGIXUSDT">SingularityNET (AGIX)</option>
+            <option value="BINANCE:FETUSDT">Fetch.ai (FET)</option>
+            <option value="BINANCE:LITUSDT">Litentry (LIT)</option>
+            <option value="BINANCE:CTSIUSDT">Cartesi (CTSI)</option>
+            <option value="BINANCE:ARUSDT">Arweave (AR)</option>
+            <option value="BINANCE:DYDXUSDT">dYdX (DYDX)</option>
+            <option value="BINANCE:OGNUSDT">Origin Protocol (OGN)</option>
+            <option value="BINANCE:REEFUSDT">Reef Finance (REEF)</option>
+            <option value="BINANCE:NMRUSDT">Numeraire (NMR)</option>
+            <option value="BINANCE:MDTUSDT">Measurable Data Token (MDT)</option>
+            <option value="BINANCE:KEYUSDT">SelfKey (KEY)</option>
+            <option value="BINANCE:AUCTIONUSDT">Bounce Token (AUCTION)</option>
+            <option value="BINANCE:ATAUSDT">Automata (ATA)</option>
+            <option value="BINANCE:SLPUSDT">Smooth Love Potion (SLP)</option>
+            <option value="BINANCE:ILVUSDT">Illuvium (ILV)</option>
+            <option value="BINANCE:ALICEUSDT">MyNeighborAlice (ALICE)</option>
+            <option value="BINANCE:SUPERUSDT">SuperVerse (SUPER)</option>
+            <option value="BINANCE:MASKUSDT">Mask Network (MASK)</option>
+            <option value="BINANCE:HIGHUSDT">Highstreet (HIGH)</option>
+            <option value="BINANCE:INJUSDT">Injective (INJ)</option>
+            <option value="BINANCE:RADUSDT">Radicle (RAD)</option>
+            <option value="BINANCE:AMPUSDT">Amp (AMP)</option>
+            <option value="BINANCE:TRBUSDT">Truebit (TRB)</option>
+            <option value="BINANCE:ANTUSDT">Aragon (ANT)</option>
+            <option value="BINANCE:CFXUSDT">Conflux (CFX)</option>
+            <option value="BINANCE:SSVUSDT">SSV Network (SSV)</option>
+            <option value="BINANCE:WOOUSDT">WOO Network (WOO)</option>
+            <option value="BINANCE:BAKEUSDT">BakeryToken (BAKE)</option>
+            <option value="BINANCE:GTCUSDT">Gitcoin (GTC)</option>
+            <option value="BINANCE:FXSUSDT">Frax Share (FXS)</option>
+            <option value="BINANCE:JOEUSDT">JOE (JOE)</option>
+            <option value="BINANCE:RAYUSDT">Raydium (RAY)</option>
+            <option value="BINANCE:QIUSDT">BENQI (QI)</option>
+            <option value="BINANCE:SPELLUSDT">Spell Token (SPELL)</option>
+            <option value="BINANCE:ALPHAUSDT">Alpha Finance (ALPHA)</option>
+            <option value="BINANCE:REQUSDT">Request (REQ)</option>
+            <option value="BINANCE:ORNUSDT">Orion Protocol (ORN)</option>
+            <option value="BINANCE:TOMOUSDT">TomoChain (TOMO)</option>
+            <option value="BINANCE:CTKUSDT">CertiK (CTK)</option>
+            <option value="BINANCE:FORTHUSDT">Ampleforth Governance (FORTH)</option>
+            <option value="BINANCE:FRONTUSDT">Frontier (FRONT)</option>
+            <option value="BINANCE:TRUUSDT">TrueFi (TRU)</option>
+            <option value="BINANCE:MBLUSDT">MovieBloc (MBL)</option>
+            <option value="BINANCE:OXTUSDT">Orchid (OXT)</option>
+            <option value="BINANCE:STPTUSDT">Standard Tokenization Protocol (STPT)</option>
+            <option value="BINANCE:COCOSUSDT">COCOS BCX (COCOS)</option>
+            <option value="BINANCE:TLMUSDT">Alien Worlds (TLM)</option>
+            <option value="BINANCE:ERNUSDT">Ethernity Chain (ERN)</option>
+            <option value="BINANCE:MLNUSDT">Enzyme (MLN)</option>
+            <option value="BINANCE:UTKUSDT">Utrust (UTK)</option>
+            <option value="BINANCE:VTHOUSDT">v.systems (VTHO)</option>
+            <option value="BINANCE:WRXUSDT">WazirX (WRX)</option>
+            <option value="BINANCE:DREPUSDT">Drep (DREP)</option>
+            <option value="BINANCE:BEAMUSDT">Beam (BEAM)</option>
+            <option value="BINANCE:AVAUSDT">Travala.com (AVA)</option>
+            <option value="BINANCE:ARDRUSDT">Ardor (ARDR)</option>
+            <option value="BINANCE:STMXUSDT">StormX (STMX)</option>
+        </select>
+        
+        <label for="timeframe">Timeframe:</label>
+        <select id="timeframe">
+            <option value="1">1 Minute</option>
+            <option value="5">5 Minutes</option>
+            <option value="15" selected>15 Minutes</option>
+            <option value="60">1 Hour</option>
+        </select>
+        
+        <button onclick="deposit()">Deposit</button>
+        <button onclick="withdraw()">Withdraw</button>
+    </div>
+
+    <div class="ad-banner middle-banner">
+        <!-- Middle Content Banner (728x90) -->
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+             crossorigin="anonymous"></script>
+        <!-- CryptoSim_Middle -->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:728px;height:90px"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="XXXXXXXXXX"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <div class="chart" id="tradingview-widget-container"></div>
+
+    <div class="actions">
+        <input type="number" placeholder="Amount (min $10)" id="trade-amount" min="10">
+        <button id="buy-btn" onclick="buy()">Buy/Long</button>
+        <button id="sell-btn" onclick="sell()">Sell/Short</button>
+        <button onclick="cancelTrade()">Cancel</button>
+        <button onclick="closeAll()">Close All</button>
+        <button onclick="resetAccount()">Reset</button>
+    </div>
+
+    <div class="amazon-affiliate">
+        <!-- Amazon Affiliate Button -->
+        <a href="https://www.amazon.com/s?k=crypto+hardware+wallet&tag=yourtag-20" class="amazon-btn" target="_blank">
+            <span>Shop Crypto Products on Amazon</span>
+        </a>
+    </div>
+
+    <h2 style="text-align: center;">Trade on Top Crypto Exchanges</h2>
+    <div class="exchange-grid">
+        <!-- Ordered as requested -->
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/binance-usd-busd-logo.svg" alt="Binance" class="exchange-logo">
+            <div class="exchange-name">Binance</div>
+            <div class="exchange-fiat">USD, EUR, GBP, BRL +8 more</div>
+            <div class="exchange-signup">Sign Up</div>
+            <a href="https://www.binance.com/" target="_blank">Binance</a>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/bybit-exchange-byb-logo.png" alt="Bybit" class="exchange-logo">
+            <div class="exchange-name">Bybit</div>
+            <div class="exchange-fiat">USD, EUR, GBP, JPY +5 more</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/bitso-bitso-logo.png" alt="Bitso" class="exchange-logo">
+            <div class="exchange-name">Bitso</div>
+            <div class="exchange-fiat">MXN, ARS, BRL, USD</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/coinbase-coin-cb-logo.png" alt="Coinbase" class="exchange-logo">
+            <div class="exchange-name">Coinbase</div>
+            <div class="exchange-fiat">USD, EUR, GBP, CAD +7 more</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/upbit-exchange-upbit-logo.png" alt="Upbit" class="exchange-logo">
+            <div class="exchange-name">Upbit</div>
+            <div class="exchange-fiat">KRW, USD, BTC</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/okex-okb-logo.png" alt="OKX" class="exchange-logo">
+            <div class="exchange-name">OKX</div>
+            <div class="exchange-fiat">USD, EUR, GBP, JPY +6 more</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/bitget-exchange-bgb-logo.png" alt="Bitget" class="exchange-logo">
+            <div class="exchange-name">Bitget</div>
+            <div class="exchange-fiat">USD, EUR, GBP, JPY +4 more</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/mexc-exchange-mexc-logo.png" alt="MEXC" class="exchange-logo">
+            <div class="exchange-name">MEXC</div>
+            <div class="exchange-fiat">USD, EUR, GBP, JPY +5 more</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/gate-io-gt-logo.png" alt="Gate.io" class="exchange-logo">
+            <div class="exchange-name">Gate.io</div>
+            <div class="exchange-fiat">USD, EUR, GBP, JPY +7 more</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/huobi-token-ht-logo.png" alt="HTX" class="exchange-logo">
+            <div class="exchange-name">HTX</div>
+            <div class="exchange-fiat">USD, EUR, GBP, JPY +6 more</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/kucoin-coin-kcs-logo.png" alt="KuCoin" class="exchange-logo">
+            <div class="exchange-name">KuCoin</div>
+            <div class="exchange-fiat">USD, EUR, GBP, JPY +5 more</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/bitfinex-bfx-logo.png" alt="Bitfinex" class="exchange-logo">
+            <div class="exchange-name">Bitfinex</div>
+            <div class="exchange-fiat">USD, EUR, GBP, JPY</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/bingx-exchange-bgx-logo.png" alt="BingX" class="exchange-logo">
+            <div class="exchange-name">BingX</div>
+            <div class="exchange-fiat">USD, EUR, GBP, JPY +4 more</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/kraken-krk-logo.png" alt="Kraken" class="exchange-logo">
+            <div class="exchange-name">Kraken</div>
+            <div class="exchange-fiat">USD, EUR, GBP, CAD +8 more</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/bitmart-exchange-bmx-logo.png" alt="BitMart" class="exchange-logo">
+            <div class="exchange-name">BitMart</div>
+            <div class="exchange-fiat">USD, EUR, GBP, JPY +3 more</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/lbank-exchange-lbank-logo.png" alt="LBank" class="exchange-logo">
+            <div class="exchange-name">LBank</div>
+            <div class="exchange-fiat">USD, EUR, GBP, JPY +4 more</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+        <div class="exchange-card">
+            <img src="https://cryptologos.cc/logos/xt-com-exchange-xt-logo.png" alt="XT.COM" class="exchange-logo">
+            <div class="exchange-name">XT.COM</div>
+            <div class="exchange-fiat">USD, EUR, GBP, JPY +5 more</div>
+            <div class="exchange-signup">Sign Up</div>
+        </div>
+    </div>
+
+   <!-- News Button -->
+       <div class="news-popup">
+            <button class="news-btn" onclick="openNewsPopup()">📰 Latest Crypto News & Market Updates 📰</button>
+        </div>
+
+        <!-- News Popup -->
+        <div class="overlay" id="news-overlay" onclick="closeNewsPopup()"></div>
+        <div class="news-popup" id="news-popup">
+            <span class="close-popup" onclick="closeNewsPopup()">&times;</span>
+            <h3>Today's Crypto Market Update</h3>
+            
+            <div class="news-item">
+                <h4>Bitcoin Breaks Key Resistance Level</h4>
+                <p>BTC surpasses $42,000 amid increasing institutional interest and ETF speculation.</p>
+                <a href="#" style="color: #3a8dd8;">Read more</a>
+            </div>
+
+            <div class="news-item">
+                <h4>Ethereum Network Activity Surges</h4>
+                <p>Record number of daily transactions recorded as Layer 2 adoption grows.</p>
+                <a href="#" style="color: #3a8dd8;">Read more</a>
+            </div>
+            
+            <div class="news-item">
+                <h4>Regulatory Developments</h4>
+                <p>New crypto legislation proposed in major markets could impact exchange operations.</p>
+                <a href="#" style="color: #3a8dd8;">Read more</a>
+            </div>
+            
+            <div class="news-item">
+                <h4>Altcoin Season Indicators</h4>
+                <p>Analysts spot early signs of capital rotation from Bitcoin to altcoins.</p>
+                <a href="#" style="color: #3a8dd8;">Read more</a>
+            </div>
+        </div>
+
+    <div class="ad-banner bottom-banner">
+        <!-- Bottom Content Banner (728x90) -->
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+             crossorigin="anonymous"></script>
+        <!-- CryptoSim_Bottom -->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:728px;height:90px"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="XXXXXXXXXX"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Coin</th>
+                <th>Amount</th>
+                <th>Result</th>
+                <th>Status</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody id="history-table">
+            <!-- History rows will be added here -->
+        </tbody>
+    </table>
 </div>
 
-<!-- Script de TradingView con carga asíncrona -->
+<footer>
+    <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="how-to-play.html">How to Play</a>
+        <a href="faq.html">FAQ</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="contact.html">Contact</a>
+    </div>
+    <p>&copy; 2023 CryptoSim Pro. All rights reserved.</p>
+</footer>
+
+<script src="https://s3.tradingview.com/tv.js"></script>
 <script>
-  (function() {
-    const script = document.createElement('script');
-    script.src = 'https://s3.tradingview.com/tv.js';
-    script.async = true;
-    script.onload = initTradingView;
-    document.head.appendChild(script);
-  })();
-
-  function initTradingView() {
-    new TradingView.widget({
-      "autosize": true,
-      "symbol": "BINANCE:BTCUSDT",
-      "interval": "5",
-      "timezone": "Etc/UTC",
-      "theme": "dark",
-      "style": "1",
-      "locale": "en",
-      "toolbar_bg": "#1e222d",
-      "enable_publishing": false,
-      "hide_side_toolbar": false,
-      "allow_symbol_change": true,
-      "container_id": "tradingview-widget-container"
-    });
-  }
-</script>
-
-<script>
-  'use strict';
-  
-  let selectedSymbol = document.getElementById("crypto-select").value;
-  let balance = 20000;
-  let currentStake = 0;
-  let tradeRunning = false;
-  let profitOrLoss = 0;
-  let tradeId = 1;
-  let timerInterval = null;
-  let secondsLeft = 0;
-
-  const balanceDisplay = document.getElementById("balance");
-  const profitLossDisplay = document.getElementById("profit-loss");
-  const timerDisplay = document.getElementById("timer");
-
-  function updateBalance() {
-    balanceDisplay.textContent = balance.toFixed(2);
-  }
-
-  function showProfitLoss(text, isProfit = true) {
-    profitLossDisplay.textContent = text;
-    profitLossDisplay.className = isProfit ? "profit-loss profit" : "profit-loss loss";
-  }
-
-  function addHistory(status) {
-    const table = document.getElementById("history-table");
-    const row = table.insertRow(0);
-    row.innerHTML = `
-      <td>${tradeId++}</td>
-      <td>${selectedSymbol.split(":")[1]}</td>
-      <td>$${currentStake.toFixed(2)}</td>
-      <td>${profitOrLoss >= 0 ? '+' : '-'}$${Math.abs(profitOrLoss).toFixed(2)}</td>
-      <td>${status}</td>
-      <td>${new Date().toLocaleTimeString()}</td>
-    `;
-  }
-
-  document.getElementById("crypto-select").addEventListener("change", function() {
-    selectedSymbol = this.value;
-    if (typeof TradingView !== 'undefined') {
-      // Actualizar el símbolo en el gráfico existente
-      const widget = document.getElementById("tradingview-widget-container").querySelector('iframe').contentWindow;
-      widget.postMessage({
-        frame_id: 'tradingview-widget-container',
-        symbol: selectedSymbol
-      }, '*');
-    }
-  });
-
-  function deposit() {
-    const amount = parseFloat(prompt("Enter deposit amount (min $100):", "100"));
-    if (amount && amount >= 100) {
-      balance += amount;
-      updateBalance();
-      alert(`Successfully deposited $${amount.toFixed(2)}`);
-    }
-  }
-
-  function withdraw() {
-    const amount = parseFloat(prompt("Enter withdrawal amount:", "10"));
-    if (amount && amount >= 10 && amount <= balance) {
-      balance -= amount;
-      updateBalance();
-      alert(`Successfully withdrew $${amount.toFixed(2)}`);
-    }
-  }
-
-  function startTimer(seconds, callback) {
-    secondsLeft = seconds;
-    timerDisplay.textContent = `Timer: ${secondsLeft}s`;
-
-    timerInterval = setInterval(() => {
-      secondsLeft--;
-      timerDisplay.textContent = `Timer: ${secondsLeft}s`;
-      if (secondsLeft <= 0) {
-        clearInterval(timerInterval);
-        callback();
-      }
-    }, 1000);
-  }
-
-  function buy() {
-    if (tradeRunning) return alert("Finish current trade first.");
-    const stake = parseFloat(document.getElementById("trade-amount").value);
-    if (!stake || stake <= 0 || stake > balance) {
-      return alert("Invalid stake amount.");
-    }
-
-    currentStake = stake;
-    balance -= stake;
-    updateBalance();
-
-    showProfitLoss("Trade running...", true);
-    tradeRunning = true;
-
-    startTimer(5, () => {
-      profitOrLoss = Math.random() > 0.5 ? stake * 0.2 : -stake * 0.3;
-      showProfitLoss(`Trade ready. You may Sell or Cancel now.`, profitOrLoss >= 0);
-    });
-  }
-
-  function sell() {
-    if (!tradeRunning) return alert("No trade to sell.");
-    clearInterval(timerInterval);
-    timerDisplay.textContent = "Timer: 0s";
-
-    const result = currentStake + profitOrLoss;
-    balance += result;
-    updateBalance();
-
-    const resultText = profitOrLoss >= 0 
-      ? `Profit: $${profitOrLoss.toFixed(2)}`
-      : `Loss: $${Math.abs(profitOrLoss).toFixed(2)}`;
+    'use strict';
     
-    showProfitLoss(resultText, profitOrLoss >= 0);
-    addHistory("Closed");
+    // Trading Simulation Logic
+    let selectedSymbol = document.getElementById("crypto-select").value;
+    let chartWidget;
+    let balance = 100000;
+    let currentStake = 0;
+    let tradeRunning = false;
+    let profitOrLoss = 0;
+    let tradeId = 1;
+    let timerInterval = null;
+    let secondsLeft = 0;
 
-    currentStake = 0;
-    profitOrLoss = 0;
-    tradeRunning = false;
-  }
+    const balanceDisplay = document.getElementById("balance");
+    const profitLossDisplay = document.getElementById("profit-loss");
+    const timerDisplay = document.getElementById("timer");
 
-  function cancelTrade() {
-    if (!tradeRunning) return alert("No active trade to cancel.");
-    clearInterval(timerInterval);
-    timerDisplay.textContent = "Timer: 0s";
-
-    if (profitOrLoss === 0) {
-      balance += currentStake;
-      showProfitLoss("Trade cancelled. Stake refunded.");
-    } else {
-      const result = currentStake + profitOrLoss;
-      balance += result;
-      showProfitLoss(
-        profitOrLoss >= 0 
-          ? `Profit (on cancel): $${profitOrLoss.toFixed(2)}`
-          : `Loss (on cancel): $${Math.abs(profitOrLoss).toFixed(2)}`,
-        profitOrLoss >= 0
-      );
+    function updateBalance() {
+        balanceDisplay.textContent = balance.toFixed(2);
     }
 
-    updateBalance();
-    addHistory("Cancelled");
-    currentStake = 0;
-    profitOrLoss = 0;
-    tradeRunning = false;
-  }
+    function showProfitLoss(text, isProfit = true) {
+        profitLossDisplay.textContent = text;
+        profitLossDisplay.className = isProfit ? "profit-loss profit" : "profit-loss loss";
+    }
+
+    function addHistory(status) {
+        const table = document.getElementById("history-table");
+        const row = table.insertRow(0);
+        row.innerHTML = `
+            <td>${tradeId++}</td>
+            <td>${selectedSymbol.split(":")[1]}</td>
+            <td>$${currentStake.toFixed(2)}</td>
+            <td>${profitOrLoss >= 0 ? '+' : '-'}$${Math.abs(profitOrLoss).toFixed(2)}</td>
+            <td>${status}</td>
+            <td>${new Date().toLocaleTimeString()}</td>
+        `;
+    }
+
+    function loadChart(symbol) {
+        if (chartWidget) {
+            chartWidget.setSymbol(symbol);
+            return;
+        }
+        
+        chartWidget = new TradingView.widget({
+            "autosize": true,
+            "symbol": symbol,
+            "interval": "15",
+            "timezone": "Etc/UTC",
+            "theme": "dark",
+            "style": "1",
+            "locale": "en",
+            "toolbar_bg": "#1e222d",
+            "enable_publishing": false,
+            "hide_side_toolbar": false,
+            "container_id": "tradingview-widget-container"
+        });
+    }
+
+    function deposit() {
+        const amount = parseFloat(prompt("Enter deposit amount (minimum $1):", "1"));
+        if (!isNaN(amount) && amount >= 1) {
+            balance += amount;
+            updateBalance();
+            alert(`Successfully deposited $${amount.toFixed(2)}`);
+        } else {
+            alert("Minimum deposit amount is $1");
+        }
+    }
+
+    function withdraw() {
+        const amount = parseFloat(prompt("Enter withdrawal amount (minimum $1):", "1"));
+        if (!isNaN(amount) && amount >= 1 && amount <= balance) {
+            balance -= amount;
+            updateBalance();
+            alert(`Successfully withdrew $${amount.toFixed(2)}`);
+        } else {
+            alert("Invalid amount (minimum $1, maximum your balance)");
+        }
+    }
+
+    function startTimer(seconds, callback) {
+        secondsLeft = seconds;
+        timerDisplay.textContent = `Timer: ${secondsLeft}s`;
+
+        timerInterval = setInterval(() => {
+            secondsLeft--;
+            timerDisplay.textContent = `Timer: ${secondsLeft}s`;
+            if (secondsLeft <= 0) {
+                clearInterval(timerInterval);
+                callback();
+            }
+        }, 1000);
+    }
+
+    function buy() {
+        if (tradeRunning) return alert("Finish current trade first.");
+        const stake = parseFloat(document.getElementById("trade-amount").value);
+        if (!stake || stake < 10 || stake > balance) {
+            return alert("Invalid amount (min $10, max your balance)");
+        }
+
+        currentStake = stake;
+        balance -= stake;
+        updateBalance();
+
+        showProfitLoss("Trade running...", true);
+        tradeRunning = true;
+
+        startTimer(10, () => {
+            profitOrLoss = Math.random() > 0.5 ? stake * 0.2 : -stake * 0.3;
+            showProfitLoss(`Trade ready. You may Sell or Cancel now.`, profitOrLoss >= 0);
+        });
+    }
+
+    function sell() {
+        if (!tradeRunning) return alert("No trade to sell.");
+        clearInterval(timerInterval);
+        timerDisplay.textContent = "Timer: 0s";
+
+        const result = currentStake + profitOrLoss;
+        balance += result;
+        updateBalance();
+
+        const resultText = profitOrLoss >= 0 
+            ? `Profit: $${profitOrLoss.toFixed(2)}`
+            : `Loss: $${Math.abs(profitOrLoss).toFixed(2)}`;
+        
+        showProfitLoss(resultText, profitOrLoss >= 0);
+        addHistory("Closed");
+
+        currentStake = 0;
+        profitOrLoss = 0;
+        tradeRunning = false;
+    }
+
+    function cancelTrade() {
+        if (!tradeRunning) return alert("No active trade to cancel.");
+        clearInterval(timerInterval);
+        timerDisplay.textContent = "Timer: 0s";
+
+        if (profitOrLoss === 0) {
+            balance += currentStake;
+            showProfitLoss("Trade cancelled. Stake refunded.");
+        } else {
+            const result = currentStake + profitOrLoss;
+            balance += result;
+            showProfitLoss(
+                profitOrLoss >= 0 
+                    ? `Profit (on cancel): $${profitOrLoss.toFixed(2)}`
+                    : `Loss (on cancel): $${Math.abs(profitOrLoss).toFixed(2)}`,
+                profitOrLoss >= 0
+            );
+        }
+
+        updateBalance();
+        addHistory("Cancelled");
+        currentStake = 0;
+        profitOrLoss = 0;
+        tradeRunning = false;
+    }
+
+    function closeAll() {
+        if (!tradeRunning) return alert("No active trades");
+        cancelTrade();
+    }
+
+    function resetAccount() {
+        if (confirm("Reset account to $100,000? All history will be lost.")) {
+            balance = 100000;
+            tradeId = 1;
+            document.getElementById("history-table").innerHTML = "";
+            updateBalance();
+            showProfitLoss("");
+        }
+    }
+
+    // Initialize
+    document.getElementById("crypto-select").addEventListener("change", function() {
+        selectedSymbol = this.value;
+        loadChart(selectedSymbol);
+    });
+
+    window.onload = () => {
+        loadChart(selectedSymbol);
+        updateBalance();
+    };
 </script>
 </body>
 </html>
