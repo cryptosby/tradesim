@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Privacy Policy - Tradesim</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { color: #3a8dd8; }
+        h2 { color: #3a8dd8; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Privacy Policy</h1>
+    <p>Last updated: January 2025</p>
+    
+    <h2>1. Information We Collect</h2>
+    <p>Tradesim does not collect any personal information. Our simulator operates entirely in your browser.</p>
+    
+    <h2>2. Cookies</h2>
+    <p>We may use browser localStorage to save your trading progress and settings, but this information never leaves your device.</p>
+    
+    <h2>3. Third-Party Services</h2>
+    <p>We use TradingView for charting functionality and may display affiliate links to cryptocurrency exchanges. These services have their own privacy policies.</p>
+    
+    <h2>4. Advertising</h2>
+    <p>We may display ads through Google AdSense, which uses cookies to serve relevant ads. You can opt out of personalized advertising through Google's Ads Settings.</p>
+    
+    <h2>5. Children's Privacy</h2>
+    <p>Our service does not address anyone under the age of 13. We do not knowingly collect personal information from children.</p>
+    
+    <h2>6. Changes to This Policy</h2>
+    <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page.</p>
+    
+    <h2>7. Contact Us</h2>
+    <p>If you have any questions about this Privacy Policy, please contact us through our website.</p>
+</body>
+</html>
