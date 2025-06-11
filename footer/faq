@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FAQ - Tradesim</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { color: #3a8dd8; }
+        .faq-item { margin-bottom: 20px; }
+        .question { font-weight: bold; color: #3a8dd8; }
+    </style>
+</head>
+<body>
+    <h1>Frequently Asked Questions</h1>
+    
+    <div class="faq-item">
+        <p class="question">Is Tradesim free to use?</p>
+        <p>Yes, our trading simulator is completely free with no hidden costs or registration requirements.</p>
+    </div>
+    
+    <div class="faq-item">
+        <p class="question">Do I need to create an account?</p>
+        <p>No, Tradesim works entirely in your browser without requiring any account creation.</p>
+    </div>
+    
+    <div class="faq-item">
+        <p class="question">How is the trading simulated?</p>
+        <p>We use randomized outcomes within realistic parameters to simulate market movements. Each trade has a 50% chance of profit/loss by default.</p>
+    </div>
+    
+    <div class="faq-item">
+        <p class="question">Can I lose money on Tradesim?</p>
+        <p>No, all trading is done with virtual money. You can reset your account balance anytime.</p>
+    </div>
+    
+    <div class="faq-item">
+        <p class="question">Why don't my trades always win?</p>
+        <p>We simulate real market conditions where not all trades are profitable, helping you learn proper risk management.</p>
+    </div>
+    
+    <div class="faq-item">
+        <p class="question">Can I use this on mobile?</p>
+        <p>Yes, Tradesim is responsive and works on most smartphones and tablets.</p>
+    </div>
+    
+    <div class="faq-item">
+        <p class="question">How do I reset my account?</p>
+        <p>Click the "Reset" button to restore your balance to $100,000 and clear your trade history.</p>
+    </div>
+    
+    <div class="faq-item">
+        <p class="question">Do you offer real trading?</p>
+        <p>No, Tradesim is strictly an educational simulator. We provide affiliate links to real exchanges if you wish to trade with real money.</p>
+    </div>
+</body>
+</html>
