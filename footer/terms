@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Terms of Service - Tradesim</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { color: #3a8dd8; }
+        h2 { color: #3a8dd8; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Terms of Service</h1>
+    <p>Last updated: January 2023</p>
+    
+    <h2>1. Acceptance of Terms</h2>
+    <p>By using Tradesim, you agree to be bound by these Terms of Service.</p>
+    
+    <h2>2. Service Description</h2>
+    <p>Tradesim provides a virtual cryptocurrency trading simulator for educational purposes only. No real trading occurs on our platform.</p>
+    
+    <h2>3. No Financial Advice</h2>
+    <p>Our content is for informational purposes only and should not be considered financial advice. Always conduct your own research before making investment decisions.</p>
+    
+    <h2>4. User Responsibilities</h2>
+    <p>You agree to use Tradesim only for lawful purposes and in accordance with these Terms.</p>
+    
+    <h2>5. Intellectual Property</h2>
+    <p>All content on Tradesim is our property or the property of our licensors and is protected by copyright laws.</p>
+    
+    <h2>6. Limitation of Liability</h2>
+    <p>We shall not be liable for any damages resulting from use of or inability to use our service.</p>
+    
+    <h2>7. Changes to Terms</h2>
+    <p>We reserve the right to modify these terms at any time. Your continued use constitutes acceptance of the modified terms.</p>
+    
+    <h2>8. Governing Law</h2>
+    <p>These Terms shall be governed by the laws of [Your Country/State] without regard to its conflict of law provisions.</p>
+</body>
+</html>
