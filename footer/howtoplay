@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>How to Use Tradesim</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { color: #3a8dd8; }
+        .step { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>How to Use Tradesim</h1>
+    
+    <div class="step">
+        <h2>1. Select a Cryptocurrency</h2>
+        <p>Choose from 100+ cryptocurrencies in the "Select Coin" dropdown menu.</p>
+    </div>
+    
+    <div class="step">
+        <h2>2. Set Your Trade Parameters</h2>
+        <p>- Choose timeframe (1m, 5m, 15m, 1h)</p>
+        <p>- Enter trade amount (minimum $10)</p>
+    </div>
+    
+    <div class="step">
+        <h2>3. Execute Trades</h2>
+        <p><strong>Buy/Long:</strong> Profit if price goes up</p>
+        <p><strong>Sell/Short:</strong> Profit if price goes down</p>
+        <p>Each trade runs for 10 seconds with random outcome</p>
+    </div>
+    
+    <div class="step">
+        <h2>4. Manage Your Trades</h2>
+        <p>- Monitor active trades in the timer</p>
+        <p>- Close trades manually or wait for completion</p>
+        <p>- Cancel trades to get refund (before completion)</p>
+    </div>
+    
+    <div class="step">
+        <h2>5. Review Your History</h2>
+        <p>All completed trades are recorded in the history table</p>
+        <p>Track your win rate and profit/loss over time</p>
+    </div>
+    
+    <div class="step">
+        <h2>Tips for Success</h2>
+        <p>- Start with small trades to test strategies</p>
+        <p>- Use different timeframes to see how they affect outcomes</p>
+        <p>- Reset your account anytime to start fresh</p>
+    </div>
+</body>
+</html>
