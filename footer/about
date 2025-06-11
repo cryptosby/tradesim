@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>About CryptoSim Pro</title>
+    <title>About Tradesim</title>
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
         h1 { color: #3a8dd8; }
     </style>
 </head>
 <body>
-    <h1>About CryptoSim Pro</h1>
-    <p>CryptoSim Pro is a free, advanced cryptocurrency trading simulator designed to help both beginners and experienced traders practice their strategies in a risk-free environment.</p>
+    <h1>About Tradesim</h1>
+    <p>Tradesim is a free, advanced cryptocurrency trading simulator designed to help both beginners and experienced traders practice their strategies in a risk-free environment.</p>
     
     <h2>Our Mission</h2>
     <p>To provide the most realistic trading experience without the risk of losing real money. Our platform helps users:</p>
@@ -30,6 +30,6 @@
         <li>No registration required</li>
     </ul>
     
-    <p>CryptoSim Pro is an educational tool and does not offer real trading or financial advice.</p>
+    <p>Tradesim is an educational tool and does not offer real trading or financial advice.</p>
 </body>
 </html>
