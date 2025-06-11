@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About CryptoSim Pro</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { color: #3a8dd8; }
+    </style>
+</head>
+<body>
+    <h1>About CryptoSim Pro</h1>
+    <p>CryptoSim Pro is a free, advanced cryptocurrency trading simulator designed to help both beginners and experienced traders practice their strategies in a risk-free environment.</p>
+    
+    <h2>Our Mission</h2>
+    <p>To provide the most realistic trading experience without the risk of losing real money. Our platform helps users:</p>
+    <ul>
+        <li>Learn cryptocurrency trading fundamentals</li>
+        <li>Test trading strategies with $100,000 virtual money</li>
+        <li>Understand market movements and technical analysis</li>
+        <li>Gain confidence before trading with real funds</li>
+    </ul>
+    
+    <h2>Features</h2>
+    <ul>
+        <li>Real-time simulated trading with 100+ cryptocurrencies</li>
+        <li>Professional TradingView chart integration</li>
+        <li>Multiple timeframe analysis</li>
+        <li>Complete trading history tracking</li>
+        <li>No registration required</li>
+    </ul>
+    
+    <p>CryptoSim Pro is an educational tool and does not offer real trading or financial advice.</p>
+</body>
+</html>
