@@ -535,16 +535,519 @@
         </div>
     </div>
 
- <div class="news-popup">
-        <button>📰 Latest Crypto News & Market Updates</button>
-        <div class="news-popup-content">
-            <h4>Market Updates</h4>
-            <p>• Bitcoin breaks $40,000 resistance</p>
-            <p>• Ethereum upgrade expected next month</p>
-            <p>• New regulation changes in Europe</p>
-            <a href="#" style="color: #3a8dd8;">Read More</a>
+ <!-- ======== SECCIÓN DE NOTICIAS (añadir después de "Trade on Top Crypto Exchanges") ======== -->
+<section class="crypto-news-section" id="crypto-news">
+  <!-- Encabezado con controles -->
+  <div class="news-header">
+    <h2>📡 Live Crypto News Dashboard</h2>
+    <div class="news-controls">
+      <button id="toggle-news" class="news-btn">🔽 Collapse</button>
+      <div class="news-filters">
+        <span class="filter-label">Filters:</span>
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="bitcoin">Bitcoin</button>
+        <button class="filter-btn" data-filter="ethereum">Ethereum</button>
+        <button class="filter-btn" data-filter="trending">🔥 Trending</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="news-container">
+    <!-- Sección de Trending Topics -->
+    <div class="trending-widget">
+      <h3>📊 Market Sentiment</h3>
+      <div class="trending-topics" id="trending-topics">
+        <div class="trending-item">
+          <span class="emoji">📈</span>
+          <span class="topic">Loading...</span>
+          <span class="sentiment">+0%</span>
         </div>
-    </div>                 
+      </div>
+    </div>
+
+    <!-- Noticias combinadas -->
+    <div class="news-grid" id="news-grid">
+      <!-- Noticias se cargarán aquí via JS -->
+    </div>
+  </div>
+
+  <!-- AdSense Banner (optimizado para monetización) -->
+  <div class="news-ad">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+     crossorigin="anonymous"></script>
+    <!-- CryptoSim_News -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+</section>
+
+<style>
+  /* ======== ESTILOS CSS ======== */
+  .crypto-news-section {
+    background: #1e222d;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 30px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .news-header h2 {
+    color: #3a8dd8;
+    margin: 0;
+    font-size: 1.4em;
+  }
+
+  .news-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .news-btn {
+    background: #2c313a;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .news-btn:hover {
+    background: #3a8dd8;
+  }
+
+  .news-filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .filter-label {
+    color: #aaa;
+    font-size: 0.9em;
+  }
+
+  .filter-btn {
+    background: #2c313a;
+    color: #fff;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .filter-btn.active {
+    background: #00aa5e;
+  }
+
+  .news-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .trending-widget {
+    background: rgba(58, 141, 216, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #3a8dd8;
+  }
+
+  .trending-widget h3 {
+    margin-top: 0;
+    color: #fff;
+    font-size: 1.1em;
+  }
+
+  .trending-topics {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+
+  .trending-item {
+    background: #2c313a;
+    padding: 10px 15px;
+    border-radius: 6px;
+    min-width: 120px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .emoji {
+    font-size: 1.2em;
+    display: block;
+  }
+
+  .topic {
+    font-weight: bold;
+    color: #fff;
+  }
+
+  .sentiment {
+    color: #00ff9f;
+    font-size: 0.9em;
+  }
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+  }
+
+  .news-card {
+    background: #2c313a;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+
+  .news-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .news-source {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background: #1e2228;
+    color: #aaa;
+    font-size: 0.8em;
+  }
+
+  .source-logo {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    border-radius: 50%;
+  }
+
+  .news-content {
+    padding: 12px;
+  }
+
+  .news-title {
+    color: #fff;
+    font-weight: bold;
+    margin: 0 0 8px 0;
+    line-height: 1.4;
+  }
+
+  .news-meta {
+    display: flex;
+    justify-content: space-between;
+    color: #aaa;
+    font-size: 0.8em;
+    margin-top: 10px;
+  }
+
+  .news-keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 8px 0;
+  }
+
+  .keyword {
+    background: rgba(58, 141, 216, 0.2);
+    color: #3a8dd8;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7em;
+  }
+
+  .news-ad {
+    margin-top: 20px;
+    background: #1e2228;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .news-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .news-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // ======== LÓGICA PRINCIPAL ========
+  document.addEventListener('DOMContentLoaded', function() {
+    // Configuración
+    const RSS_FEEDS = [
+      'https://cointelegraph.com/rss',
+      'https://decrypt.co/feed'
+    ];
+    
+    const CRYPTOPANIC_API_KEY = 'free'; // Usar 'free' para plan gratuito
+    
+    // Elementos DOM
+    const newsGrid = document.getElementById('news-grid');
+    const trendingWidget = document.getElementById('trending-topics');
+    const toggleBtn = document.getElementById('toggle-news');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    
+    // Estado
+    let allNews = [];
+    let isExpanded = true;
+    
+    // Inicialización
+    fetchCombinedNews();
+    fetchTrendingTopics();
+    setupEventListeners();
+    
+    // ======== FUNCIONES PRINCIPALES ========
+    
+    // 1. Obtener noticias combinadas (RSS + CryptoPanic)
+    async function fetchCombinedNews() {
+      try {
+        // Fetch RSS Feeds
+        const rssPromises = RSS_FEEDS.map(feed => parseRSS(feed));
+        const rssResults = await Promise.all(rssPromises);
+        const rssNews = rssResults.flat();
+        
+        // Fetch CryptoPanic (Social Sentiment)
+        const panicNews = await fetchCryptoPanic();
+        
+        // Combinar y ordenar
+        allNews = [...rssNews, ...panicNews]
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        // Renderizar
+        renderNews(allNews);
+      } catch (error) {
+        console.error('Error fetching news:', error);
+        newsGrid.innerHTML = `<p class="error">Failed to load news. Please refresh.</p>`;
+      }
+    }
+    
+    // 2. Obtener temas trending de CryptoPanic
+    async function fetchTrendingTopics() {
+      try {
+        const response = await fetch(
+          `https://cryptopanic.com/api/v1/posts/?auth_token=${CRYPTOPANIC_API_KEY}&filter=hot`
+        );
+        const data = await response.json();
+        
+        const trendingItems = data.results.slice(0, 3).map(item => {
+          const symbol = item.currencies[0]?.code || 'CRYPTO';
+          const upvotes = item.votes?.positive || 0;
+          const downvotes = item.votes?.negative || 0;
+          const sentiment = ((upvotes - downvotes) / (upvotes + downvotes || 1)) * 100;
+          
+          return `
+            <div class="trending-item">
+              <span class="emoji">${sentiment >= 0 ? '📈' : '📉'}</span>
+              <span class="topic">${symbol}</span>
+              <span class="sentiment" style="color: ${sentiment >= 0 ? '#00ff9f' : '#ff4d4d'}">
+                ${sentiment >= 0 ? '+' : ''}${Math.round(sentiment)}%
+              </span>
+            </div>
+          `;
+        }).join('');
+        
+        trendingWidget.innerHTML = trendingItems;
+      } catch (error) {
+        console.error('Error fetching trends:', error);
+        trendingWidget.innerHTML = '<div class="trending-item">Trend data unavailable</div>';
+      }
+    }
+    
+    // 3. Parsear RSS Feeds
+    async function parseRSS(url) {
+      const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`;
+      const response = await fetch(proxyUrl);
+      const data = await response.json();
+      
+      return data.items.map(item => ({
+        title: item.title,
+        link: item.link,
+        source: 'Cointelegraph',
+        date: item.pubDate,
+        isOfficial: true,
+        keywords: extractKeywords(item.title)
+      }));
+    }
+    
+    // 4. Fetch CryptoPanic API
+    async function fetchCryptoPanic() {
+      const response = await fetch(
+        `https://cryptopanic.com/api/v1/posts/?auth_token=${CRYPTOPANIC_API_KEY}`
+      );
+      const data = await response.json();
+      
+      return data.results.map(item => ({
+        title: item.title,
+        link: item.url,
+        source: item.domain || 'Social',
+        date: item.published_at,
+        isOfficial: false,
+        sentiment: item.votes?.positive - item.votes?.negative || 0,
+        keywords: extractKeywords(item.title)
+      }));
+    }
+    
+    // 5. Renderizar noticias
+    function renderNews(news) {
+      newsGrid.innerHTML = news.map(item => `
+        <div class="news-card" data-keywords="${item.keywords.join(',')}" data-source="${item.isOfficial ? 'official' : 'social'}">
+          <div class="news-source">
+            <img src="${getFavicon(item.link)}" class="source-logo" alt="${item.source}">
+            ${item.source} ${item.isOfficial ? '' : '• Social'}
+          </div>
+          <div class="news-content">
+            <h3 class="news-title">
+              <a href="${item.link}" target="_blank" rel="noopener noreferrer">${highlightKeywords(item.title)}</a>
+            </h3>
+            ${item.keywords.length ? `
+              <div class="news-keywords">
+                ${item.keywords.map(kw => `<span class="keyword">${kw}</span>`).join('')}
+              </div>
+            ` : ''}
+            <div class="news-meta">
+              <span>${formatDate(item.date)}</span>
+              ${!item.isOfficial ? `
+                <span style="color: ${item.sentiment >= 0 ? '#00ff9f' : '#ff4d4d'}">
+                  ${item.sentiment >= 0 ? '👍' : '👎'} ${Math.abs(item.sentiment)}
+                </span>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // ======== FUNCIONES UTILITARIAS ========
+    
+    function extractKeywords(title) {
+      const keywords = ['bitcoin', 'ethereum', 'bullish', 'bearish', 'regulation', 
+                       'sec', 'etf', 'halving', 'defi', 'nft', 'web3'];
+      return keywords.filter(kw => 
+        title.toLowerCase().includes(kw)
+      ).slice(0, 3);
+    }
+    
+    function highlightKeywords(title) {
+      return title.replace(/(bitcoin|ethereum|bullish|bearish|etf|halving)/gi, 
+        '<span class="highlight">$1</span>');
+    }
+    
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+    
+    function getFavicon(url) {
+      const domain = new URL(url).hostname.replace('www.', '');
+      return `https://www.google.com/s2/favicons?domain=${domain}`;
+    }
+    
+    // ======== EVENT LISTENERS ========
+    
+    function setupEventListeners() {
+      // Toggle expandir/colapsar
+      toggleBtn.addEventListener('click', () => {
+        isExpanded = !isExpanded;
+        newsGrid.style.display = isExpanded ? 'grid' : 'none';
+        toggleBtn.textContent = isExpanded ? '🔽 Collapse' : '🔼 Expand';
+      });
+      
+      // Filtros
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          const filter = btn.dataset.filter;
+          let filteredNews = allNews;
+          
+          if (filter === 'bitcoin') {
+            filteredNews = allNews.filter(n => 
+              n.title.toLowerCase().includes('bitcoin') || 
+              n.keywords.includes('bitcoin')
+            );
+          } else if (filter === 'ethereum') {
+            filteredNews = allNews.filter(n => 
+              n.title.toLowerCase().includes('ethereum') || 
+              n.keywords.includes('ethereum')
+            );
+          } else if (filter === 'trending') {
+            filteredNews = allNews.filter(n => 
+              !n.isOfficial && Math.abs(n.sentiment) > 5
+            ).sort((a, b) => Math.abs(b.sentiment) - Math.abs(a.sentiment));
+          }
+          
+          renderNews(filteredNews);
+        });
+      });
+    }
+    
+    // ======== SEO DINÁMICO ========
+    function updateSEOMetaTags() {
+      if (allNews.length > 0) {
+        const latestNews = allNews[0];
+        document.querySelector('meta[name="description"]').content = 
+          `Latest crypto news: ${latestNews.title}. Stay updated with Bitcoin, Ethereum and blockchain trends.`;
+        
+        // JSON-LD para rich snippets
+        const jsonLd = {
+          "@context": "https://schema.org",
+          "@type": "NewsMediaOrganization",
+          "name": "CryptoSim Pro News",
+          "url": window.location.href,
+          "logo": "https://yourdomain.com/logo.png",
+          "sameAs": [
+            "https://twitter.com/yourhandle",
+            "https://t.me/yourchannel"
+          ]
+        };
+        
+        const scriptTag = document.createElement('script');
+        scriptTag.type = 'application/ld+json';
+        scriptTag.text = JSON.stringify(jsonLd);
+        document.head.appendChild(scriptTag);
+      }
+    }
+    
+    // Actualizar cada 5 minutos
+    setInterval(() => {
+      fetchCombinedNews();
+      fetchTrendingTopics();
+    }, 300000);
+  });
+</script>             
             
     <div class="ad-banner bottom-banner">
         <!-- Bottom Content Banner (728x90) -->
