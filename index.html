@@ -586,9 +586,12 @@
 document.addEventListener('DOMContentLoaded', async () => {
   // 1. Configuración segura (HTTPS)
   const RSS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
-  const RSS_FEEDS = [
-    "https://cointelegraph.com/rss",
-    "https://decrypt.co/feed"
+// Si falla api.rss2json.com, usa este backup:
+const RSS_FEEDS = [
+  "https://cors-anywhere.herokuapp.com/https://cointelegraph.com/rss",
+  "https://cors-anywhere.herokuapp.com/https://decrypt.co/feed"
+];    
+  
   ].map(url => RSS_PROXY + encodeURIComponent(url));
 
   // 2. Elementos DOM con verificación
