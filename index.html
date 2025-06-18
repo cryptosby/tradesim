@@ -534,15 +534,14 @@
             <div class="exchange-signup">Sign Up</div>
         </div>
     </div>
-   <!-- ======= SECCIÓN DE NOTICIAS ======= -->
+  <!-- ======= SECCIÓN DE NOTICIAS ======= -->
 <section class="crypto-news-section" id="crypto-news">
   <div class="news-header">
     <h2>📡 Live Crypto News Dashboard</h2>
     <div class="news-controls">
-      <button id="toggle-news" class="news-btn">🔽 Collapse</button>
-      <button id="refresh-news" class="news-btn">🔄 Refresh</button>
+      <button id="toggle-news" class="news-btn collapse-btn">🔽 Collapse</button>
+      <button id="refresh-news" class="news-btn refresh-btn">🔄 Refresh</button>
       <div class="news-filters">
-        <span class="filter-label">Filters:</span>
         <button class="filter-btn active" data-filter="all">All</button>
         <button class="filter-btn" data-filter="bitcoin">Bitcoin</button>
         <button class="filter-btn" data-filter="ethereum">Ethereum</button>
@@ -558,53 +557,140 @@
 </section>
 
 <style>
+  /* ===== ESTILOS GENERALES ===== */
   .crypto-news-section {
     background: #1e222d;
     border-radius: 12px;
     padding: 20px;
     margin: 30px 0;
+    border: 1px solid #2c313a;
   }
+
+  /* ===== ESTILOS DE BOTONES (como en tu versión anterior) ===== */
+  .news-btn {
+    background: #3a8dd8;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 5px;
+    transition: all 0.3s;
+  }
+
+  .news-btn:hover {
+    background: #2c6fb7;
+    transform: translateY(-2px);
+  }
+
+  .collapse-btn {
+    background: #00aa5e;
+  }
+
+  .refresh-btn {
+    background: #3a8dd8;
+  }
+
+  .filter-btn {
+    background: #2c313a;
+    color: #aaa;
+    padding: 6px 12px;
+    margin: 0 3px;
+    border-radius: 4px;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+
+  .filter-btn.active {
+    background: #3a8dd8;
+    color: white;
+  }
+
+  /* ===== ESTILOS DE NOTICIAS ===== */
   .news-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 15px;
+    margin-top: 20px;
   }
+
   .news-card {
     background: #2c313a;
-    padding: 15px;
     border-radius: 8px;
+    padding: 15px;
+    transition: transform 0.3s;
+    border: 1px solid #3a3f4b;
   }
-  .news-loading {
+
+  .news-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  .news-card h3 {
+    color: #e0e0e0 !important; /* Color blanco suave */
+    font-size: 16px;
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  .news-meta {
+    color: #aaa;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ===== ESTILOS DE ESTADO ===== */
+  .news-loading, .news-error {
     color: #aaa;
     text-align: center;
     padding: 20px;
+    grid-column: 1 / -1;
   }
 </style>
 
 <script>
-// ======= CÓDIGO JS CORREGIDO =======
 document.addEventListener('DOMContentLoaded', async () => {
-  // 1. Configuración segura (HTTPS)
+  // 1. Configuración
   const RSS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
   const RSS_FEEDS = [
     "https://cointelegraph.com/rss",
     "https://decrypt.co/feed"
   ].map(url => RSS_PROXY + encodeURIComponent(url));
 
-  // 2. Elementos DOM con verificación
+  // 2. Elementos DOM
   const newsGrid = document.getElementById('news-grid');
-  if (!newsGrid) return console.error("Element #news-grid not found");
+  const toggleBtn = document.getElementById('toggle-news');
+  const refreshBtn = document.getElementById('refresh-news');
+  const filterBtns = document.querySelectorAll('.filter-btn');
   
-  // 3. Función principal con manejo de errores
-  try {
-    const news = await fetchNews(RSS_FEEDS);
-    renderNews(news);
-  } catch (error) {
-    console.error("News Error:", error);
-    newsGrid.innerHTML = `<div class="news-error">Failed to load news. Try refreshing.</div>`;
+  // 3. Estado
+  let allNews = [];
+  let currentFilter = 'all';
+  let isExpanded = true;
+
+  // 4. Inicialización
+  loadNews();
+  setupEventListeners();
+
+  // ===== FUNCIONES PRINCIPALES =====
+  async function loadNews() {
+    try {
+      newsGrid.innerHTML = '<div class="news-loading">Loading crypto news...</div>';
+      
+      const news = await fetchNews(RSS_FEEDS);
+      allNews = news;
+      
+      renderNews(filterNews(allNews, currentFilter));
+    } catch (error) {
+      console.error("News Error:", error);
+      newsGrid.innerHTML = '<div class="news-error">Failed to load news. Try refreshing.</div>';
+    }
   }
 
-  // 4. Fetch optimizado con CORS
   async function fetchNews(feeds) {
     try {
       const responses = await Promise.all(
@@ -614,34 +700,87 @@ document.addEventListener('DOMContentLoaded', async () => {
       return responses.flatMap(res => 
         res.items?.map(item => ({
           title: item.title,
-          link: item.link,
+          content: item.description || "No content available",
           source: res.feed?.title || "Unknown",
-          date: item.pubDate || new Date().toISOString()
+          date: item.pubDate || new Date().toISOString(),
+          keywords: extractKeywords(item.title)
         })) || []
       );
-      
     } catch (error) {
       console.error("Fetch Error:", error);
       return [];
     }
   }
 
-  // 5. Renderizado seguro
   function renderNews(news) {
     if (!news.length) {
-      newsGrid.innerHTML = `<div class="news-empty">No news available</div>`;
+      newsGrid.innerHTML = '<div class="news-empty">No news available for this filter</div>';
       return;
     }
 
-    newsGrid.innerHTML = news.slice(0, 6).map(item => `
-      <div class="news-card">
-        <h3><a href="${item.link}" target="_blank" rel="noopener">${item.title}</a></h3>
+    newsGrid.innerHTML = news.map(item => `
+      <div class="news-card" data-keywords="${item.keywords.join(',')}">
+        <h3>${item.title}</h3>
+        <div class="news-content">${truncateContent(item.content, 150)}</div>
         <div class="news-meta">
           <span>${item.source}</span>
-          <span>${new Date(item.date).toLocaleDateString()}</span>
+          <span>${formatDate(item.date)}</span>
         </div>
       </div>
     `).join('');
+  }
+
+  // ===== FUNCIONALIDAD DE BOTONES =====
+  function setupEventListeners() {
+    // Botón Collapse/Expand
+    toggleBtn.addEventListener('click', () => {
+      isExpanded = !isExpanded;
+      newsGrid.style.display = isExpanded ? 'grid' : 'none';
+      toggleBtn.textContent = isExpanded ? '🔽 Collapse' : '🔼 Expand';
+    });
+
+    // Botón Refresh
+    refreshBtn.addEventListener('click', () => {
+      loadNews();
+    });
+
+    // Botones de Filtro
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderNews(filterNews(allNews, currentFilter));
+      });
+    });
+  }
+
+  function filterNews(news, filter) {
+    if (filter === 'all') return news;
+    return news.filter(item => 
+      item.title.toLowerCase().includes(filter) || 
+      item.keywords.includes(filter)
+    );
+  }
+
+  // ===== FUNCIONES AUXILIARES =====
+  function extractKeywords(title) {
+    const keywords = ['bitcoin', 'ethereum', 'bullish', 'bearish'];
+    return keywords.filter(kw => title.toLowerCase().includes(kw));
+  }
+
+  function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
+    });
+  }
+
+  function truncateContent(text, maxLength) {
+    return text.length > maxLength ? 
+      text.substring(0, maxLength) + '...' : 
+      text;
   }
 });
 </script>
