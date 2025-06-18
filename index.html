@@ -534,7 +534,7 @@
             <div class="exchange-signup">Sign Up</div>
         </div>
     </div>
-    <!-- ======= SECCIÓN DE NOTICIAS ======= -->
+   <!-- ======= SECCIÓN DE NOTICIAS ======= -->
 <section class="crypto-news-section" id="crypto-news">
   <div class="news-header">
     <h2>📡 Live Crypto News Dashboard</h2>
@@ -585,12 +585,12 @@
 // ======= CÓDIGO JS CORREGIDO =======
 document.addEventListener('DOMContentLoaded', async () => {
   // 1. Configuración segura (HTTPS)
-  const RSS_PROXY = "/";
-// Si falla api.rss2json.com, usa este backup:
-const RSS_FEEDS = [
-  "https://cors-anywhere.herokuapp.com/https://cointelegraph.com/rss",
-  "https://cors-anywhere.herokuapp.com/https://decrypt.co/feed"
-];    
+  const RSS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
+  const RSS_FEEDS = [
+    "https://cointelegraph.com/rss",
+    "https://decrypt.co/feed"
+  ].map(url => RSS_PROXY + encodeURIComponent(url));
+
   // 2. Elementos DOM con verificación
   const newsGrid = document.getElementById('news-grid');
   if (!newsGrid) return console.error("Element #news-grid not found");
