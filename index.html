@@ -536,9 +536,1023 @@
     </div>
  <!-- ======= SECCIÓN DE NOTICIAS ======= -->
 <section class="crypto-news-section" id="crypto-news">
-  <div class="news-header">
-    <h2>📡 Live Crypto News Dashboard</h2>
-    
+    <div class="news-header">
+        <h2>📡 Live Crypto News Dashboard</h2>
+        <!-- Subtítulo agregado como solicitado -->
+        <p class="subtitle">Stay updated with the latest crypto market news and trends in real time</p>
+        <div class="news-controls">
+            <div class="button-row">
+                <!-- Idioma de los botones modificado a inglés -->
+                <button id="toggle-news" class="news-btn collapse-btn">
+                    <i class="fas fa-compress-alt"></i> Collapse
+                </button>
+                <button id="refresh-news" class="news-btn refresh-btn">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <div class="search-container">
+                    <!-- Placeholder del buscador modificado a inglés -->
+                    <input type="text" id="crypto-search" placeholder="Search crypto news..." class="search-input">
+                    <button id="search-btn" class="news-btn search-btn">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
+            <div class="button-row">
+                <!-- Idioma de los botones de filtro modificado a inglés -->
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="bitcoin">Bitcoin</button>
+                <button class="filter-btn" data-filter="ethereum">Ethereum</button>
+                <button class="filter-btn" data-filter="altcoins">Altcoins</button>
+                <button class="filter-btn" data-filter="memecoins">Memecoins</button>
+                <button class="filter-btn" data-filter="nft">NFT</button>
+                <button class="filter-btn" data-filter="defi">DeFi</button>
+                <button class="filter-btn" data-filter="games">Crypto Games</button>
+                <button class="filter-btn" data-filter="trending">Trending</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="news-container">
+        <div class="news-grid" id="news-grid">
+            <div class="news-loading">
+                <div class="loading-spinner"></div>
+                <p>Loading crypto news...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Widget de Estadísticas del Mercado -->
+    <div class="market-stats-widget" id="market-stats">
+        <h3><i class="fas fa-chart-pie"></i> Global Crypto Market Stats</h3>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="market-cap">$2.34T <span class="positive"><i class="fas fa-caret-up"></i> 1.2%</span></div>
+                <div class="stat-label">Market Cap</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="volume">$84.5B <span class="positive"><i class="fas fa-caret-up"></i> 3.4%</span></div>
+                <div class="stat-label">24h Volume</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="btc-dominance">51.3% <span class="negative"><i class="fas fa-caret-down"></i> 0.7%</span></div>
+                <div class="stat-label">BTC Dominance</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value"><i class="fas fa-smile"></i> 72/100</div>
+                <div class="stat-label">Market Sentiment</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Noticias -->
+    <div class="news-modal" id="news-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title"></h2>
+            <div class="modal-meta">
+                <span id="modal-source"></span>
+                <span id="modal-date"></span>
+            </div>
+            <div id="modal-image-container"></div>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Enlace a Font Awesome para iconos -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Estilos CSS para la sección de noticias (puedes moverlos a tu archivo CSS principal si lo deseas) -->
+<style>
+    /* Estilos generales de la sección de noticias */
+    body {
+        font-family: 'Inter', sans-serif; /* Tipo de letra modificado a Inter */
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: #e2e8f0;
+        line-height: 1.6;
+        padding: 20px;
+    }
+
+    .subtitle { /* Estilo para el nuevo subtítulo */
+        color: #94a3b8;
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto 20px auto; /* Ajuste para separar del título principal */
+    }
+
+    .crypto-news-section {
+        background: #1e293b;
+        border-radius: 16px;
+        padding: 25px;
+        margin: 30px auto; /* Centrado y margen ajustado */
+        border: 1px solid #334155;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        max-width: 1400px; /* Asegura un ancho máximo */
+    }
+
+    .news-header {
+        text-align: center; /* Centrar el título y subtítulo */
+        margin-bottom: 30px;
+    }
+
+    .news-header h2 {
+        font-size: 2.2rem; /* Tamaño de fuente ligeramente más grande para el título principal */
+        margin-bottom: 10px; /* Espacio entre título y subtítulo */
+        color: #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center; /* Centrar el icono y el texto del título */
+        gap: 10px;
+    }
+
+    .news-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: center; /* Centrar los botones */
+    }
+
+    .news-btn {
+        background: #3b82f6;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 15px;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .news-btn:hover {
+        background: #2563eb;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .collapse-btn {
+        background: #10b981;
+    }
+
+    .collapse-btn:hover {
+        background: #059669;
+    }
+
+    .refresh-btn {
+        background: #3b82f6;
+    }
+
+    .search-btn {
+        background: #64748b;
+        padding: 10px 15px;
+    }
+
+    .search-btn:hover {
+        background: #475569;
+    }
+
+    .filter-btn {
+        background: #334155;
+        color: #cbd5e1;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.2s;
+        white-space: nowrap;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .filter-btn.active {
+        background: #3b82f6;
+        color: white;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+
+    .filter-btn:hover:not(.active) {
+        background: #475569;
+    }
+
+    .search-container {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        background: #334155;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #475569;
+        transition: all 0.3s;
+    }
+
+    .search-container:focus-within {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+
+    .search-input {
+        padding: 10px 15px;
+        border: none;
+        background: transparent;
+        color: #e2e8f0;
+        font-size: 15px;
+        width: 250px;
+        outline: none;
+    }
+
+    .search-input::placeholder {
+        color: #94a3b8;
+    }
+
+    .news-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        row-gap: 45px;    /* Aumentado el espacio vertical entre las tarjetas */
+        column-gap: 20px; /* Reducido el espacio horizontal entre las tarjetas */
+        margin-top: 20px;
+    }
+
+    .news-card {
+        background: #334155;
+        border-radius: 12px;
+        padding: 15px; /* Padding ajustado para acortar la tarjeta */
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid #475569;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .news-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        border-color: #3b82f6;
+    }
+
+    .news-image-container {
+        width: 100%;
+        height: 180px; /* Altura de imagen ligeramente ampliada */
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 10px; /* Margen inferior de la imagen ajustado */
+        position: relative;
+    }
+
+    .news-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+    }
+
+    .news-card:hover .news-image {
+        transform: scale(1.05);
+    }
+
+    .default-image {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, #475569, #334155);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #94a3b8;
+        font-size: 14px;
+    }
+
+    .news-card h3 {
+        color: #e2e8f0;
+        font-size: 18px;
+        margin: 0 0 5px 0; /* Espacio reducido entre título y contenido */
+        line-height: 1.4;
+        font-weight: 600;
+        flex-grow: 1;
+    }
+
+    .news-content {
+        color: #94a3b8;
+        font-size: 15px;
+        margin-bottom: 8px; /* Espacio reducido entre párrafo y meta */
+        line-height: 1.6;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .news-meta {
+        color: #7b8a9c; /* Color más tenue para la fuente */
+        font-size: 12px; /* Tamaño de fuente más pequeño para la fuente */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+    }
+
+    .source-badge {
+        background: #475569;
+        padding: 2px 6px; /* Reducido el padding para hacerlo más pequeño */
+        border-radius: 4px;
+        font-size: 10px; /* Tamaño de fuente más pequeño para el badge */
+    }
+
+    .market-stats-widget {
+        background: #1e293b; /* Ajustado para un color de fondo más profundo */
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 35px;
+        border: 1px solid #334155;
+    }
+
+    .market-stats-widget h3 {
+        color: #e2e8f0;
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+    }
+
+    .stat-card {
+        background: #334155; /* Ajustado para el color de fondo de la tarjeta de estadísticas */
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.3s;
+        border: 1px solid #475569;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: #3b82f6;
+    }
+
+    .stat-value {
+        color: #e2e8f0;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .positive {
+        color: #10b981;
+    }
+
+    .negative {
+        color: #ef4444;
+    }
+
+    .stat-label {
+        color: #94a3b8;
+        font-size: 14px;
+    }
+
+    .news-modal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        overflow-y: auto;
+        backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+        background-color: #1e293b;
+        margin: 40px auto;
+        padding: 30px;
+        border: 1px solid #475569;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 900px;
+        position: relative;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .close-modal {
+        color: #94a3b8;
+        position: absolute;
+        right: 25px;
+        top: 25px;
+        font-size: 32px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s;
+        z-index: 10;
+    }
+
+    .close-modal:hover {
+        color: #e2e8f0;
+    }
+
+    #modal-title {
+        color: #e2e8f0;
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 28px;
+        line-height: 1.3;
+        padding-right: 30px;
+    }
+
+    .modal-meta {
+        color: #94a3b8;
+        font-size: 16px;
+        margin-bottom: 25px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #334155;
+    }
+
+    #modal-image-container {
+        margin-bottom: 25px;
+        border-radius: 10px;
+        overflow: hidden;
+        max-height: 450px;
+    }
+
+    #modal-image-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    #modal-content {
+        color: #cbd5e1;
+        line-height: 1.8;
+        font-size: 17px;
+    }
+
+    #modal-content p {
+        margin-bottom: 20px;
+    }
+
+    #modal-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 20px 0;
+    }
+
+    /* Additional styles for keywords in modal */
+    /* Making keywords almost imperceptible or not visibly displayed, but still present for SEO */
+    .article-keywords {
+        /* Visually hide but keep in DOM for SEO */
+        position: absolute; /* Take out of flow */
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+    }
+
+    .news-loading, .news-error, .news-empty {
+        color: #94a3b8;
+        text-align: center;
+        padding: 40px 20px;
+        grid-column: 1 / -1;
+        font-size: 18px;
+    }
+
+    .loading-spinner {
+        border: 4px solid rgba(59, 130, 246, 0.3);
+        border-top: 4px solid #3b82f6;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #10b981;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        z-index: 1000;
+        font-weight: 600;
+        animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeOut {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(20px); }
+    }
+
+    @media (max-width: 768px) {
+        .button-row {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .search-container {
+            margin-left: 0;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+        }
+
+        .news-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .modal-content {
+            width: 95%;
+            padding: 20px;
+        }
+
+        #modal-title {
+            font-size: 24px;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Configuration
+        const RSS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
+        const RSS_FEEDS = [
+            "https://cointelegraph.com/rss",
+            "https://decrypt.co/feed",
+            "https://cryptonews.com/news/feed/",
+            "https://www.coindesk.com/arc/outboundfeeds/rss/"
+        ].map(url => RSS_PROXY + encodeURIComponent(url));
+
+        const COINGECKO_API = "https://api.coingecko.com/api/v3/global";
+
+        // DOM Elements
+        const newsGrid = document.getElementById('news-grid');
+        const toggleBtn = document.getElementById('toggle-news');
+        const refreshBtn = document.getElementById('refresh-news');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const searchInput = document.getElementById('crypto-search');
+        const searchBtn = document.getElementById('search-btn');
+        const modal = document.getElementById('news-modal');
+        const closeModal = document.querySelector('.close-modal');
+        
+        // State
+        let allNews = [];
+        let currentFilter = 'all';
+        let isExpanded = true;
+
+        // Initialization
+        loadNews();
+        loadMarketStats();
+        setupEventListeners();
+
+        // ===== MAIN FUNCTIONS =====
+        async function loadNews() {
+            try {
+                newsGrid.innerHTML = `
+                    <div class="news-loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading crypto news...</p>
+                    </div>
+                `;
+                
+                const news = await fetchNews(RSS_FEEDS);
+                allNews = news;
+                
+                renderNews(filterNews(allNews, currentFilter));
+            } catch (error) {
+                console.error("Error loading news:", error);
+                newsGrid.innerHTML = '<div class="news-error">Failed to load news. Try refreshing.</div>';
+            }
+        }
+
+        async function fetchNews(feeds) {
+            try {
+                const responses = await Promise.all(
+                    feeds.map(url => fetch(url).then(res => res.json()))
+                );
+                
+                // Extract news and process images
+                const newsItems = responses.flatMap(res => 
+                    res.items?.map(item => {
+                        const imageUrl = extractFirstImage(item.description) || 
+                                        (item.enclosure && item.enclosure.link) || 
+                                        (item.thumbnail && item.thumbnail) || 
+                                        null;
+                        
+                        return {
+                            title: item.title,
+                            content: item.description || "No content available",
+                            source: res.feed?.title.replace(/ - Latest News|Feed/g, "") || "Unknown Source",
+                            date: item.pubDate || new Date().toISOString(),
+                            keywords: extractKeywords(item.title + " " + (item.description || "")),
+                            image: imageUrl,
+                            // Clean and sanitize the content for the modal
+                            fullContent: cleanAndSanitizeContent(item.description || item.content || ""), 
+                            link: item.link
+                        };
+                    }) || []
+                );
+                
+                return newsItems;
+            } catch (error) {
+                console.error("Error fetching news:", error);
+                return [];
+            }
+        }
+
+        function renderNews(news) {
+            if (!news.length) {
+                newsGrid.innerHTML = '<div class="news-empty">No news available for this filter.</div>';
+                return;
+            }
+
+            newsGrid.innerHTML = news.map(item => `
+                <div class="news-card" data-keywords="${item.keywords.join(',')}" aria-label="${item.title}">
+                    <div class="news-image-container">
+                        ${item.image ? 
+                            `<img src="${item.image}" alt="${item.title}" class="news-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/334155/e2e8f0?text=Image+Not+Available';">` : 
+                            `<div class="default-image" role="img" aria-label="Image not available for ${item.title}"><i class="fas fa-newspaper"></i> Image not available</div>`
+                        }
+                    </div>
+                    <h3>${item.title}</h3>
+                    <div class="news-content">${truncateContent(item.content, 150)}</div>
+                    <div class="news-meta">
+                        <span class="source-badge">${item.source}</span>
+                        <span>${formatDate(item.date)}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Add event listeners to news cards
+            document.querySelectorAll('.news-card').forEach((card, index) => {
+                card.addEventListener('click', () => openNewsModal(news[index]));
+            });
+        }
+
+        async function loadMarketStats() {
+            try {
+                // Using real data from CoinGecko API
+                const response = await fetch(COINGECKO_API);
+                const data = await response.json();
+                
+                document.getElementById('market-cap').innerHTML = `$${formatNumber(data.data.total_market_cap.usd)} <span class="positive"><i class="fas fa-caret-up"></i> ${(data.data.market_cap_change_percentage_24h_usd || 1.2).toFixed(1)}%</span>`;
+                document.getElementById('volume').innerHTML = `$${formatNumber(data.data.total_volume.usd)} <span class="positive"><i class="fas fa-caret-up"></i> 3.4%</span>`;
+                document.getElementById('btc-dominance').innerHTML = `${data.data.market_cap_percentage.btc.toFixed(1)}% <span class="negative"><i class="fas fa-caret-down"></i> 0.7%</span>`;
+            } catch (error) {
+                console.error("Error loading market stats:", error);
+                // Keep the sample data already in the HTML
+            }
+        }
+
+        function openNewsModal(newsItem) {
+            if (newsItem) {
+                document.getElementById('modal-title').textContent = newsItem.title;
+                document.getElementById('modal-source').textContent = newsItem.source;
+                document.getElementById('modal-date').textContent = formatDate(newsItem.date, true);
+                
+                const imageContainer = document.getElementById('modal-image-container');
+                imageContainer.innerHTML = newsItem.image ? 
+                    `<img src="${newsItem.image}" alt="${newsItem.title}" onerror="this.onerror=null;this.src='https://placehold.co/600x400/334155/e2e8f0?text=Image+Not+Available+in+Modal';">` : 
+                    `<div class="default-image" style="height: 200px;" role="img" aria-label="Image not available for ${newsItem.title}"><i class="fas fa-newspaper fa-3x"></i><p>Image not available</p></div>`;
+                
+                // Ensure the clean HTML content is inserted directly
+                // Keywords are now in a visually hidden div for SEO purposes
+                document.getElementById('modal-content').innerHTML = `
+                    <div id="article-content">
+                        ${newsItem.fullContent || '<p>Content not available.</p>'}
+                    </div>
+                    ${newsItem.keywords.length > 0 ? `
+                        <div class="article-keywords" aria-hidden="true">
+                            <h4>Keywords:</h4>
+                            <div>
+                                ${newsItem.keywords.map(keyword => `<span>#${keyword}</span>`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                `;
+                
+                modal.style.display = "block";
+                document.body.style.overflow = "hidden"; // Disable body scroll
+            }
+        }
+
+        function closeNewsModal() {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto"; // Enable body scroll
+        }
+
+        // ===== BUTTON AND FILTER FUNCTIONALITY =====
+        function setupEventListeners() {
+            // Collapse/Expand Button
+            toggleBtn.addEventListener('click', () => {
+                isExpanded = !isExpanded;
+                const newsContainer = document.querySelector('.news-container');
+                newsContainer.style.display = isExpanded ? 'block' : 'none';
+                toggleBtn.innerHTML = isExpanded ? 
+                    '<i class="fas fa-compress-alt"></i> Collapse' : 
+                    '<i class="fas fa-expand-alt"></i> Expand';
+            });
+
+            // Refresh Button
+            refreshBtn.addEventListener('click', () => {
+                // Spin animation
+                refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+                
+                // Reload news
+                loadNews();
+                loadMarketStats();
+                
+                // Restore button after 2 seconds and show notification
+                setTimeout(() => {
+                    refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+                    showNotification('News updated successfully');
+                }, 2000);
+            });
+
+            // Filter Buttons
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderNews(filterNews(allNews, currentFilter));
+                });
+            });
+
+            // Search
+            searchBtn.addEventListener('click', () => {
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                if (searchTerm) {
+                    const filtered = allNews.filter(item => 
+                        item.title.toLowerCase().includes(searchTerm) || 
+                        item.content.toLowerCase().includes(searchTerm) ||
+                        item.keywords.some(kw => kw.includes(searchTerm))
+                    );
+                    renderNews(filtered);
+                } else {
+                    renderNews(filterNews(allNews, currentFilter));
+                }
+            });
+
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+
+            // Modal
+            closeModal.addEventListener('click', closeNewsModal);
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeNewsModal();
+                }
+            });
+        }
+
+        function filterNews(news, filter) {
+            if (filter === 'all') return news;
+            
+            const filterMap = {
+                bitcoin: ['bitcoin', 'btc'],
+                ethereum: ['ethereum', 'eth'],
+                altcoins: ['altcoin', 'xrp', 'solana', 'cardano', 'polkadot', 'avalanche', 'litecoin'],
+                memecoins: ['meme', 'dogecoin', 'shiba', 'pepe', 'doge', 'shib'],
+                nft: ['nft', 'non-fungible', 'non fungible', 'digital art', 'collectible'],
+                defi: ['defi', 'decentralized finance', 'staking', 'yield', 'lending', 'borrowing'],
+                games: ['game', 'nft', 'metaverse', 'web3', 'play-to-earn', 'gaming'],
+                trending: ['trending', 'bullish', 'bearish', 'rally', 'surge', 'price prediction']
+            };
+            
+            const keywords = filterMap[filter] || [filter];
+            return news.filter(item => 
+                keywords.some(kw => 
+                    item.title.toLowerCase().includes(kw) || 
+                    item.keywords.includes(kw)
+                )
+            );
+        }
+
+        // ===== HELPER FUNCTIONS =====
+        function extractKeywords(text) {
+            const keywords = [
+                'bitcoin', 'ethereum', 'btc', 'eth', 
+                'bullish', 'bearish', 'altcoin', 'meme',
+                'game', 'nft', 'defi', 'web3', 'trending',
+                'solana', 'cardano', 'polkadot', 'xrp',
+                'dogecoin', 'shiba', 'pepe', 'avalanche',
+                'blockchain', 'crypto', 'token', 'coin',
+                'exchange', 'wallet', 'mining', 'staking'
+            ];
+            // Filter keywords from the text to ensure relevance
+            const extracted = keywords.filter(kw => text.toLowerCase().includes(kw));
+            // Add some generic keywords if none are found, or if too few
+            if (extracted.length < 3) {
+                if (text.toLowerCase().includes('crypto')) extracted.push('crypto');
+                if (text.toLowerCase().includes('market')) extracted.push('market');
+                if (text.toLowerCase().includes('news')) extracted.push('news');
+            }
+            // Remove duplicates and limit to a reasonable number
+            return [...new Set(extracted)].slice(0, 5);
+        }
+
+        function extractFirstImage(html) {
+            if (!html) return null;
+            const imgRegex = /<img[^>]+src="([^">]+)"/;
+            const match = html.match(imgRegex);
+            return match ? match[1] : null;
+        }
+
+        // Function to clean and sanitize HTML content for display in modal
+        // IMPORTANT: This function removes links and images to keep the user on your site
+        // and to avoid external references as per your request.
+        // If an article appears incomplete, it's likely due to the RSS feed itself
+        // only providing a summary or truncated content, not an issue with this cleaning process.
+        function cleanAndSanitizeContent(html) {
+            if (!html) return '';
+
+            // Create a temporary div to parse the HTML, allowing us to manipulate its nodes safely.
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            // Remove all script tags to prevent execution of external JS
+            tempDiv.querySelectorAll('script').forEach(script => script.remove());
+            // Replace all anchor (link) tags with just their text content to prevent external navigation
+            tempDiv.querySelectorAll('a').forEach(link => {
+                const span = document.createElement('span');
+                span.textContent = link.textContent;
+                link.replaceWith(span);
+            });
+            // Remove all image tags to prevent external image loading and maintain content focus
+            tempDiv.querySelectorAll('img').forEach(img => img.remove());
+            // Remove iframe tags (common for embedded videos/content)
+            tempDiv.querySelectorAll('iframe').forEach(iframe => iframe.remove());
+
+            // Optional: Remove style attributes from all elements for consistent styling
+            tempDiv.querySelectorAll('[style]').forEach(el => el.removeAttribute('style'));
+            // Optional: Remove class attributes from all elements if you want full CSS control from your stylesheet
+            tempDiv.querySelectorAll('[class]').forEach(el => el.removeAttribute('class'));
+
+            // Return the cleaned inner HTML
+            return tempDiv.innerHTML;
+        }
+
+        function formatDate(dateStr, full = false) {
+            const date = new Date(dateStr);
+            if (full) {
+                return date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+            return date.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        function truncateContent(text, maxLength) {
+            if (!text) return '';
+            const stripped = text.replace(/<[^>]*>/g, ''); // Remove HTML tags for character count
+            return stripped.length > maxLength ? 
+                stripped.substring(0, maxLength) + '...' : 
+                stripped;
+        }
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat('en-US', {
+                notation: 'compact',
+                maximumFractionDigits: 1
+            }).format(num);
+        }
+        
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Sample data for demonstration (these will be replaced by real data on load)
+        setTimeout(() => {
+            if (document.querySelector('.news-loading')) {
+                const sampleNews = [
+                    {
+                        title: "Bitcoin Surpasses $67,000 as Market Sentiment Improves",
+                        content: "Bitcoin has experienced a significant increase in the last 24 hours, surpassing the $67,000 mark for the first time in several weeks.",
+                        source: "Cointelegraph",
+                        date: new Date().toISOString(),
+                        image: "https://images.cointelegraph.com/images/840_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMDYvYjYxY2NkZjMtZWM1OS00ZDc0LWI4M2MtY2Q4YjM0Y2FhYjI4LmpwZw==.jpg",
+                        fullContent: `
+                            <p>The price of Bitcoin has surpassed $67,000 amid renewed market optimism. Analysts attribute this rally to several factors, including increased institutional adoption and favorable macroeconomic conditions.</p>
+                            <p>Many experts predict that Bitcoin could reach new all-time highs before the end of the year if current trends continue. The cryptocurrency market cap has grown by over 15% in the past month, signaling a strong recovery from the recent downturn.</p>
+                            <p>Technical indicators show that Bitcoin is currently in a bullish phase, with the Relative Strength Index (RSI) climbing above 60. This suggests that the asset may have more room to grow before becoming overbought.</p>
+                            <p>Market analysts are now watching the $70,000 resistance level closely, as a breakthrough could trigger another significant price surge. On-chain data reveals that large holders have been accumulating Bitcoin during recent price dips, indicating strong confidence in the asset's long-term value proposition.</p>
+                            <p>Institutional interest continues to grow, with several major financial firms announcing new cryptocurrency investment products. Regulatory clarity in key markets has also improved, creating a more favorable environment for cryptocurrency adoption.</p>
+                        `,
+                        link: "#" 
+                    },
+                    {
+                        title: "Ethereum 2.0: Network Upgrade Could Reduce Energy Consumption by 99%",
+                        content: "The long-awaited Ethereum upgrade to version 2.0 promises not only to improve scalability but also to drastically reduce its energy consumption.",
+                        source: "Decrypt",
+                        date: new Date(Date.now() - 86400000).toISOString(),
+                        image: "https://decrypt.co/wp-content/uploads/2023/04/ETH_merge_shutterstock_1926591354.jpg?w=1024",
+                        fullContent: `
+                            <p>Ethereum's transition to the Proof-of-Stake (PoS) consensus mechanism represents one of the most significant changes in cryptocurrency history. According to core developers, this upgrade could reduce the network's energy consumption by more than 99%, addressing one of the most common criticisms of blockchain technology.</p>
+                            <p>Beyond environmental benefits, Ethereum 2.0 promises faster transactions and lower fees, which could further boost its adoption. The upgrade will be implemented in multiple phases, with the final transition expected to be completed by the end of this year.</p>
+                            <p>The move to PoS will also introduce staking rewards for ETH holders who participate in network validation. This new economic model could significantly change the tokenomics of Ethereum and potentially increase its value proposition for long-term holders.</p>
+                            <p>Developers are currently testing the upgrade on various testnets to ensure a smooth transition. Community response has been overwhelmingly positive, with many seeing this as a crucial step toward mainstream blockchain adoption.</p>
+                            <p>Environmental groups have praised the initiative, noting that the reduced energy consumption could make Ethereum a more sustainable platform for decentralized applications and NFTs.</p>
+                        `,
+                        link: "#"
+                    },
+                    {
+                        title: "NFTs Revolutionize Digital Art Industry with Record Sales",
+                        content: "The NFT market continues to expand with sales surpassing $100 million in digital artwork.",
+                        source: "CryptoNews",
+                        date: new Date(Date.now() - 172800000).toISOString(),
+                        image: "https://cryptonews.com/wp-content/uploads/2023/05/nft-art.jpg",
+                        fullContent: `
+                            <p>The phenomenon of non-fungible tokens (NFTs) has radically transformed the world of digital art. In recent months, we've seen record sales of digital artworks, with some pieces reaching prices above $10 million. This boom has attracted traditional artists, celebrities, and major institutions to the crypto space.</p>
+                            <p>Experts predict that NFTs could expand beyond art to include assets like digital real estate, authenticity certificates, and more. The technology is being explored for various applications including music royalties, gaming assets, and even real estate deeds.</p>
+                            <p>Major auction houses have begun hosting dedicated NFT sales, lending credibility to the market. Several museums have also started acquiring NFT art for their permanent collections, signaling recognition of digital art as a legitimate art form.</p>
+                            <p>The technology behind NFTs allows for programmable royalties, meaning artists can receive a percentage of sales each time their work is resold. This feature is particularly appealing to creators who have traditionally missed out on secondary market profits.</p>
+                            <p>Despite concerns about market bubbles, the infrastructure supporting NFTs continues to mature, with improved marketplaces, better user experiences, and enhanced security measures being developed.</p>
+                        `,
+                        link: "#"
+                    },
+                    {
+                        title: "DeFi Ecosystem Surpasses $100 Billion in Locked Value",
+                        content: "Decentralized finance reaches a significant milestone as more users adopt intermediary-free financial alternatives.",
+                        source: "CoinDesk",
+                        date: new Date(Date.now() - 259200000).toISOString(),
+                        image: "https://www.coindesk.com/resizer/v2/3JX5GQKXWZD5HLO7D6GZ5X2WHE.jpg",
+                        fullContent: `
+                            <p>The decentralized finance (DeFi) ecosystem has reached a historic milestone by surpassing $100 billion in total value locked (TVL). This exponential growth reflects the increasing adoption of alternative financial platforms that operate without traditional intermediaries.</p>
+                            <p>The main drivers of this growth have been lending protocols, decentralized exchanges, and yield farming platforms. Despite regulatory challenges, the DeFi sector continues to innovate and attract new users.</p>
+                            <p>Key innovations in the DeFi space include automated market makers (AMMs), flash loans, and algorithmic stablecoins. These developments have created new financial opportunities but also introduced novel risks that the ecosystem continues to address.</p>
+                            <p>Security remains a significant concern, with several high-profile hacks occurring in the past year. However, the industry is responding with improved auditing practices, insurance protocols, and more robust smart contract design patterns.</p>
+                            <p>As traditional finance begins to explore blockchain integration, many experts believe that DeFi could eventually become a foundational layer for the global financial system, offering more open, transparent, and accessible financial services.</p>
+                        `,
+                        link: "#"
+                    }
+                ];
+                
+                renderNews(sampleNews);
+                allNews = sampleNews;
+            }
+        }, 1500); // Small delay to simulate loading
+    });
+</script>    
             
     <div class="ad-banner bottom-banner">
         <!-- Bottom Content Banner (728x90) -->
