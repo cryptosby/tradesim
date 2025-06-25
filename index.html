@@ -534,15 +534,13 @@
             <div class="exchange-signup">Sign Up</div>
         </div>
     </div>
- <!-- ======= SECCIÓN DE NOTICIAS ======= -->
+   <!-- ======= LIVE CRYPTO NEWS SECTION ======= -->
 <section class="crypto-news-section" id="crypto-news">
     <div class="news-header">
         <h2>📡 Live Crypto News Dashboard</h2>
-        <!-- Subtítulo agregado como solicitado -->
         <p class="subtitle">Stay updated with the latest crypto market news and trends in real time</p>
         <div class="news-controls">
             <div class="button-row">
-                <!-- Idioma de los botones modificado a inglés -->
                 <button id="toggle-news" class="news-btn collapse-btn">
                     <i class="fas fa-compress-alt"></i> Collapse
                 </button>
@@ -550,15 +548,13 @@
                     <i class="fas fa-sync-alt"></i> Refresh
                 </button>
                 <div class="search-container">
-                    <!-- Placeholder del buscador modificado a inglés -->
                     <input type="text" id="crypto-search" placeholder="Search crypto news..." class="search-input">
                     <button id="search-btn" class="news-btn search-btn">
                         <i class="fas fa-search"></i> Search
                     </button>
                 </div>
             </div>
-            <div class="button-row">
-                <!-- Idioma de los botones de filtro modificado a inglés -->
+            <div class="button-row filter-buttons">
                 <button class="filter-btn active" data-filter="all">All</button>
                 <button class="filter-btn" data-filter="bitcoin">Bitcoin</button>
                 <button class="filter-btn" data-filter="ethereum">Ethereum</button>
@@ -568,6 +564,9 @@
                 <button class="filter-btn" data-filter="defi">DeFi</button>
                 <button class="filter-btn" data-filter="games">Crypto Games</button>
                 <button class="filter-btn" data-filter="trending">Trending</button>
+                <button class="filter-btn" data-filter="security">Security</button>
+                <button class="filter-btn" data-filter="mining">Mining</button>
+                <button class="filter-btn" data-filter="regulation">Regulation</button>
             </div>
         </div>
     </div>
@@ -581,7 +580,7 @@
         </div>
     </div>
 
-    <!-- Widget de Estadísticas del Mercado -->
+    <!-- Market Stats Widget -->
     <div class="market-stats-widget" id="market-stats">
         <h3><i class="fas fa-chart-pie"></i> Global Crypto Market Stats</h3>
         <div class="stats-grid">
@@ -604,7 +603,7 @@
         </div>
     </div>
 
-    <!-- Modal de Noticias -->
+    <!-- News Modal -->
     <div class="news-modal" id="news-modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
@@ -619,155 +618,152 @@
     </div>
 </section>
 
-<!-- Enlace a Font Awesome para iconos -->
+<!-- Font Awesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Estilos CSS para la sección de noticias (puedes moverlos a tu archivo CSS principal si lo deseas) -->
+<!-- Google Fonts - Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
-    /* Estilos generales de la sección de noticias */
+    /* General body styles from tradescript.html and Inter font */
     body {
-        font-family: 'Inter', sans-serif; /* Tipo de letra modificado a Inter */
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        font-family: 'Inter', sans-serif;
+        background: #0e1116; /* Black background from tradescript.html */
         color: #e2e8f0;
         line-height: 1.6;
         padding: 20px;
     }
 
-    .subtitle { /* Estilo para el nuevo subtítulo */
-        color: #94a3b8;
-        font-size: 1.2rem;
-        max-width: 700px;
-        margin: 0 auto 20px auto; /* Ajuste para separar del título principal */
-    }
-
+    /* Styles for the News Section */
     .crypto-news-section {
-        background: #1e293b;
+        background: #1e222d; /* Darker gray background for the section */
         border-radius: 16px;
-        padding: 25px;
-        margin: 30px auto; /* Centrado y margen ajustado */
+        padding: 20px; /* Reduced padding for compactness */
+        margin: 30px auto;
         border: 1px solid #334155;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        max-width: 1400px; /* Asegura un ancho máximo */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        max-width: 1200px; /* Max width for compactness */
     }
 
     .news-header {
-        text-align: center; /* Centrar el título y subtítulo */
-        margin-bottom: 30px;
+        text-align: center;
+        margin-bottom: 20px; /* Reduced margin */
     }
 
     .news-header h2 {
-        font-size: 2.2rem; /* Tamaño de fuente ligeramente más grande para el título principal */
-        margin-bottom: 10px; /* Espacio entre título y subtítulo */
+        font-size: 2rem; /* Slightly smaller font for compactness */
+        margin-bottom: 8px;
         color: #e2e8f0;
         display: flex;
         align-items: center;
-        justify-content: center; /* Centrar el icono y el texto del título */
-        gap: 10px;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .subtitle {
+        color: #94a3b8;
+        font-size: 1.1rem; /* Slightly smaller font */
+        max-width: 600px;
+        margin: 0 auto 15px auto; /* Reduced margin */
     }
 
     .news-controls {
         display: flex;
         flex-direction: column;
-        gap: 15px;
-        margin-bottom: 20px;
+        gap: 10px; /* Reduced gap */
+        margin-bottom: 15px; /* Reduced margin */
     }
 
     .button-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 8px; /* Reduced gap */
         align-items: center;
-        justify-content: center; /* Centrar los botones */
+        justify-content: center;
+    }
+
+    .news-btn, .filter-btn {
+        padding: 8px 15px; /* Reduced padding for compactness */
+        border-radius: 6px; /* Slightly smaller radius */
+        font-size: 14px; /* Slightly smaller font */
     }
 
     .news-btn {
-        background: #3b82f6;
-        color: white;
+        background: #3a8dd8; /* Use blue from tradescript.html */
+        color: #fff;
         border: none;
-        padding: 10px 18px;
-        border-radius: 8px;
         cursor: pointer;
-        font-size: 15px;
         transition: all 0.3s;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         font-weight: 600;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
     }
 
     .news-btn:hover {
-        background: #2563eb;
-        transform: translateY(-3px);
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        background: #337ac4; /* Darker blue on hover */
+        transform: translateY(-2px);
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
     }
 
     .collapse-btn {
-        background: #10b981;
+        background: #10b981; /* Green color */
     }
-
     .collapse-btn:hover {
         background: #059669;
     }
 
     .refresh-btn {
-        background: #3b82f6;
+        background: #3a8dd8;
     }
 
     .search-btn {
         background: #64748b;
-        padding: 10px 15px;
     }
-
     .search-btn:hover {
         background: #475569;
     }
 
     .filter-btn {
-        background: #334155;
+        background: #1e222d; /* Background color of tradescript.html header */
         color: #cbd5e1;
-        padding: 8px 16px;
-        border-radius: 8px;
-        font-size: 14px;
-        transition: all 0.2s;
-        white-space: nowrap;
-        border: none;
-        cursor: pointer;
+        border: 1px solid #334155; /* Slight border for definition */
         font-weight: 500;
     }
 
     .filter-btn.active {
-        background: #3b82f6;
+        background: #3a8dd8; /* Use blue from tradescript.html */
         color: white;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 0 0 2px rgba(58, 141, 216, 0.4);
     }
 
     .filter-btn:hover:not(.active) {
-        background: #475569;
+        background: #2c313a; /* Darker grey on hover */
     }
 
     .search-container {
         display: flex;
         align-items: center;
         margin-left: auto;
-        background: #334155;
-        border-radius: 8px;
+        background: #2c313a; /* Darker grey from tradescript.html th */
+        border-radius: 6px;
         overflow: hidden;
-        border: 1px solid #475569;
-        transition: all 0.3s;
+        border: 1px solid #334155;
+        transition: all 0.2s;
     }
 
     .search-container:focus-within {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        border-color: #3a8dd8;
+        box-shadow: 0 0 0 2px rgba(58, 141, 216, 0.4);
     }
 
     .search-input {
-        padding: 10px 15px;
+        padding: 8px 12px;
         border: none;
         background: transparent;
         color: #e2e8f0;
-        font-size: 15px;
-        width: 250px;
+        font-size: 14px;
+        width: 200px; /* Slightly narrower */
         outline: none;
     }
 
@@ -777,18 +773,17 @@
 
     .news-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        row-gap: 45px;    /* Aumentado el espacio vertical entre las tarjetas */
-        column-gap: 20px; /* Reducido el espacio horizontal entre las tarjetas */
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Adjusted minmax for compactness */
+        gap: 20px; /* Reduced gap for compactness */
         margin-top: 20px;
     }
 
     .news-card {
-        background: #334155;
-        border-radius: 12px;
-        padding: 15px; /* Padding ajustado para acortar la tarjeta */
+        background: #1e222d; /* Matches section background */
+        border-radius: 10px; /* Slightly smaller radius */
+        padding: 15px; /* Consistent padding */
         transition: transform 0.3s, box-shadow 0.3s;
-        border: 1px solid #475569;
+        border: 1px solid #2c313a; /* Darker border */
         cursor: pointer;
         display: flex;
         flex-direction: column;
@@ -797,17 +792,17 @@
     }
 
     .news-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        border-color: #3b82f6;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        border-color: #3a8dd8;
     }
 
     .news-image-container {
         width: 100%;
-        height: 180px; /* Altura de imagen ligeramente ampliada */
-        border-radius: 8px;
+        height: 160px; /* Height of image container slightly reduced for compactness */
+        border-radius: 6px;
         overflow: hidden;
-        margin-bottom: 10px; /* Margen inferior de la imagen ajustado */
+        margin-bottom: 10px;
         position: relative;
     }
 
@@ -825,28 +820,30 @@
     .default-image {
         width: 100%;
         height: 100%;
-        background: linear-gradient(45deg, #475569, #334155);
+        background: linear-gradient(45deg, #2c313a, #1e222d);
         display: flex;
         align-items: center;
         justify-content: center;
         color: #94a3b8;
-        font-size: 14px;
+        font-size: 13px;
+        text-align: center;
+        padding: 10px;
     }
 
     .news-card h3 {
         color: #e2e8f0;
-        font-size: 18px;
-        margin: 0 0 5px 0; /* Espacio reducido entre título y contenido */
-        line-height: 1.4;
+        font-size: 17px; /* Slightly smaller font */
+        margin: 0 0 5px 0; /* Reduced margin for compactness */
+        line-height: 1.3;
         font-weight: 600;
         flex-grow: 1;
     }
 
     .news-content {
         color: #94a3b8;
-        font-size: 15px;
-        margin-bottom: 8px; /* Espacio reducido entre párrafo y meta */
-        line-height: 1.6;
+        font-size: 14px; /* Slightly smaller font */
+        margin-bottom: 8px; /* Reduced margin for compactness */
+        line-height: 1.5;
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
@@ -854,8 +851,8 @@
     }
 
     .news-meta {
-        color: #7b8a9c; /* Color más tenue para la fuente */
-        font-size: 12px; /* Tamaño de fuente más pequeño para la fuente */
+        color: #7b8a9c;
+        font-size: 11px; /* Smaller font */
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -863,76 +860,78 @@
     }
 
     .source-badge {
-        background: #475569;
-        padding: 2px 6px; /* Reducido el padding para hacerlo más pequeño */
-        border-radius: 4px;
-        font-size: 10px; /* Tamaño de fuente más pequeño para el badge */
+        background: #2c313a; /* Matches table header/search container */
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-size: 10px;
     }
 
+    /* Market Stats Widget Styles (adjusted for consistency) */
     .market-stats-widget {
-        background: #1e293b; /* Ajustado para un color de fondo más profundo */
-        border-radius: 12px;
+        background: #1e222d; /* Matches section background */
+        border-radius: 16px;
         padding: 20px;
-        margin-top: 35px;
+        margin-top: 30px;
         border: 1px solid #334155;
     }
 
     .market-stats-widget h3 {
         color: #e2e8f0;
         margin-top: 0;
-        margin-bottom: 20px;
-        font-size: 18px;
+        margin-bottom: 15px; /* Reduced margin */
+        font-size: 17px;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
     }
 
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Adjusted minmax */
+        gap: 15px; /* Reduced gap */
     }
 
     .stat-card {
-        background: #334155; /* Ajustado para el color de fondo de la tarjeta de estadísticas */
-        border-radius: 10px;
-        padding: 20px;
+        background: #2c313a; /* Darker gray */
+        border-radius: 8px; /* Slightly smaller radius */
+        padding: 15px; /* Reduced padding */
         text-align: center;
         transition: transform 0.3s;
-        border: 1px solid #475569;
+        border: 1px solid #334155;
     }
 
     .stat-card:hover {
-        transform: translateY(-5px);
-        border-color: #3b82f6;
+        transform: translateY(-2px);
+        border-color: #3a8dd8;
     }
 
     .stat-value {
         color: #e2e8f0;
-        font-size: 24px;
+        font-size: 22px; /* Slightly smaller */
         font-weight: 700;
-        margin-bottom: 8px;
+        margin-bottom: 6px; /* Reduced margin */
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 6px;
     }
 
     .positive {
-        color: #10b981;
+        color: #00ff9f; /* Green from tradescript.html */
     }
 
     .negative {
-        color: #ef4444;
+        color: #ff4d4d; /* Red from tradescript.html */
     }
 
     .stat-label {
         color: #94a3b8;
-        font-size: 14px;
+        font-size: 13px; /* Slightly smaller */
     }
 
+    /* News Modal Styles (adjusted for consistency) */
     .news-modal {
-        display: none; /* Hidden by default */
+        display: none;
         position: fixed;
         z-index: 1000;
         left: 0;
@@ -945,23 +944,23 @@
     }
 
     .modal-content {
-        background-color: #1e293b;
-        margin: 40px auto;
-        padding: 30px;
-        border: 1px solid #475569;
+        background-color: #1e222d; /* Matches section background */
+        margin: 30px auto; /* Adjusted margin */
+        padding: 25px; /* Reduced padding */
+        border: 1px solid #334155;
         border-radius: 12px;
-        width: 90%;
-        max-width: 900px;
+        width: 95%;
+        max-width: 800px; /* Reduced max-width for compactness */
         position: relative;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     }
 
     .close-modal {
         color: #94a3b8;
         position: absolute;
-        right: 25px;
-        top: 25px;
-        font-size: 32px;
+        right: 20px; /* Adjusted position */
+        top: 20px; /* Adjusted position */
+        font-size: 30px;
         font-weight: bold;
         cursor: pointer;
         transition: color 0.3s;
@@ -975,29 +974,29 @@
     #modal-title {
         color: #e2e8f0;
         margin-top: 0;
-        margin-bottom: 20px;
-        font-size: 28px;
+        margin-bottom: 15px; /* Reduced margin */
+        font-size: 26px; /* Slightly smaller */
         line-height: 1.3;
-        padding-right: 30px;
+        padding-right: 20px;
     }
 
     .modal-meta {
         color: #94a3b8;
-        font-size: 16px;
-        margin-bottom: 25px;
+        font-size: 15px; /* Slightly smaller */
+        margin-bottom: 20px; /* Reduced margin */
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
-        gap: 15px;
-        padding-bottom: 15px;
+        gap: 10px; /* Reduced gap */
+        padding-bottom: 10px; /* Reduced padding */
         border-bottom: 1px solid #334155;
     }
 
     #modal-image-container {
-        margin-bottom: 25px;
-        border-radius: 10px;
+        margin-bottom: 20px; /* Reduced margin */
+        border-radius: 8px; /* Slightly smaller radius */
         overflow: hidden;
-        max-height: 450px;
+        max-height: 400px; /* Reduced max height */
     }
 
     #modal-image-container img {
@@ -1008,26 +1007,17 @@
 
     #modal-content {
         color: #cbd5e1;
-        line-height: 1.8;
-        font-size: 17px;
+        line-height: 1.7; /* Slightly tighter line height */
+        font-size: 16px; /* Slightly smaller font */
     }
 
     #modal-content p {
-        margin-bottom: 20px;
+        margin-bottom: 15px; /* Reduced margin */
     }
 
-    #modal-content img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        margin: 20px 0;
-    }
-
-    /* Additional styles for keywords in modal */
-    /* Making keywords almost imperceptible or not visibly displayed, but still present for SEO */
+    /* Hidden keywords for SEO */
     .article-keywords {
-        /* Visually hide but keep in DOM for SEO */
-        position: absolute; /* Take out of flow */
+        position: absolute;
         width: 1px;
         height: 1px;
         margin: -1px;
@@ -1040,76 +1030,75 @@
     .news-loading, .news-error, .news-empty {
         color: #94a3b8;
         text-align: center;
-        padding: 40px 20px;
+        padding: 30px 15px; /* Reduced padding */
         grid-column: 1 / -1;
-        font-size: 18px;
+        font-size: 16px; /* Slightly smaller */
     }
 
     .loading-spinner {
-        border: 4px solid rgba(59, 130, 246, 0.3);
-        border-top: 4px solid #3b82f6;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 20px;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        border: 3px solid rgba(58, 141, 216, 0.3); /* Smaller border */
+        border-top: 3px solid #3a8dd8;
+        width: 40px; /* Smaller size */
+        height: 40px;
+        margin: 0 auto 15px; /* Reduced margin */
     }
 
     .notification {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #10b981;
-        color: white;
-        padding: 15px 25px;
-        border-radius: 8px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        z-index: 1000;
-        font-weight: 600;
-        animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+        padding: 12px 20px; /* Reduced padding */
+        border-radius: 6px; /* Smaller radius */
+        font-size: 14px; /* Smaller font */
     }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeOut {
-        from { opacity: 1; transform: translateY(0); }
-        to { opacity: 0; transform: translateY(20px); }
-    }
-
+    /* Media Queries for Responsiveness */
     @media (max-width: 768px) {
-        .button-row {
-            flex-direction: column;
-            align-items: stretch;
+        .crypto-news-section {
+            padding: 15px;
+            margin: 20px auto;
         }
-
-        .search-container {
-            margin-left: 0;
-            width: 100%;
+        .news-header h2 {
+            font-size: 1.8rem;
         }
-
+        .subtitle {
+            font-size: 1rem;
+        }
+        .news-btn, .filter-btn {
+            padding: 7px 12px;
+            font-size: 13px;
+        }
         .search-input {
             width: 100%;
         }
-
         .news-grid {
             grid-template-columns: 1fr;
+            gap: 15px;
         }
-
+        .news-card {
+            padding: 10px;
+        }
+        .news-card h3 {
+            font-size: 16px;
+        }
+        .news-content {
+            font-size: 13px;
+        }
+        .news-meta {
+            font-size: 10px;
+        }
         .modal-content {
-            width: 95%;
+            margin: 20px auto;
             padding: 20px;
         }
-
         #modal-title {
-            font-size: 24px;
+            font-size: 22px;
+        }
+        .modal-meta {
+            font-size: 14px;
+        }
+        #modal-image-container {
+            max-height: 250px;
+        }
+        #modal-content {
+            font-size: 15px;
         }
     }
 </style>
@@ -1242,7 +1231,7 @@
                 document.getElementById('btc-dominance').innerHTML = `${data.data.market_cap_percentage.btc.toFixed(1)}% <span class="negative"><i class="fas fa-caret-down"></i> 0.7%</span>`;
             } catch (error) {
                 console.error("Error loading market stats:", error);
-                // Keep the sample data already in the HTML
+                // Keep the sample data already in the HTML. It's safe for free APIs to fail.
             }
         }
 
@@ -1254,7 +1243,7 @@
                 
                 const imageContainer = document.getElementById('modal-image-container');
                 imageContainer.innerHTML = newsItem.image ? 
-                    `<img src="${newsItem.image}" alt="${newsItem.title}" onerror="this.onerror=null;this.src='https://placehold.co/600x400/334155/e2e8f0?text=Image+Not+Available+in+Modal';">` : 
+                    `<img src="${newsItem.image}" alt="${newsItem.title}" class="news-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/334155/e2e8f0?text=Image+Not+Available+in+Modal';">` : 
                     `<div class="default-image" style="height: 200px;" role="img" aria-label="Image not available for ${newsItem.title}"><i class="fas fa-newspaper fa-3x"></i><p>Image not available</p></div>`;
                 
                 // Ensure the clean HTML content is inserted directly
@@ -1362,7 +1351,10 @@
                 nft: ['nft', 'non-fungible', 'non fungible', 'digital art', 'collectible'],
                 defi: ['defi', 'decentralized finance', 'staking', 'yield', 'lending', 'borrowing'],
                 games: ['game', 'nft', 'metaverse', 'web3', 'play-to-earn', 'gaming'],
-                trending: ['trending', 'bullish', 'bearish', 'rally', 'surge', 'price prediction']
+                trending: ['trending', 'bullish', 'bearish', 'rally', 'surge', 'price prediction'],
+                security: ['security', 'hack', 'phishing', 'scam', 'audit'],
+                mining: ['mining', 'miner', 'hashrate', 'proof-of-work', 'pow', 'gpu'],
+                regulation: ['regulation', 'sec', 'cftc', 'policy', 'law', 'government']
             };
             
             const keywords = filterMap[filter] || [filter];
@@ -1383,7 +1375,10 @@
                 'solana', 'cardano', 'polkadot', 'xrp',
                 'dogecoin', 'shiba', 'pepe', 'avalanche',
                 'blockchain', 'crypto', 'token', 'coin',
-                'exchange', 'wallet', 'mining', 'staking'
+                'exchange', 'wallet', 'mining', 'staking',
+                'security', 'hack', 'phishing', 'scam', 'audit',
+                'miner', 'hashrate', 'proof-of-work', 'pow', 'gpu',
+                'regulation', 'sec', 'cftc', 'policy', 'law', 'government'
             ];
             // Filter keywords from the text to ensure relevance
             const extracted = keywords.filter(kw => text.toLowerCase().includes(kw));
@@ -1405,36 +1400,20 @@
         }
 
         // Function to clean and sanitize HTML content for display in modal
-        // IMPORTANT: This function removes links and images to keep the user on your site
-        // and to avoid external references as per your request.
-        // If an article appears incomplete, it's likely due to the RSS feed itself
-        // only providing a summary or truncated content, not an issue with this cleaning process.
         function cleanAndSanitizeContent(html) {
             if (!html) return '';
-
-            // Create a temporary div to parse the HTML, allowing us to manipulate its nodes safely.
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
-
-            // Remove all script tags to prevent execution of external JS
             tempDiv.querySelectorAll('script').forEach(script => script.remove());
-            // Replace all anchor (link) tags with just their text content to prevent external navigation
             tempDiv.querySelectorAll('a').forEach(link => {
                 const span = document.createElement('span');
                 span.textContent = link.textContent;
                 link.replaceWith(span);
             });
-            // Remove all image tags to prevent external image loading and maintain content focus
             tempDiv.querySelectorAll('img').forEach(img => img.remove());
-            // Remove iframe tags (common for embedded videos/content)
             tempDiv.querySelectorAll('iframe').forEach(iframe => iframe.remove());
-
-            // Optional: Remove style attributes from all elements for consistent styling
             tempDiv.querySelectorAll('[style]').forEach(el => el.removeAttribute('style'));
-            // Optional: Remove class attributes from all elements if you want full CSS control from your stylesheet
             tempDiv.querySelectorAll('[class]').forEach(el => el.removeAttribute('class'));
-
-            // Return the cleaned inner HTML
             return tempDiv.innerHTML;
         }
 
@@ -1457,7 +1436,7 @@
 
         function truncateContent(text, maxLength) {
             if (!text) return '';
-            const stripped = text.replace(/<[^>]*>/g, ''); // Remove HTML tags for character count
+            const stripped = text.replace(/<[^>]*>/g, '');
             return stripped.length > maxLength ? 
                 stripped.substring(0, maxLength) + '...' : 
                 stripped;
@@ -1481,67 +1460,63 @@
             }, 3000);
         }
 
-        // Sample data for demonstration (these will be replaced by real data on load)
+        // Sample data for demonstration
         setTimeout(() => {
             if (document.querySelector('.news-loading')) {
                 const sampleNews = [
                     {
-                        title: "Bitcoin Surpasses $67,000 as Market Sentiment Improves",
-                        content: "Bitcoin has experienced a significant increase in the last 24 hours, surpassing the $67,000 mark for the first time in several weeks.",
+                        title: "Bitcoin ETFs See Record Inflows, Boosting Market Confidence",
+                        content: "Spot Bitcoin Exchange-Traded Funds (ETFs) have experienced unprecedented inflows this week, signaling growing institutional interest and confidence in the cryptocurrency market. This surge in investment is widely seen as a bullish indicator for Bitcoin's price trajectory.",
                         source: "Cointelegraph",
                         date: new Date().toISOString(),
                         image: "https://images.cointelegraph.com/images/840_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjQtMDYvYjYxY2NkZjMtZWM1OS00ZDc0LWI4M2MtY2Q4YjM0Y2FhYjI4LmpwZw==.jpg",
                         fullContent: `
-                            <p>The price of Bitcoin has surpassed $67,000 amid renewed market optimism. Analysts attribute this rally to several factors, including increased institutional adoption and favorable macroeconomic conditions.</p>
-                            <p>Many experts predict that Bitcoin could reach new all-time highs before the end of the year if current trends continue. The cryptocurrency market cap has grown by over 15% in the past month, signaling a strong recovery from the recent downturn.</p>
-                            <p>Technical indicators show that Bitcoin is currently in a bullish phase, with the Relative Strength Index (RSI) climbing above 60. This suggests that the asset may have more room to grow before becoming overbought.</p>
-                            <p>Market analysts are now watching the $70,000 resistance level closely, as a breakthrough could trigger another significant price surge. On-chain data reveals that large holders have been accumulating Bitcoin during recent price dips, indicating strong confidence in the asset's long-term value proposition.</p>
-                            <p>Institutional interest continues to grow, with several major financial firms announcing new cryptocurrency investment products. Regulatory clarity in key markets has also improved, creating a more favorable environment for cryptocurrency adoption.</p>
+                            <p>Spot Bitcoin Exchange-Traded Funds (ETFs) have experienced unprecedented inflows this week, signaling growing institutional interest and confidence in the cryptocurrency market. This surge in investment is widely seen as a bullish indicator for Bitcoin's price trajectory.</p>
+                            <p>Analysts report that the cumulative net inflows into these ETFs have surpassed $1.5 billion in the past five trading days, a new record since their inception. Major financial institutions are increasingly allocating capital into these investment vehicles, providing traditional investors with regulated access to Bitcoin.</p>
+                            <p>The increased demand comes amidst a period of relative stability in the broader financial markets, making Bitcoin an attractive asset for diversification. Experts suggest that the continued acceptance of Bitcoin ETFs by mainstream finance could pave the way for further cryptocurrency derivatives and investment products.</p>
+                            <p>Despite some volatility, the underlying sentiment remains strong, driven by macroeconomic factors and the upcoming Bitcoin halving event, which historically has preceded significant price rallies. The market eagerly anticipates how these new capital injections will influence Bitcoin's position as a global asset.</p>
                         `,
                         link: "#" 
                     },
                     {
-                        title: "Ethereum 2.0: Network Upgrade Could Reduce Energy Consumption by 99%",
-                        content: "The long-awaited Ethereum upgrade to version 2.0 promises not only to improve scalability but also to drastically reduce its energy consumption.",
+                        title: "Ethereum's Dencun Upgrade Sets Stage for Layer-2 Dominance",
+                        content: "The successful implementation of Ethereum's Dencun upgrade marks a pivotal moment for Layer-2 scaling solutions, promising reduced transaction costs and enhanced network efficiency.",
                         source: "Decrypt",
                         date: new Date(Date.now() - 86400000).toISOString(),
                         image: "https://decrypt.co/wp-content/uploads/2023/04/ETH_merge_shutterstock_1926591354.jpg?w=1024",
                         fullContent: `
-                            <p>Ethereum's transition to the Proof-of-Stake (PoS) consensus mechanism represents one of the most significant changes in cryptocurrency history. According to core developers, this upgrade could reduce the network's energy consumption by more than 99%, addressing one of the most common criticisms of blockchain technology.</p>
-                            <p>Beyond environmental benefits, Ethereum 2.0 promises faster transactions and lower fees, which could further boost its adoption. The upgrade will be implemented in multiple phases, with the final transition expected to be completed by the end of this year.</p>
-                            <p>The move to PoS will also introduce staking rewards for ETH holders who participate in network validation. This new economic model could significantly change the tokenomics of Ethereum and potentially increase its value proposition for long-term holders.</p>
-                            <p>Developers are currently testing the upgrade on various testnets to ensure a smooth transition. Community response has been overwhelmingly positive, with many seeing this as a crucial step toward mainstream blockchain adoption.</p>
-                            <p>Environmental groups have praised the initiative, noting that the reduced energy consumption could make Ethereum a more sustainable platform for decentralized applications and NFTs.</p>
+                            <p>The successful implementation of Ethereum's Dencun upgrade marks a pivotal moment for Layer-2 scaling solutions, promising reduced transaction costs and enhanced network efficiency. This upgrade introduces "proto-danksharding," which significantly lowers data availability costs for rollups.</p>
+                            <p>Rollups, such as Arbitrum and Optimism, are expected to benefit most from this upgrade, as they can now post transaction data more cheaply to the Ethereum mainnet. This reduction in cost is anticipated to be passed on to end-users, making decentralized applications (dApps) more accessible and affordable.</p>
+                            <p>The Dencun upgrade is a crucial step in Ethereum's roadmap towards scalability, moving closer to a future where the network can handle mass adoption without prohibitive gas fees. Developers are already leveraging the new capabilities to build more complex and efficient applications.</p>
+                            <p>Community response has been largely positive, with many seeing this as a necessary evolution for Ethereum to maintain its lead in the smart contract platform space. The upgrade is expected to foster innovation and growth across the DeFi and NFT ecosystems built on Ethereum Layer-2s.</p>
                         `,
                         link: "#"
                     },
                     {
-                        title: "NFTs Revolutionize Digital Art Industry with Record Sales",
-                        content: "The NFT market continues to expand with sales surpassing $100 million in digital artwork.",
+                        title: "Gaming Guilds Redefine Play-to-Earn Economy with Massive Growth",
+                        content: "Gaming guilds are rapidly expanding, transforming the play-to-earn (P2E) landscape by providing scholarships and capital to new players in blockchain games.",
                         source: "CryptoNews",
                         date: new Date(Date.now() - 172800000).toISOString(),
                         image: "https://cryptonews.com/wp-content/uploads/2023/05/nft-art.jpg",
                         fullContent: `
-                            <p>The phenomenon of non-fungible tokens (NFTs) has radically transformed the world of digital art. In recent months, we've seen record sales of digital artworks, with some pieces reaching prices above $10 million. This boom has attracted traditional artists, celebrities, and major institutions to the crypto space.</p>
-                            <p>Experts predict that NFTs could expand beyond art to include assets like digital real estate, authenticity certificates, and more. The technology is being explored for various applications including music royalties, gaming assets, and even real estate deeds.</p>
-                            <p>Major auction houses have begun hosting dedicated NFT sales, lending credibility to the market. Several museums have also started acquiring NFT art for their permanent collections, signaling recognition of digital art as a legitimate art form.</p>
-                            <p>The technology behind NFTs allows for programmable royalties, meaning artists can receive a percentage of sales each time their work is resold. This feature is particularly appealing to creators who have traditionally missed out on secondary market profits.</p>
-                            <p>Despite concerns about market bubbles, the infrastructure supporting NFTs continues to mature, with improved marketplaces, better user experiences, and enhanced security measures being developed.</p>
+                            <p>Gaming guilds are rapidly expanding, transforming the play-to-earn (P2E) landscape by providing scholarships and capital to new players in blockchain games. These decentralized autonomous organizations (DAOs) pool resources to acquire valuable in-game assets and then lend them to players who might not otherwise afford them.</p>
+                            <p>This model creates a symbiotic relationship where guilds earn a share of the players' in-game earnings, while players gain access to opportunities without upfront investment. This democratizes access to P2E games, especially in emerging markets where gaming can be a significant source of income.</p>
+                            <p>The growth of these guilds highlights the evolving nature of the gaming industry, moving towards more community-driven and economically empowering models. Experts believe that gaming guilds will play a crucial role in onboarding the next wave of users into the broader Web3 ecosystem.</p>
+                            <p>Challenges remain, including managing large and diverse player bases, optimizing asset utilization, and adapting to fluctuating game economies. However, continuous innovation in guild management tools and incentive structures promises to overcome these hurdles, fostering sustainable growth.</p>
                         `,
                         link: "#"
                     },
                     {
-                        title: "DeFi Ecosystem Surpasses $100 Billion in Locked Value",
-                        content: "Decentralized finance reaches a significant milestone as more users adopt intermediary-free financial alternatives.",
+                        title: "DeFi Protocols Innovate with Real-World Asset Tokenization",
+                        content: "Decentralized Finance (DeFi) is bridging the gap with traditional finance by increasingly tokenizing real-world assets (RWAs), from real estate to commodities.",
                         source: "CoinDesk",
                         date: new Date(Date.now() - 259200000).toISOString(),
                         image: "https://www.coindesk.com/resizer/v2/3JX5GQKXWZD5HLO7D6GZ5X2WHE.jpg",
                         fullContent: `
-                            <p>The decentralized finance (DeFi) ecosystem has reached a historic milestone by surpassing $100 billion in total value locked (TVL). This exponential growth reflects the increasing adoption of alternative financial platforms that operate without traditional intermediaries.</p>
-                            <p>The main drivers of this growth have been lending protocols, decentralized exchanges, and yield farming platforms. Despite regulatory challenges, the DeFi sector continues to innovate and attract new users.</p>
-                            <p>Key innovations in the DeFi space include automated market makers (AMMs), flash loans, and algorithmic stablecoins. These developments have created new financial opportunities but also introduced novel risks that the ecosystem continues to address.</p>
-                            <p>Security remains a significant concern, with several high-profile hacks occurring in the past year. However, the industry is responding with improved auditing practices, insurance protocols, and more robust smart contract design patterns.</p>
-                            <p>As traditional finance begins to explore blockchain integration, many experts believe that DeFi could eventually become a foundational layer for the global financial system, offering more open, transparent, and accessible financial services.</p>
+                            <p>Decentralized Finance (DeFi) is bridging the gap with traditional finance by increasingly tokenizing real-world assets (RWAs), from real estate to commodities. This innovation allows tangible assets to be represented as digital tokens on a blockchain, enabling fractional ownership, increased liquidity, and broader access to investments.</p>
+                            <p>By tokenizing RWAs, DeFi protocols are opening up new avenues for capital efficiency and financial inclusion. Investors can gain exposure to assets like property, art, or even debt instruments without traditional intermediaries, often with lower transaction costs and faster settlement times.</p>
+                            <p>This trend signifies a maturation of the DeFi space, moving beyond purely crypto-native assets to integrate with the multi-trillion dollar traditional financial markets. Regulatory frameworks are slowly adapting to accommodate these new financial instruments, paving the way for wider adoption.</p>
+                            <p>Challenges include legal enforceability of tokenized ownership, accurate valuation of physical assets, and ensuring compliance across different jurisdictions. Nevertheless, the potential benefits in terms of transparency, accessibility, and efficiency are driving significant interest and development in the RWA tokenization sector.</p>
                         `,
                         link: "#"
                     }
@@ -1552,7 +1527,7 @@
             }
         }, 1500); // Small delay to simulate loading
     });
-</script>    
+</script>  
             
     <div class="ad-banner bottom-banner">
         <!-- Bottom Content Banner (728x90) -->
