@@ -1528,7 +1528,1549 @@
         }, 1500); // Small delay to simulate loading
     });
 </script>  
-            
+
+ <!-- ======= CRYPTOQUEST GAME SECTION ======= -->
+<section class="crypto-quest-section" id="crypto-quest">
+    <div class="game-header">
+        <h2>🧠 CryptoQuest: Test Your Knowledge!</h2>
+        <p class="subtitle">Challenge yourself and learn about the exciting world of cryptocurrencies.</p>
+        <div class="game-stats">
+            <span class="stat-item">Score: <span id="score">0</span></span>
+            <span class="stat-item">High Score: <span id="high-score">0</span></span>
+            <span class="stat-item">Question: <span id="question-count">0/0</span></span>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div id="start-screen" class="game-screen active">
+            <h3>Ready to become a Crypto Expert?</h3>
+            <p>Answer questions across 12 exciting categories and expand your knowledge!</p>
+            <button id="start-game-btn" class="game-btn primary-btn">Start CryptoQuest</button>
+        </div>
+
+        <div id="quiz-screen" class="game-screen">
+            <div class="category-selection">
+                <h4>Choose a Category:</h4>
+                <div id="category-grid" class="category-grid">
+                    <!-- Categories will be loaded here by JS -->
+                </div>
+            </div>
+
+            <div class="question-area" style="display: none;">
+                <p class="current-category">Category: <span id="current-category-name"></span></p>
+                <h3 id="question-text"></h3>
+                <div id="options-container" class="options-container">
+                    <!-- Options buttons will be loaded here by JS -->
+                </div>
+                <div id="feedback-message" class="feedback-message"></div>
+                <button id="next-question-btn" class="game-btn next-btn" style="display: none;">Next Question</button>
+            </div>
+        </div>
+
+        <div id="end-screen" class="game-screen">
+            <h3>Quest Completed!</h3>
+            <p id="final-score-text">Your Final Score: <span id="final-score">0</span></p>
+            <p id="high-score-achieved" style="display: none;">🎉 New High Score!</p>
+            <button id="restart-game-btn" class="game-btn primary-btn">Play Again</button>
+        </div>
+    </div>
+</section>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Google Fonts - Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+    /* Inherit body styles from tradescript.html for consistent background/font */
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #0e1116; /* Black background from tradescript.html */
+        color: #e2e8f0;
+        line-height: 1.6;
+        padding: 20px;
+    }
+
+    /* CryptoQuest Specific Styles */
+    .crypto-quest-section {
+        background: #1e222d; /* Darker gray background */
+        border-radius: 16px;
+        padding: 25px;
+        margin: 40px auto; /* More margin to separate from news */
+        border: 1px solid #334155;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        max-width: 1200px;
+        text-align: center;
+    }
+
+    .game-header h2 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+        color: #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .crypto-quest-section .subtitle {
+        color: #94a3b8;
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto 25px auto; /* More separation */
+    }
+
+    .game-stats {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 30px;
+        color: #cbd5e1;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .stat-item {
+        background: #2c313a; /* Dark gray for stats */
+        padding: 8px 15px;
+        border-radius: 8px;
+        border: 1px solid #334155;
+    }
+
+    .game-screen {
+        display: none;
+        padding: 20px;
+    }
+
+    .game-screen.active {
+        display: block;
+    }
+
+    #start-screen h3, #end-screen h3 {
+        font-size: 2rem;
+        color: #e2e8f0;
+        margin-bottom: 15px;
+    }
+
+    #start-screen p {
+        font-size: 1.1rem;
+        color: #94a3b8;
+        margin-bottom: 30px;
+    }
+
+    .game-btn {
+        background-color: #3a8dd8; /* Blue from tradescript.html */
+        color: #fff;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .game-btn:hover {
+        background-color: #337ac4; /* Darker blue */
+        transform: translateY(-2px);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .primary-btn {
+        /* Already defined above */
+    }
+
+    .next-btn {
+        background-color: #10b981; /* Green color */
+        margin-top: 20px;
+    }
+    .next-btn:hover {
+        background-color: #059669; /* Darker green */
+    }
+
+    .category-selection {
+        margin-bottom: 30px;
+    }
+
+    .category-selection h4 {
+        font-size: 1.5rem;
+        color: #e2e8f0;
+        margin-bottom: 20px;
+    }
+
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .category-card {
+        background: #2c313a; /* Dark gray for category cards */
+        border-radius: 10px;
+        padding: 15px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #cbd5e1;
+        border: 1px solid #334155;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 80px;
+    }
+
+    .category-card:hover {
+        background: #334155;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-color: #3a8dd8;
+    }
+
+    .question-area {
+        background: #2c313a; /* Dark gray for question area */
+        padding: 25px;
+        border-radius: 10px;
+        border: 1px solid #334155;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .current-category {
+        font-size: 1rem;
+        color: #94a3b8;
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+    #question-text {
+        font-size: 1.6rem;
+        color: #e2e8f0;
+        margin-bottom: 25px;
+        line-height: 1.4;
+    }
+
+    .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .option-btn {
+        background: #334155; /* Slightly lighter gray for options */
+        color: #cbd5e1;
+        border: 1px solid #475569;
+        padding: 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        text-align: left;
+        transition: all 0.2s;
+    }
+
+    .option-btn:hover:not(.disabled) {
+        background: #475569;
+        transform: translateX(5px);
+    }
+
+    .option-btn.correct {
+        background-color: #00ff9f; /* Green for correct */
+        color: #1e222d; /* Dark text for contrast */
+        border-color: #00e68e;
+    }
+
+    .option-btn.incorrect {
+        background-color: #ff4d4d; /* Red for incorrect */
+        color: #1e222d;
+        border-color: #e64444;
+    }
+
+    .option-btn.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    .feedback-message {
+        margin-top: 15px;
+        font-size: 1.1rem;
+        color: #cbd5e1;
+        min-height: 30px; /* To prevent layout shift */
+        text-align: left;
+    }
+    .feedback-message.correct {
+        color: #00ff9f;
+    }
+    .feedback-message.incorrect {
+        color: #ff4d4d;
+    }
+
+    #end-screen p {
+        font-size: 1.2rem;
+        color: #cbd5e1;
+        margin-bottom: 15px;
+    }
+
+    #final-score {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #00ff9f;
+    }
+
+    #high-score-achieved {
+        color: #f7e018; /* Yellow for new high score */
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-top: 10px;
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+        .crypto-quest-section {
+            padding: 15px;
+            margin: 20px auto;
+        }
+        .game-header h2 {
+            font-size: 1.8rem;
+        }
+        .crypto-quest-section .subtitle {
+            font-size: 1rem;
+        }
+        .game-stats {
+            flex-direction: column;
+            gap: 10px;
+            font-size: 1rem;
+        }
+        #start-screen h3, #end-screen h3 {
+            font-size: 1.8rem;
+        }
+        .game-btn {
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+        .category-grid {
+            grid-template-columns: 1fr;
+        }
+        .question-area {
+            padding: 15px;
+        }
+        #question-text {
+            font-size: 1.4rem;
+        }
+        .option-btn {
+            padding: 12px;
+            font-size: 1rem;
+        }
+        #final-score {
+            font-size: 2rem;
+        }
+        #high-score-achieved {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- DOM Elements ---
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const endScreen = document.getElementById('end-screen');
+        const startGameBtn = document.getElementById('start-game-btn');
+        const restartGameBtn = document.getElementById('restart-game-btn');
+        const scoreDisplay = document.getElementById('score');
+        const highScoreDisplay = document.getElementById('high-score');
+        const questionCountDisplay = document.getElementById('question-count');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const nextQuestionBtn = document.getElementById('next-question-btn');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const highScoreAchievedMessage = document.getElementById('high-score-achieved');
+        const categoryGrid = document.getElementById('category-grid');
+        const currentCategoryNameDisplay = document.getElementById('current-category-name');
+        const questionArea = quizScreen.querySelector('.question-area');
+
+        // --- Game State Variables ---
+        let currentQuestions = []; // Questions for the current category
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let highScore = parseInt(localStorage.getItem('cryptoQuestHighScore')) || 0;
+        let selectedCategory = null;
+
+        // --- Question Database (Sample - expand to 72 per category!) ---
+        const categories = {
+            "Blockchain Fundamentals": [
+                {
+                    q: "What is a blockchain?",
+                    options: ["A centralized database", "A decentralized, distributed ledger", "A type of cryptocurrency wallet", "A mining algorithm"],
+                    a: "A decentralized, distributed ledger",
+                    exp: "A blockchain is a distributed database that maintains a continuously growing list of ordered records, called blocks."
+                },
+                {
+                    q: "What is 'hashing' in blockchain?",
+                    options: ["Encrypting data for privacy", "Creating a unique fixed-size output from input data", "Sending cryptocurrency from one wallet to another", "Verifying transactions on the network"],
+                    a: "Creating a unique fixed-size output from input data",
+                    exp: "Hashing transforms any input data into a fixed-size string of characters, crucial for block integrity."
+                },
+                {
+                    q: "What consensus mechanism does Bitcoin use?",
+                    options: ["Proof of Stake (PoS)", "Delegated Proof of Stake (DPoS)", "Proof of Work (PoW)", "Proof of Authority (PoA)"],
+                    a: "Proof of Work (PoW)",
+                    exp: "Proof of Work requires participants (miners) to expend computational effort to solve a puzzle, securing the network."
+                },
+                {
+                    q: "What does 'decentralization' mean in crypto?",
+                    options: ["Control by a central bank", "No single entity controls the network", "Only a few large companies control the network", "Transactions are private"],
+                    a: "No single entity controls the network",
+                    exp: "Decentralization means control is distributed among many participants, rather than concentrated in one central authority."
+                },
+                {
+                    q: "What is a 'node' in a blockchain network?",
+                    options: ["A type of smart contract", "A computer that verifies and stores blockchain data", "A cryptocurrency exchange", "A digital wallet address"],
+                    a: "A computer that verifies and stores blockchain data",
+                    exp: "Nodes are essential for maintaining the blockchain's integrity and distributing its data across the network."
+                },
+                 {
+                    q: "What is the purpose of a 'genesis block'?",
+                    options: ["The last block in a blockchain", "The first block in a blockchain", "A block containing smart contracts", "A block used for staking"],
+                    a: "The first block in a blockchain",
+                    exp: "The genesis block is the very first block of a blockchain, from which all subsequent blocks are derived."
+                },
+                {
+                    q: "Which of these is NOT a characteristic of blockchain technology?",
+                    options: ["Immutability", "Transparency", "Centralized control", "Distributed ledger"],
+                    a: "Centralized control",
+                    exp: "Blockchain is fundamentally decentralized, meaning no single entity has control over the network."
+                }
+            ],
+            "Popular Cryptocurrencies": [
+                {
+                    q: "Who is the pseudonymous creator of Bitcoin?",
+                    options: ["Vitalik Buterin", "Hal Finney", "Satoshi Nakamoto", "Changpeng Zhao"],
+                    a: "Satoshi Nakamoto",
+                    exp: "Satoshi Nakamoto is the name used by the unknown person or group of people who developed Bitcoin."
+                },
+                {
+                    q: "What is Ethereum primarily known for?",
+                    options: ["Being the fastest cryptocurrency", "Enabling smart contracts and dApps", "Its use in stablecoins only", "Being purely a digital gold alternative"],
+                    a: "Enabling smart contracts and dApps",
+                    exp: "Ethereum introduced the concept of smart contracts, allowing for decentralized applications (dApps) to be built on its blockchain."
+                },
+                {
+                    q: "What is a 'halving' event in Bitcoin?",
+                    options: ["When Bitcoin price halves", "When mining difficulty halves", "When the reward for mining new blocks halves", "When Bitcoin supply halves"],
+                    a: "When the reward for mining new blocks halves",
+                    exp: "A Bitcoin halving event cuts the reward for mining new blocks in half, reducing the rate at which new bitcoins are created."
+                },
+                {
+                    q: "Which cryptocurrency is often called 'digital silver'?",
+                    options: ["Ethereum", "Litecoin", "Ripple (XRP)", "Cardano"],
+                    a: "Litecoin",
+                    exp: "Litecoin was created as a 'lighter' version of Bitcoin, often referred to as digital silver due to its faster block generation time."
+                },
+                {
+                    q: "What problem do 'gas fees' address on the Ethereum network?",
+                    options: ["Exchange listing fees", "Transaction priority and network spam prevention", "Wallet setup costs", "Mining hardware expenses"],
+                    a: "Transaction priority and network spam prevention",
+                    exp: "Gas fees are a payment made by users to compensate for the computing energy required to process and validate transactions on the Ethereum blockchain, preventing network abuse."
+                },
+                {
+                    q: "Which of these is NOT a major altcoin by market capitalization (as of early 2020s)?",
+                    options: ["Solana", "Cardano", "Dogecoin", "MyspaceCoin"],
+                    a: "MyspaceCoin",
+                    exp: "MyspaceCoin is a fictional cryptocurrency. Solana, Cardano, and Dogecoin are well-known altcoins."
+                },
+                {
+                    q: "What is the native cryptocurrency of the Binance Smart Chain (BSC)?",
+                    options: ["BNB", "BUSD", "Cake", "ETH"],
+                    a: "BNB",
+                    exp: "BNB (Binance Coin) is the native cryptocurrency of Binance Chain and Binance Smart Chain, used for transaction fees and staking."
+                }
+            ],
+            "DeFi (Decentralized Finance)": [
+                {
+                    q: "What is 'Yield Farming' in DeFi?",
+                    options: ["Growing crops on a farm using crypto", "Lending crypto assets to earn high returns", "Mining crypto on specialized hardware", "Buying and holding crypto long-term"],
+                    a: "Lending crypto assets to earn high returns",
+                    exp: "Yield farming involves locking up cryptocurrencies in DeFi protocols to generate high returns or rewards."
+                },
+                {
+                    q: "What is a 'Liquidity Pool'?",
+                    options: ["A pool of water for miners", "A collection of funds locked in a smart contract", "A group of traders sharing strategies", "A centralized exchange's order book"],
+                    a: "A collection of funds locked in a smart contract",
+                    exp: "Liquidity pools facilitate decentralized trading, lending, and other DeFi services by providing assets for users to trade against."
+                },
+                {
+                    q: "What is 'Staking' in Proof of Stake (PoS) networks?",
+                    options: ["Gambling crypto on sports events", "Locking up crypto to support network operations and earn rewards", "Selling crypto assets quickly", "Borrowing crypto using other assets as collateral"],
+                    a: "Locking up crypto to support network operations and earn rewards",
+                    exp: "Staking involves pledging your cryptocurrency to a blockchain network to help secure and validate transactions in exchange for rewards."
+                },
+                {
+                    q: "What is 'Impermaneent Loss' in liquidity providing?",
+                    options: ["A permanent loss of all funds", "A temporary loss of funds due to price divergence after providing liquidity", "Loss of funds due to hacking", "Loss of interest earned from lending"],
+                    a: "A temporary loss of funds due to price divergence after providing liquidity",
+                    exp: "Impermanent loss occurs when the price of your tokens changes compared to when you deposited them in a liquidity pool."
+                },
+                {
+                    q: "Which type of exchange is core to DeFi?",
+                    options: ["Centralized Exchange (CEX)", "Decentralized Exchange (DEX)", "Traditional Stock Exchange", "Forex Exchange"],
+                    a: "Decentralized Exchange (DEX)",
+                    exp: "DEXs allow peer-to-peer cryptocurrency transactions to happen directly on the blockchain without intermediaries."
+                },
+                {
+                    q: "What is an 'Automated Market Maker' (AMM)?",
+                    options: ["A robot that trades crypto automatically", "A type of decentralized exchange protocol that uses mathematical formulas to price assets", "A centralized system for managing liquidity", "A smart contract for predicting market prices"],
+                    a: "A type of decentralized exchange protocol that uses mathematical formulas to price assets",
+                    exp: "AMMs are foundational to DEXs like Uniswap, allowing automated trading of digital assets by using liquidity pools instead of order books."
+                },
+                 {
+                    q: "Which of these is a common use case for DeFi lending protocols?",
+                    options: ["Issuing new government bonds", "Taking out a collateralized crypto loan", "Buying stocks on margin", "Facilitating international wire transfers"],
+                    a: "Taking out a collateralized crypto loan",
+                    exp: "DeFi lending protocols allow users to borrow cryptocurrencies by putting up other crypto as collateral, all without traditional banks."
+                }
+            ],
+            "NFTs (Non-Fungible Tokens)": [
+                {
+                    q: "What makes an NFT 'non-fungible'?",
+                    options: ["It can be exchanged for any other token", "Each token is unique and cannot be replaced by another identical item", "It is divisible into smaller units", "It loses value over time"],
+                    a: "Each token is unique and cannot be replaced by another identical item",
+                    exp: "Non-fungible means unique and not interchangeable. Unlike Bitcoin, where any one Bitcoin is identical to another, each NFT has unique properties."
+                },
+                {
+                    q: "Which blockchain is most commonly used for NFTs?",
+                    options: ["Bitcoin", "Litecoin", "Ethereum", "Dogecoin"],
+                    a: "Ethereum",
+                    exp: "Ethereum is the most popular blockchain for NFTs, supporting standards like ERC-721 and ERC-1155 for their creation."
+                },
+                {
+                    q: "What does 'minting' an NFT refer to?",
+                    options: ["Selling an NFT on a marketplace", "Buying an NFT with cryptocurrency", "The process of creating an NFT on a blockchain", "Exchanging one NFT for another"],
+                    a: "The process of creating an NFT on a blockchain",
+                    exp: "Minting is the act of converting a digital file into a crypto collectible or digital asset recorded on a blockchain."
+                },
+                {
+                    q: "Which of these is a popular use case for NFTs?",
+                    options: ["Digital currencies for daily transactions", "Voting in political elections", "Representing ownership of digital art and collectibles", "Trading traditional stocks"],
+                    a: "Representing ownership of digital art and collectibles",
+                    exp: "NFTs are widely used to prove ownership of unique digital items like art, music, and in-game assets."
+                },
+                {
+                    q: "What is an NFT marketplace?",
+                    options: ["A physical store to buy NFTs", "A platform to buy, sell, and trade NFTs", "A type of cryptocurrency exchange", "A social media platform for NFT artists"],
+                    a: "A platform to buy, sell, and trade NFTs",
+                    exp: "NFT marketplaces like OpenSea or Rarible allow users to list, browse, and exchange NFTs."
+                },
+                {
+                    q: "What is 'royalties' for NFT creators?",
+                    options: ["A fixed payment received by the creator upon minting", "A percentage of the secondary sales price that the creator receives automatically", "A tax imposed on NFT transactions", "A fee paid by buyers to the marketplace"],
+                    a: "A percentage of the secondary sales price that the creator receives automatically",
+                    exp: "NFT smart contracts can be programmed to automatically pay a royalty percentage to the original creator on every subsequent sale of the NFT."
+                },
+                {
+                    q: "Which standard is commonly used for NFTs on Ethereum?",
+                    options: ["ERC-20", "ERC-777", "ERC-721", "ERC-223"],
+                    a: "ERC-721",
+                    exp: "ERC-721 is a free, open standard that describes how to build non-fungible tokens on the Ethereum blockchain."
+                }
+            ],
+            "Security & Wallets": [
+                {
+                    q: "What is a 'seed phrase' (or recovery phrase)?",
+                    options: ["Your wallet's password", "A list of cryptocurrencies you own", "A series of words that can restore your crypto wallet", "A type of blockchain transaction"],
+                    a: "A series of words that can restore your crypto wallet",
+                    exp: "Your seed phrase is the master key to your cryptocurrency, allowing you to access and restore your funds on any compatible wallet."
+                },
+                {
+                    q: "What is 'phishing' in the crypto context?",
+                    options: ["A method of earning crypto rewards", "Scamming attempts to trick users into revealing private keys or login info", "A type of crypto exchange", "A security update for your wallet"],
+                    a: "Scamming attempts to trick users into revealing private keys or login info",
+                    exp: "Phishing involves deceptive tactics, often through fake websites or emails, to steal sensitive information from crypto users."
+                },
+                {
+                    q: "Which type of wallet is generally considered the most secure for long-term storage?",
+                    options: ["Web wallet", "Mobile wallet", "Exchange wallet", "Hardware wallet"],
+                    a: "Hardware wallet",
+                    exp: "Hardware wallets store your private keys offline, making them highly resistant to online hacking attempts."
+                },
+                {
+                    q: "What is a 'private key'?",
+                    options: ["Your public wallet address", "A secret alphanumeric code that allows access to your crypto", "A username for your exchange account", "A security question for password recovery"],
+                    a: "A secret alphanumeric code that allows access to your crypto",
+                    exp: "The private key is a critical piece of information used to authorize transactions and prove ownership of your cryptocurrency."
+                },
+                {
+                    q: "What is '2FA' (Two-Factor Authentication)?",
+                    options: ["A single password for all accounts", "A security method requiring two forms of verification", "A type of digital signature", "A blockchain consensus algorithm"],
+                    a: "A security method requiring two forms of verification",
+                    exp: "2FA adds an extra layer of security by requiring a second verification method (like a code from your phone) beyond your password."
+                },
+                 {
+                    q: "What is the primary risk of storing crypto on a centralized exchange?",
+                    options: ["High transaction fees", "Slow transaction speeds", "You don't own your private keys, making funds vulnerable to exchange hacks", "Lack of investment options"],
+                    a: "You don't own your private keys, making funds vulnerable to exchange hacks",
+                    exp: "On centralized exchanges, you typically do not have direct control over your private keys, meaning your funds are custodial and subject to the exchange's security."
+                },
+                {
+                    q: "What is a 'cold wallet'?",
+                    options: ["A wallet kept in a refrigerator", "An online wallet that is rarely used", "A crypto wallet that is not connected to the internet", "A wallet designed for frozen assets"],
+                    a: "A crypto wallet that is not connected to the internet",
+                    exp: "Cold wallets (like hardware wallets or paper wallets) store cryptocurrency offline, providing superior security against online threats."
+                }
+            ],
+            "Mining & Consensus": [
+                {
+                    q: "What is 'mining' in cryptocurrencies like Bitcoin?",
+                    options: ["Buying crypto on an exchange", "Solving complex mathematical puzzles to validate transactions and add new blocks", "Staking crypto for rewards", "Creating new cryptocurrencies from scratch"],
+                    a: "Solving complex mathematical puzzles to validate transactions and add new blocks",
+                    exp: "Mining is the process by which transactions are verified and added to the blockchain ledger, usually involving computational proof of work."
+                },
+                {
+                    q: "What is 'hashrate' in crypto mining?",
+                    options: ["The speed of a blockchain transaction", "The total number of cryptocurrencies in circulation", "The computational power per second used by a miner or network", "The volatility of a cryptocurrency's price"],
+                    a: "The computational power per second used by a miner or network",
+                    exp: "Hashrate measures the total computational power being used to mine and process transactions on a Proof-of-Work blockchain."
+                },
+                {
+                    q: "Which consensus mechanism focuses on validators staking their crypto?",
+                    options: ["Proof of Work (PoW)", "Proof of Burn (PoB)", "Proof of Stake (PoS)", "Proof of Capacity (PoC)"],
+                    a: "Proof of Stake (PoS)",
+                    exp: "In Proof of Stake, validators are chosen to create new blocks based on the amount of cryptocurrency they are 'staking' as collateral."
+                },
+                {
+                    q: "What is an 'ASIC miner'?",
+                    options: ["A type of GPU for gaming", "A specialized computer designed for mining a specific cryptocurrency", "Software used for staking", "A decentralized exchange platform"],
+                    a: "A specialized computer designed for mining a specific cryptocurrency",
+                    exp: "ASICs (Application-Specific Integrated Circuits) are highly efficient hardware devices built solely for cryptocurrency mining."
+                },
+                {
+                    q: "What happens to the mining difficulty of Bitcoin as more miners join the network?",
+                    options: ["It decreases", "It remains the same", "It increases", "It becomes irrelevant"],
+                    a: "It increases",
+                    exp: "Bitcoin's difficulty adjusts periodically to ensure that, on average, a new block is mined every 10 minutes, regardless of the total hashrate."
+                },
+                 {
+                    q: "What is a 'mining pool'?",
+                    options: ["A group of crypto enthusiasts who share mining tips", "A collective of miners who combine their computational resources to increase their chances of mining a block", "A fund used to invest in mining equipment", "A blockchain where mining is not required"],
+                    a: "A collective of miners who combine their computational resources to increase their chances of mining a block",
+                    exp: "Mining pools allow individual miners to combine their hashrate and share block rewards proportionally to their contribution."
+                },
+                {
+                    q: "Which of these typically consumes more energy?",
+                    options: ["Proof of Stake mining", "Proof of Work mining", "Running a cryptocurrency wallet", "Browsing a crypto news website"],
+                    a: "Proof of Work mining",
+                    exp: "Proof of Work systems, like Bitcoin's, require significant computational power (and thus energy) to solve cryptographic puzzles."
+                }
+            ],
+            "Web3 & Metaverse": [
+                {
+                    q: "What is 'Web3'?",
+                    options: ["The third version of the World Wide Web, powered by centralized servers", "A new iteration of the web featuring decentralization and blockchain technologies", "A new programming language for websites", "A type of mobile internet connection"],
+                    a: "A new iteration of the web featuring decentralization and blockchain technologies",
+                    exp: "Web3 envisions a decentralized internet built on blockchain, giving users more control over their data and digital identities."
+                },
+                {
+                    q: "In Web3, who typically controls the data?",
+                    options: ["Large tech companies", "Government agencies", "The users themselves", "Internet service providers"],
+                    a: "The users themselves",
+                    exp: "Web3 aims to shift data ownership and control from corporations back to individual users through decentralized protocols."
+                },
+                {
+                    q: "What is a 'Metaverse' in the context of Web3?",
+                    options: ["A new type of social media app", "A virtual 3D world where users can interact, play, and socialize", "A decentralized financial protocol", "A blockchain for gaming transactions"],
+                    a: "A virtual 3D world where users can interact, play, and socialize",
+                    exp: "The metaverse refers to immersive virtual environments where users can interact with each other and digital assets, often powered by blockchain and NFTs."
+                },
+                {
+                    q: "What role do NFTs play in the Metaverse?",
+                    options: ["They are used for sending messages", "They represent ownership of digital assets like land, wearables, and avatars", "They are used for mining cryptocurrencies", "They provide internet access"],
+                    a: "They represent ownership of digital assets like land, wearables, and avatars",
+                    exp: "NFTs enable true digital ownership in the metaverse, allowing users to buy, sell, and own unique virtual items."
+                },
+                {
+                    q: "What is a 'DAO' (Decentralized Autonomous Organization)?",
+                    options: ["A type of central bank", "A traditional company run by a CEO", "An organization run by code and governed by its community", "A financial advisory firm"],
+                    a: "An organization run by code and governed by its community",
+                    exp: "DAOs are blockchain-based organizations governed by smart contracts and their token holders, rather than a central authority."
+                },
+                {
+                    q: "Which of these technologies is foundational to Web3?",
+                    options: ["Centralized cloud computing", "Relational databases", "Blockchain", "Traditional HTTP protocols"],
+                    a: "Blockchain",
+                    exp: "Blockchain technology provides the decentralized, transparent, and immutable ledger infrastructure that Web3 relies on."
+                },
+                 {
+                    q: "What is the concept of 'digital identity' in Web3?",
+                    options: ["Your social media profile", "An identity managed by a central authority like a government", "A self-sovereign identity controlled by the user, often linked to a wallet", "Your email address"],
+                    a: "A self-sovereign identity controlled by the user, often linked to a wallet",
+                    exp: "Web3 aims for self-sovereign identity, where users have direct control over their digital credentials and data, often through their crypto wallets."
+                }
+            ],
+            "Crypto Terminology": [
+                {
+                    q: "What does 'HODL' mean in crypto?",
+                    options: ["Sell your crypto quickly", "Hold on for Dear Life (keep your crypto)", "Buy low, sell high", "Lend your crypto for interest"],
+                    a: "Hold on for Dear Life (keep your crypto)",
+                    exp: "HODL originated from a misspelling of 'hold' and means to hold onto your cryptocurrencies regardless of price fluctuations."
+                },
+                {
+                    q: "What is 'FUD'?",
+                    options: ["Fear, Uncertainty, and Doubt", "Fast Unlisted Derivatives", "Future Utility Development", "Financial Understanding Data"],
+                    a: "Fear, Uncertainty, and Doubt",
+                    exp: "FUD refers to the spread of misinformation to create negative sentiment about a cryptocurrency or the market."
+                },
+                {
+                    q: "What does 'FOMO' stand for?",
+                    options: ["Future Of Money Operations", "Fear Of Missing Out", "Fast-Moving Opportunities", "Funds On My Orderbook"],
+                    a: "Fear Of Missing Out",
+                    exp: "FOMO describes the anxiety or fear of missing out on a potentially profitable investment or trend in the crypto market."
+                },
+                {
+                    q: "Who are 'whales' in the crypto market?",
+                    options: ["New investors", "Small-scale traders", "Individuals or entities holding very large amounts of cryptocurrency", "Regulators of the crypto market"],
+                    a: "Individuals or entities holding very large amounts of cryptocurrency",
+                    exp: "Whales are large holders whose buy or sell orders can significantly impact market prices due to their sheer volume."
+                },
+                {
+                    q: "What is a 'bear market'?",
+                    options: ["A market where prices are rising", "A market where prices are falling or expected to fall", "A market with low trading volume", "A market driven by fear"],
+                    a: "A market where prices are falling or expected to fall",
+                    exp: "A bear market is characterized by declining prices and widespread pessimism among investors."
+                },
+                 {
+                    q: "What is a 'bull market'?",
+                    options: ["A market where prices are falling", "A market where prices are rising or expected to rise", "A market with high volatility", "A market driven by greed"],
+                    a: "A market where prices are rising or expected to rise",
+                    exp: "A bull market is a period when asset prices are rising, leading to optimism and confidence among investors."
+                },
+                {
+                    q: "What is 'DYOR' an acronym for?",
+                    options: ["Do Your Own Research", "Don't Yield On Returns", "Develop Your Own Robot", "Digital Yield Optimization Report"],
+                    a: "Do Your Own Research",
+                    exp: "DYOR is a common crypto adage encouraging investors to investigate projects thoroughly before investing, rather than relying on others' advice."
+                }
+            ],
+            "Crypto Investing & Trading": [
+                {
+                    q: "What does 'DCA' stand for in crypto investing?",
+                    options: ["Decentralized Crypto Accounts", "Digital Currency Allocation", "Dollar-Cost Averaging", "Daily Crypto Analysis"],
+                    a: "Dollar-Cost Averaging",
+                    exp: "DCA is an investment strategy where an investor divides the total amount to be invested across periodic purchases of a target asset to reduce the impact of volatility."
+                },
+                {
+                    q: "What is a 'pump and dump' scheme?",
+                    options: ["A legitimate investment strategy", "A fraudulent scheme where prices are artificially inflated before being sold off", "A method of liquidating assets quickly", "A regulated trading practice"],
+                    a: "A fraudulent scheme where prices are artificially inflated before being sold off",
+                    exp: "Pump and dump is a form of market manipulation where a scammer artificially inflates the price of a crypto asset and then sells their own holdings for a profit."
+                },
+                {
+                    q: "What is a 'limit order' on an exchange?",
+                    options: ["An order to buy/sell immediately at the current market price", "An order to buy/sell at a specified price or better", "An order that executes only partially", "An order placed directly on the blockchain"],
+                    a: "An order to buy/sell at a specified price or better",
+                    exp: "A limit order allows you to set a maximum price you're willing to pay or a minimum price you're willing to accept when buying or selling crypto."
+                },
+                {
+                    q: "What is 'liquidity' in a crypto market?",
+                    options: ["How easily an asset can be converted to cash without affecting its market price", "The total supply of a cryptocurrency", "The number of active users on an exchange", "The amount of profit generated by a trade"],
+                    a: "How easily an asset can be converted to cash without affecting its market price",
+                    exp: "High liquidity means there are many buyers and sellers, allowing assets to be traded quickly without significant price changes."
+                },
+                {
+                    q: "What is a 'stop-loss' order?",
+                    options: ["An order to automatically buy more crypto if the price falls", "An order to sell a crypto asset if it reaches a certain price to limit potential losses", "An order to stop all trading activity", "An order that guarantees a profit"],
+                    a: "An order to sell a crypto asset if it reaches a certain price to limit potential losses",
+                    exp: "A stop-loss order is a risk management tool that automatically sells your asset if its price drops to a predetermined level."
+                },
+                 {
+                    q: "What does 'slippage' refer to in crypto trading?",
+                    options: ["When a trader makes a mistake in their order", "The difference between the expected price of a trade and the price at which the trade is actually executed", "A security vulnerability on an exchange", "A sudden drop in market price"],
+                    a: "The difference between the expected price of a trade and the price at which the trade is actually executed",
+                    exp: "Slippage often occurs during periods of high volatility or when executing large orders, as the order book may not have enough liquidity at the desired price."
+                },
+                {
+                    q: "What is a 'Market Order'?",
+                    options: ["An order to buy or sell at a specific future price", "An order to buy or sell immediately at the best available current market price", "An order that requires a deposit first", "An order that remains open indefinitely"],
+                    a: "An order to buy or sell immediately at the best available current market price",
+                    exp: "A market order is a request to buy or sell a cryptocurrency immediately at its current best available price on the exchange."
+                }
+            ],
+            "Regulations & Future": [
+                {
+                    q: "Which country was the first to adopt Bitcoin as legal tender?",
+                    options: ["USA", "China", "El Salvador", "Japan"],
+                    a: "El Salvador",
+                    exp: "El Salvador made Bitcoin legal tender in September 2021, becoming the first country to do so."
+                },
+                {
+                    q: "What is a 'CBDC'?",
+                    options: ["Central Bank Digital Currency", "Crypto-Backed Decentralized Coin", "Community Blockchain Development Council", "Centralized Bitcoin Derivative Contract"],
+                    a: "Central Bank Digital Currency",
+                    exp: "CBDCs are digital versions of a country's fiat currency, issued and regulated by its central bank."
+                },
+                {
+                    q: "What is a 'stablecoin' designed to do?",
+                    options: ["Fluctuate wildly in price", "Maintain a stable value, typically pegged to a fiat currency or commodity", "Only be used for staking", "Increase in value exponentially"],
+                    a: "Maintain a stable value, typically pegged to a fiat currency or commodity",
+                    exp: "Stablecoins aim to offer price stability by being pegged to a stable asset like the US dollar, gold, or other cryptocurrencies."
+                },
+                {
+                    q: "Which regulatory body in the US is often involved in cryptocurrency discussions?",
+                    options: ["FDA", "SEC (Securities and Exchange Commission)", "NASA", "FBI"],
+                    a: "SEC (Securities and Exchange Commission)",
+                    exp: "The SEC often debates whether certain cryptocurrencies should be classified as securities, impacting their regulation."
+                },
+                {
+                    q: "What is the primary concern for governments regarding cryptocurrencies?",
+                    options: ["Their energy consumption", "Loss of monetary control and potential for illicit activities", "Lack of public interest", "Difficulty in trading them"],
+                    a: "Loss of monetary control and potential for illicit activities",
+                    exp: "Governments are concerned about cryptocurrencies' potential for money laundering, terrorist financing, and challenging traditional financial control mechanisms."
+                },
+                 {
+                    q: "What is the 'Travel Rule' as it applies to crypto?",
+                    options: ["A rule for international crypto transfers", "A regulation requiring financial institutions to share certain customer information for transactions above a threshold", "A rule about crypto exchanges' travel policies", "A guideline for using crypto while traveling"],
+                    a: "A regulation requiring financial institutions to share certain customer information for transactions above a threshold",
+                    exp: "The FATF's Travel Rule requires Virtual Asset Service Providers (VASPs) to transmit and obtain certain customer information during transactions above a specified amount."
+                },
+                {
+                    q: "What does 'AML' stand for in crypto compliance?",
+                    options: ["Automated Market Liquidity", "Anti-Money Laundering", "Asset Management Ledger", "Advanced Mining Logic"],
+                    a: "Anti-Money Laundering",
+                    exp: "AML refers to the laws and regulations designed to prevent criminals from disguising illegally obtained funds as legitimate income."
+                }
+            ],
+            "History of Crypto": [
+                {
+                    q: "When was Bitcoin's whitepaper released?",
+                    options: ["2005", "2008", "2010", "2012"],
+                    a: "2008",
+                    exp: "Satoshi Nakamoto published the Bitcoin whitepaper, 'Bitcoin: A Peer-to-Peer Electronic Cash System,' on October 31, 2008."
+                },
+                {
+                    q: "What was the 'pizza transaction' famous for?",
+                    options: ["The first time Bitcoin was used to buy a car", "The first real-world transaction using Bitcoin (for two pizzas)", "A major hack involving pizza delivery", "A famous Bitcoin exchange collapse"],
+                    a: "The first real-world transaction using Bitcoin (for two pizzas)",
+                    exp: "In 2010, Laszlo Hanyecz bought two pizzas for 10,000 Bitcoins, marking the first known real-world transaction using Bitcoin."
+                },
+                {
+                    q: "What was the name of the first major cryptocurrency exchange?",
+                    options: ["Coinbase", "Binance", "Mt. Gox", "Kraken"],
+                    a: "Mt. Gox",
+                    exp: "Mt. Gox was a Bitcoin exchange based in Tokyo that handled over 70% of all Bitcoin transactions worldwide at its peak in 2013-2014 before its collapse."
+                },
+                {
+                    q: "Who co-founded Ethereum?",
+                    options: ["Elon Musk", "Charles Hoskinson", "Vitalik Buterin", "Jed McCaleb"],
+                    a: "Vitalik Buterin",
+                    exp: "Vitalik Buterin is the primary inventor of Ethereum, conceptualizing it in a 2013 white paper."
+                },
+                {
+                    q: "What event significantly impacted Bitcoin's price in 2017?",
+                    options: ["Launch of Facebook Libra", "The ICO (Initial Coin Offering) boom", "Global stock market crash", "Introduction of new mining hardware"],
+                    a: "The ICO (Initial Coin Offering) boom",
+                    exp: "2017 saw a massive surge in Initial Coin Offerings (ICOs), where new crypto projects raised funds by selling their tokens, largely contributing to the crypto market bull run."
+                },
+                 {
+                    q: "Which country famously banned crypto mining in 2021?",
+                    options: ["USA", "Germany", "China", "Canada"],
+                    a: "China",
+                    exp: "China implemented a severe crackdown on cryptocurrency mining and trading in 2021, leading to a significant shift in global hashrate distribution."
+                },
+                {
+                    q: "What major event happened in 2022 that significantly impacted the crypto market sentiment?",
+                    options: ["Bitcoin becoming legal tender in a country", "The collapse of Terra (LUNA) and FTX", "The launch of Ethereum 2.0", "Massive adoption by traditional banks"],
+                    a: "The collapse of Terra (LUNA) and FTX",
+                    exp: "The collapses of the Terra ecosystem (UST stablecoin and LUNA token) and the FTX exchange in 2022 led to widespread market contagion and loss of investor confidence."
+                }
+            ],
+            "Memecoins & Culture": [
+                {
+                    q: "Which memecoin was created as a joke in 2013, featuring a Shiba Inu dog?",
+                    options: ["Shiba Inu (SHIB)", "Pepe Coin (PEPE)", "Dogecoin (DOGE)", "Floki Inu (FLOKI)"],
+                    a: "Dogecoin (DOGE)",
+                    exp: "Dogecoin was created in 2013 by Billy Markus and Jackson Palmer as a lighthearted alternative to traditional cryptocurrencies."
+                },
+                {
+                    q: "Which celebrity is often associated with Dogecoin, causing its price to fluctuate?",
+                    options: ["Mark Cuban", "Elon Musk", "Kim Kardashian", "Jeff Bezos"],
+                    a: "Elon Musk",
+                    exp: "Elon Musk's tweets and public statements frequently impact Dogecoin's price due to his significant following and influence."
+                },
+                {
+                    q: "What is a 'Diamond Hand' in memecoin culture?",
+                    options: ["Someone who sells their crypto quickly", "Someone who holds onto their crypto through extreme volatility", "A highly profitable crypto trader", "A person who creates new memecoins"],
+                    a: "Someone who holds onto their crypto through extreme volatility",
+                    exp: "Diamond Hands refers to investors who refuse to sell their holdings, even during significant price drops, showing strong conviction."
+                },
+                {
+                    q: "What does 'Wen Lambo?' imply in crypto culture?",
+                    options: ["Asking when a new car model is released", "Expressing anticipation for a significant price increase that would allow luxury purchases", "Questioning the legality of a token", "Asking about the development progress of a project"],
+                    a: "Expressing anticipation for a significant price increase that would allow luxury purchases",
+                    exp: "It's a meme used by crypto investors to inquire when their holdings will dramatically increase in value, allowing them to buy a Lamborghini."
+                },
+                {
+                    q: "What is a 'Moonboy'?",
+                    options: ["A lunar mining enthusiast", "Someone who believes a cryptocurrency's price will go 'to the moon' (increase dramatically)", "A developer working on space-related blockchain projects", "A new investor who always loses money"],
+                    a: "Someone who believes a cryptocurrency's price will go 'to the moon' (increase dramatically)",
+                    exp: "A 'Moonboy' is an individual who is overly optimistic about the potential price increase of a cryptocurrency."
+                },
+                 {
+                    q: "Which memecoin was launched as an 'experiment' by an anonymous developer in 2020?",
+                    options: ["Dogecoin", "Pepe Coin", "Shiba Inu", "Bonk"],
+                    a: "Shiba Inu",
+                    exp: "Shiba Inu (SHIB) was created anonymously in August 2020 by 'Ryoshi' as an experiment in decentralized spontaneous community building."
+                },
+                {
+                    q: "What is 'Paper Hands' in crypto slang?",
+                    options: ["An investor who makes significant profits", "Someone who sells their crypto quickly at the first sign of volatility or loss", "A person who trades with physical money", "An investor who buys only low-cap coins"],
+                    a: "Someone who sells their crypto quickly at the first sign of volatility or loss",
+                    exp: "Paper Hands refers to an investor who lacks conviction and sells their assets at a loss or for a small gain when market conditions become challenging."
+                }
+            ],
+            "Blockchain Applications": [
+                {
+                    q: "What is a 'dApp' (Decentralized Application)?",
+                    options: ["A mobile app for central banks", "An application built on a decentralized blockchain network", "A desktop application for trading crypto", "A traditional web application with crypto features"],
+                    a: "An application built on a decentralized blockchain network",
+                    exp: "dApps run on a decentralized network (like Ethereum) instead of a centralized server, offering transparency and censorship resistance."
+                },
+                {
+                    q: "What is the primary benefit of blockchain in supply chain management?",
+                    options: ["Faster physical delivery of goods", "Enhanced transparency and traceability of products", "Lower manufacturing costs", "Increased marketing efficiency"],
+                    a: "Enhanced transparency and traceability of products",
+                    exp: "Blockchain provides an immutable record of a product's journey from origin to consumer, increasing trust and accountability."
+                },
+                {
+                    q: "How can blockchain technology aid in voting systems?",
+                    options: ["By making votes easier to change", "By ensuring transparency, immutability, and security of votes", "By speeding up physical vote counting", "By allowing anonymous voting only"],
+                    a: "By ensuring transparency, immutability, and security of votes",
+                    exp: "Blockchain could create tamper-proof and verifiable voting records, potentially increasing trust in electoral processes."
+                },
+                {
+                    q: "What is 'tokenization' of assets?",
+                    options: ["Creating new cryptocurrencies", "Converting real-world or digital assets into blockchain-based tokens", "Sending crypto to another wallet", "Trading NFTs on an exchange"],
+                    a: "Converting real-world or digital assets into blockchain-based tokens",
+                    exp: "Tokenization allows fractional ownership and easier transfer of various assets by representing them as digital tokens on a blockchain."
+                },
+                {
+                    q: "What is the goal of 'blockchain gaming'?",
+                    options: ["To make games more expensive", "To integrate NFTs and crypto into gaming for true ownership and new economies", "To replace traditional gaming consoles", "To create games that require no internet connection"],
+                    a: "To integrate NFTs and crypto into gaming for true ownership and new economies",
+                    exp: "Blockchain games allow players to own in-game assets as NFTs and participate in play-to-earn economies."
+                },
+                {
+                    q: "How can blockchain be used in identity management?",
+                    options: ["By storing all personal data on a public ledger", "By enabling decentralized, self-sovereign digital identities controlled by the individual", "By replacing government-issued IDs with crypto tokens", "By linking social media accounts to blockchain addresses"],
+                    a: "By enabling decentralized, self-sovereign digital identities controlled by the individual",
+                    exp: "Blockchain can provide a secure and verifiable way for individuals to manage their own digital identities without relying on central authorities."
+                },
+                 {
+                    q: "What is 'Interoperability' in blockchain?",
+                    options: ["The ability of different blockchains to communicate and exchange data or assets", "The process of securing a blockchain network", "The speed at which transactions are processed", "The cost of sending transactions on a blockchain"],
+                    a: "The ability of different blockchains to communicate and exchange data or assets",
+                    exp: "Interoperability aims to allow different blockchain networks to work together seamlessly, facilitating cross-chain transfers and interactions."
+                }
+            ],
+            "Altcoins & Ecosystems": [
+                {
+                    q: "What is the primary focus of Polkadot (DOT)?",
+                    options: ["Centralized exchange operations", "Providing interoperability between different blockchains", "Being a privacy coin", "Only supporting NFTs"],
+                    a: "Providing interoperability between different blockchains",
+                    exp: "Polkadot aims to enable different blockchains (parachains) to connect and communicate, creating a multi-chain ecosystem."
+                },
+                {
+                    q: "Which project is known for its focus on 'Proof of History' consensus and high transaction throughput?",
+                    options: ["Cardano", "Solana", "XRP", "Litecoin"],
+                    a: "Solana",
+                    exp: "Solana combines Proof of History (PoH) with Proof of Stake (PoS) to achieve incredibly fast transaction speeds and high scalability."
+                },
+                {
+                    q: "What is Cardano (ADA) known for in its development?",
+                    options: ["Rapid, unvetted updates", "A scientific and research-driven approach to blockchain development", "Focus solely on payments", "Being the first cryptocurrency"],
+                    a: "A scientific and research-driven approach to blockchain development",
+                    exp: "Cardano emphasizes a peer-reviewed, academic research-driven methodology for its blockchain and smart contract development."
+                },
+                {
+                    q: "What is XRP (Ripple) primarily designed for?",
+                    options: ["Decentralized gaming", "Fast and low-cost international payments for financial institutions", "Decentralized social media", "NFT marketplaces"],
+                    a: "Fast and low-cost international payments for financial institutions",
+                    exp: "XRP Ledger and XRP coin are designed to facilitate rapid, cheap, and scalable international money transfers for banks and payment providers."
+                },
+                {
+                    q: "What is the main goal of Layer-2 scaling solutions like Arbitrum or Optimism on Ethereum?",
+                    options: ["To replace the Ethereum mainnet", "To increase Ethereum's transaction speed and reduce gas fees", "To make Ethereum more centralized", "To create new stablecoins"],
+                    a: "To increase Ethereum's transaction speed and reduce gas fees",
+                    exp: "Layer-2 solutions process transactions off the main Ethereum blockchain, bundling them and then submitting them back to the mainnet, improving efficiency."
+                },
+                {
+                    q: "Which blockchain uses 'sharding' as a scaling solution?",
+                    options: ["Bitcoin", "Ethereum (post-merge roadmap)", "Dogecoin", "Litecoin"],
+                    a: "Ethereum (post-merge roadmap)",
+                    exp: "Ethereum's long-term scaling strategy involves sharding, which divides the network into smaller, more manageable 'shards' to process transactions in parallel."
+                },
+                 {
+                    q: "What is the primary feature of a 'privacy coin' like Monero (XMR)?",
+                    options: ["Extremely fast transactions", "Low transaction fees", "Enhanced anonymity and untraceability of transactions", "High staking rewards"],
+                    a: "Enhanced anonymity and untraceability of transactions",
+                    exp: "Privacy coins use various cryptographic techniques to obscure transaction details, including sender, receiver, and amount, offering greater privacy."
+                }
+            ],
+            "Blockchain Development": [
+                {
+                    q: "What is a 'smart contract'?",
+                    options: ["A traditional legal contract", "A self-executing contract with the terms of the agreement directly written into code", "A contract managed by a central authority", "A physical document used in crypto transactions"],
+                    a: "A self-executing contract with the terms of the agreement directly written into code",
+                    exp: "Smart contracts run on a blockchain and automatically execute when predefined conditions are met, without intermediaries."
+                },
+                {
+                    q: "What language is commonly used for writing smart contracts on Ethereum?",
+                    options: ["Python", "Java", "Solidity", "C++"],
+                    a: "Solidity",
+                    exp: "Solidity is a high-level, contract-oriented programming language for implementing smart contracts on various EVM-compatible blockchains."
+                },
+                {
+                    q: "What is an 'oracle' in blockchain?",
+                    options: ["A person who predicts crypto prices", "A decentralized service that provides external data to smart contracts", "A type of blockchain validator", "A new form of cryptocurrency"],
+                    a: "A decentralized service that provides external data to smart contracts",
+                    exp: "Oracles act as bridges between blockchains and the outside world, feeding real-world data (like prices, weather) to smart contracts."
+                },
+                {
+                    q: "What is a 'testnet'?",
+                    options: ["The main, live blockchain network", "A blockchain network used for development and testing without real-world value", "A network for stress-testing internet speed", "A private network for specific users only"],
+                    a: "A blockchain network used for development and testing without real-world value",
+                    exp: "Testnets allow developers to experiment with new features and dApps without risking real funds or impacting the mainnet."
+                },
+                {
+                    q: "What does 'EVM compatibility' mean?",
+                    options: ["Compatibility with email systems", "The ability of a blockchain to run smart contracts designed for the Ethereum Virtual Machine", "Compatibility with electronic voting machines", "The ability to run on multiple operating systems"],
+                    a: "The ability of a blockchain to run smart contracts designed for the Ethereum Virtual Machine",
+                    exp: "EVM compatibility means a blockchain can execute smart contracts written for Ethereum, allowing for easier migration of dApps."
+                },
+                 {
+                    q: "What is a 'gas limit' in Ethereum transactions?",
+                    options: ["The maximum amount of fuel a miner can use", "The maximum amount of gas (computational effort) a user is willing to spend on a transaction", "The minimum number of transactions per block", "The total gas available on the network"],
+                    a: "The maximum amount of gas (computational effort) a user is willing to spend on a transaction",
+                    exp: "The gas limit sets the maximum amount of 'gas' you are willing to consume for a transaction, preventing infinite loops or excessive resource usage."
+                },
+                {
+                    q: "What is the purpose of 'bridges' in blockchain?",
+                    options: ["To connect physical hardware to blockchain", "To facilitate the transfer of assets and data between different blockchain networks", "To provide financial loans to developers", "To secure a single blockchain network"],
+                    a: "To facilitate the transfer of assets and data between different blockchain networks",
+                    exp: "Blockchain bridges enable interoperability by allowing tokens and data to move between otherwise incompatible blockchains."
+                }
+            ],
+            "Decentralized Applications (dApps)": [
+                {
+                    q: "Which characteristic is essential for a dApp?",
+                    options: ["Centralized control", "Runs on a single server", "Open-source and runs on a decentralized network", "Requires government approval to function"],
+                    a: "Open-source and runs on a decentralized network",
+                    exp: "dApps are applications that operate on a decentralized peer-to-peer network, leveraging blockchain technology."
+                },
+                {
+                    q: "What is a common use case for dApps in the financial sector?",
+                    options: ["Traditional banking apps", "Decentralized exchanges (DEXs) for trading crypto", "Stock market analysis software", "Credit card processing systems"],
+                    a: "Decentralized exchanges (DEXs) for trading crypto",
+                    exp: "DEXs are prominent dApps that allow users to trade cryptocurrencies directly without intermediaries."
+                },
+                {
+                    q: "What does it mean for a dApp to be 'censorship-resistant'?",
+                    options: ["It can block specific users", "No single entity can prevent it from running or being accessed", "It is protected from cyberattacks", "It requires user permission to operate"],
+                    a: "No single entity can prevent it from running or being accessed",
+                    exp: "Because dApps run on decentralized networks, they are designed to be resilient to censorship or shutdown by any single authority."
+                },
+                {
+                    q: "What is a common challenge for dApps regarding scalability?",
+                    options: ["Too many users wanting to access them", "The underlying blockchain's transaction speed limitations", "Lack of developer interest", "Difficulty in finding hosting servers"],
+                    a: "The underlying blockchain's transaction speed limitations",
+                    exp: "Many dApps face scalability issues because they are limited by the throughput of the blockchain they run on, leading to high fees or slow transactions during peak usage."
+                },
+                {
+                    q: "What is the role of a 'front-end' in a dApp?",
+                    options: ["It's the smart contract logic", "It's the user interface that interacts with the blockchain backend", "It manages network security", "It's the decentralized database"],
+                    a: "It's the user interface that interacts with the blockchain backend",
+                    exp: "The front-end of a dApp is what users see and interact with, which then communicates with the smart contracts on the blockchain."
+                },
+                {
+                    q: "Which of these is NOT typically a component of a dApp?",
+                    options: ["Smart contracts", "Decentralized storage", "Centralized server database", "User interface"],
+                    a: "Centralized server database",
+                    exp: "A core principle of dApps is decentralization, so they typically avoid reliance on centralized server databases."
+                },
+                {
+                    q: "What is a common use case for dApps outside of finance and gaming?",
+                    options: ["Traditional email services", "Supply chain tracking and provenance", "Centralized cloud storage", "Proprietary software development"],
+                    a: "Supply chain tracking and provenance",
+                    exp: "dApps can provide transparent and immutable records for tracking goods in a supply chain, ensuring authenticity and ethical sourcing."
+                }
+            ],
+            "Wallets & Keys": [
+                {
+                    q: "Which of these is a 'hot wallet'?",
+                    options: ["A paper wallet", "A hardware wallet", "A mobile wallet connected to the internet", "A wallet stored in a bank vault"],
+                    a: "A mobile wallet connected to the internet",
+                    exp: "Hot wallets are connected to the internet, making them convenient for transactions but potentially more vulnerable to online threats."
+                },
+                {
+                    q: "What is a 'public key' (or wallet address)?",
+                    options: ["A secret code for your crypto", "An address you can share for receiving crypto", "Your exchange login password", "A phrase to recover your wallet"],
+                    a: "An address you can share for receiving crypto",
+                    exp: "Your public key (wallet address) is similar to an email address; you can share it freely to receive funds."
+                },
+                {
+                    q: "How are funds moved from a hardware wallet?",
+                    options: ["By typing the seed phrase online", "By entering the private key directly into a computer", "By physically confirming the transaction on the device", "By sending an email request to the manufacturer"],
+                    a: "By physically confirming the transaction on the device",
+                    exp: "Hardware wallets require physical interaction (like pressing a button) on the device itself to sign and authorize transactions, keeping private keys offline."
+                },
+                {
+                    q: "What is the main danger if someone obtains your seed phrase?",
+                    options: ["They can only view your balance", "They can access and control all funds associated with that seed phrase", "They can only send you more crypto", "It only affects your wallet's design"],
+                    a: "They can access and control all funds associated with that seed phrase",
+                    exp: "A seed phrase is the ultimate backup for your wallet; anyone with it can access your funds."
+                },
+                {
+                    q: "Which type of wallet typically allows you to stake cryptocurrencies directly from it?",
+                    options: ["Paper wallet", "Cold storage in a bank vault", "Non-custodial software wallets (desktop/mobile) that support staking protocols", "Only exchange wallets"],
+                    a: "Non-custodial software wallets (desktop/mobile) that support staking protocols",
+                    exp: "Non-custodial wallets allow you to retain control of your private keys while interacting directly with staking protocols."
+                },
+                 {
+                    q: "What is the primary difference between a 'custodial' and 'non-custodial' wallet?",
+                    options: ["Custodial wallets are more secure", "Non-custodial wallets are always offline", "Custodial wallets hold your private keys for you, non-custodial wallets give you full control", "Custodial wallets only hold Bitcoin, non-custodial hold altcoins"],
+                    a: "Custodial wallets hold your private keys for you, non-custodial wallets give you full control",
+                    exp: "With a non-custodial wallet, you are solely responsible for your private keys. With a custodial wallet, a third party holds them on your behalf."
+                },
+                {
+                    q: "What is a 'multisig' wallet?",
+                    options: ["A wallet that holds multiple cryptocurrencies", "A wallet that requires multiple signatures (private keys) to authorize a transaction", "A wallet used for multiple users", "A wallet that generates multiple addresses"],
+                    a: "A wallet that requires multiple signatures (private keys) to authorize a transaction",
+                    exp: "Multisignature wallets require two or more private keys to sign and execute a transaction, enhancing security, especially for shared funds."
+                }
+            ],
+            "Decentralized Autonomous Organizations (DAOs)": [
+                {
+                    q: "What is a DAO?",
+                    options: ["A type of centralized bank", "An organization managed by a board of directors", "An organization run by code and governed by its community through voting", "A traditional company that uses blockchain for payments"],
+                    a: "An organization run by code and governed by its community through voting",
+                    exp: "DAOs are blockchain-based organizations that are typically governed by tokens, allowing token holders to vote on proposals."
+                },
+                {
+                    q: "How are decisions typically made in a DAO?",
+                    options: ["By a single CEO", "Through traditional board meetings", "Via token-based voting on proposals", "By government regulation"],
+                    a: "Via token-based voting on proposals",
+                    exp: "Token holders in a DAO typically have voting power proportional to their holdings, allowing them to participate in governance decisions."
+                },
+                {
+                    q: "What is a 'governance token'?",
+                    options: ["A token used only for trading", "A cryptocurrency issued by a government", "A token that grants holders voting rights and influence over a protocol's future", "A stablecoin used for transactions"],
+                    a: "A token that grants holders voting rights and influence over a protocol's future",
+                    exp: "Governance tokens allow their holders to propose and vote on changes to a decentralized protocol or DAO."
+                },
+                {
+                    q: "What is one of the main benefits of a DAO?",
+                    options: ["Centralized control and efficiency", "Transparency and community-driven decision-making", "Faster transaction speeds for cryptocurrencies", "Guaranteed high investment returns"],
+                    a: "Transparency and community-driven decision-making",
+                    exp: "DAOs offer transparent operations and allow a distributed community to participate directly in decision-making."
+                },
+                {
+                    q: "What is a challenge faced by DAOs?",
+                    options: ["Difficulty in finding investors", "Achieving consensus among a large and diverse group of token holders", "Lack of available technology", "Being too centralized"],
+                    a: "Achieving consensus among a large and diverse group of token holders",
+                    exp: "Coordinating and reaching agreement within a large, decentralized community can be complex for DAOs."
+                },
+                {
+                    q: "Which of these sectors is NOT seeing significant DAO adoption?",
+                    options: ["DeFi protocols", "NFT projects", "Venture capital funds", "Traditional brick-and-mortar retail stores"],
+                    a: "Traditional brick-and-mortar retail stores",
+                    exp: "DAOs are primarily digital-native organizations that operate in the blockchain and crypto space, less so in traditional physical businesses."
+                },
+                {
+                    q: "What happens if a DAO proposal passes?",
+                    options: ["It becomes a suggestion for the core team", "It is automatically executed by smart contracts or implemented by the community", "It is sent to a central committee for review", "It is discarded after a week"],
+                    a: "It is automatically executed by smart contracts or implemented by the community",
+                    exp: "The power of DAOs lies in their ability to execute approved proposals automatically via smart contracts or by community consensus."
+                }
+            ],
+            "Scalability Solutions": [
+                {
+                    q: "What is the main problem that Layer-2 solutions aim to solve for blockchains like Ethereum?",
+                    options: ["Security vulnerabilities", "Lack of decentralization", "Scalability (transaction speed and cost)", "Data storage limitations"],
+                    a: "Scalability (transaction speed and cost)",
+                    exp: "Layer-2 solutions help blockchains handle more transactions per second and reduce fees by processing them off-chain."
+                },
+                {
+                    q: "What is a 'rollup' in the context of Layer-2?",
+                    options: ["A type of cryptocurrency wallet", "A scaling solution that executes transactions off-chain and then posts bundled transaction data back to the mainnet", "A new consensus mechanism", "A method for creating NFTs"],
+                    a: "A scaling solution that executes transactions off-chain and then posts bundled transaction data back to the mainnet",
+                    exp: "Rollups (like Optimistic and ZK-Rollups) bundle many transactions into a single batch and submit it to the main chain, significantly increasing throughput."
+                },
+                {
+                    q: "What is 'sharding'?",
+                    options: ["Breaking a blockchain into smaller, more manageable pieces to process transactions in parallel", "A method for mining crypto more efficiently", "A type of smart contract", "A way to secure a blockchain against attacks"],
+                    a: "Breaking a blockchain into smaller, more manageable pieces to process transactions in parallel",
+                    exp: "Sharding is a database partitioning technique that aims to improve scalability by dividing the blockchain network into smaller, independent segments called 'shards'."
+                },
+                {
+                    q: "Which Layer-2 solution uses 'fraud proofs' to ensure transaction validity?",
+                    options: ["ZK-Rollups", "Optimistic Rollups", "Sidechains", "State Channels"],
+                    a: "Optimistic Rollups",
+                    exp: "Optimistic Rollups assume transactions are valid by default but allow a dispute period during which fraud proofs can be submitted to challenge invalid transactions."
+                },
+                {
+                    q: "What is the primary advantage of a 'sidechain'?",
+                    options: ["It is directly secured by the mainnet's consensus", "It allows for custom functionality and faster transactions without burdening the mainnet", "It eliminates the need for any fees", "It ensures complete anonymity for all transactions"],
+                    a: "It allows for custom functionality and faster transactions without burdening the mainnet",
+                    exp: "Sidechains are independent blockchains connected to a mainnet via a two-way peg, offering flexibility for different use cases and relieving mainnet congestion."
+                },
+                {
+                    q: "What is the main difference between 'Optimistic Rollups' and 'ZK-Rollups'?",
+                    options: ["Optimistic Rollups are faster", "ZK-Rollups use cryptographic proofs (zero-knowledge proofs) for instant validity, while Optimistic Rollups use a fraud proof period", "ZK-Rollups are more expensive", "Optimistic Rollups are more secure"],
+                    a: "ZK-Rollups use cryptographic proofs (zero-knowledge proofs) for instant validity, while Optimistic Rollups use a fraud proof period",
+                    exp: "ZK-Rollups provide immediate finality by proving the validity of off-chain transactions cryptographically, whereas Optimistic Rollups rely on a challenge period."
+                },
+                 {
+                    q: "What is a 'State Channel'?",
+                    options: ["A channel for communicating between blockchains", "A Layer-2 solution that allows parties to conduct multiple transactions off-chain, with only the opening and closing transactions recorded on the main chain", "A method for securely storing private keys", "A platform for buying and selling crypto assets"],
+                    a: "A Layer-2 solution that allows parties to conduct multiple transactions off-chain, with only the opening and closing transactions recorded on the main chain",
+                    exp: "State channels are a Layer-2 scaling technique that enables participants to conduct a series of transactions off-chain while only committing the final state to the main blockchain."
+                }
+            ],
+            "Token Standards & Types": [
+                {
+                    q: "What is the most common token standard for fungible tokens on Ethereum?",
+                    options: ["ERC-721", "ERC-1155", "ERC-20", "ERC-777"],
+                    a: "ERC-20",
+                    exp: "ERC-20 is the most prevalent standard for creating fungible (interchangeable) tokens on the Ethereum blockchain, like stablecoins or utility tokens."
+                },
+                {
+                    q: "What type of token is an ERC-721 token?",
+                    options: ["Fungible token", "Security token", "Non-fungible token (NFT)", "Utility token"],
+                    a: "Non-fungible token (NFT)",
+                    exp: "ERC-721 is the standard specifically designed for unique, non-fungible tokens, often used for digital collectibles and art."
+                },
+                {
+                    q: "What does a 'governance token' allow its holders to do?",
+                    options: ["Mine new cryptocurrency", "Vote on protocol changes and proposals", "Earn passive income without staking", "Exchange for any other cryptocurrency instantly"],
+                    a: "Vote on protocol changes and proposals",
+                    exp: "Governance tokens grant holders the right to participate in the decentralized governance of a project, such as a DAO or DeFi protocol."
+                },
+                {
+                    q: "What is a 'utility token'?",
+                    options: ["A token used for governance", "A token that provides access to a product or service within an ecosystem", "A token backed by real-world assets", "A token that represents ownership in a company"],
+                    a: "A token that provides access to a product or service within an ecosystem",
+                    exp: "Utility tokens are designed to provide users with access to specific functionalities or services within a blockchain-based platform or dApp."
+                },
+                {
+                    q: "What is a 'security token'?",
+                    options: ["A token used for network security", "A digital representation of traditional securities (like stocks or bonds) on a blockchain", "A token that secures your wallet", "A token used only for voting"],
+                    a: "A digital representation of traditional securities (like stocks or bonds) on a blockchain",
+                    exp: "Security tokens are crypto tokens that represent ownership in an underlying asset or investment, similar to traditional securities, and are subject to securities regulations."
+                },
+                {
+                    q: "Which token standard combines features of both fungible and non-fungible tokens?",
+                    options: ["ERC-20", "ERC-721", "ERC-1155", "BEP-20"],
+                    a: "ERC-1155",
+                    exp: "ERC-1155 allows a single smart contract to manage multiple token types, including both fungible and non-fungible tokens, making it highly versatile."
+                },
+                {
+                    q: "What is the primary function of a 'Wrapped Bitcoin' (WBTC) token?",
+                    options: ["To create a new, separate Bitcoin blockchain", "To make Bitcoin fungible with Ethereum's ERC-20 standard, allowing it to be used in DeFi protocols", "To increase Bitcoin's supply", "To mine Bitcoin more efficiently on Ethereum"],
+                    a: "To make Bitcoin fungible with Ethereum's ERC-20 standard, allowing it to be used in DeFi protocols",
+                    exp: "WBTC is an ERC-20 token backed 1:1 by Bitcoin, enabling Bitcoin holders to participate in Ethereum's DeFi ecosystem."
+                }
+            ],
+            "Crypto & Society": [
+                {
+                    q: "What is a common criticism of Bitcoin's environmental impact?",
+                    options: ["Its use of paper wallets", "The energy consumption of Proof of Work mining", "Its lack of physical presence", "The amount of data it stores"],
+                    a: "The energy consumption of Proof of Work mining",
+                    exp: "The energy consumed by Bitcoin's Proof of Work mining process is a frequent concern for environmentalists."
+                },
+                {
+                    q: "How can cryptocurrencies facilitate financial inclusion?",
+                    options: ["By requiring users to have traditional bank accounts", "By providing access to financial services for the unbanked", "By increasing the cost of international remittances", "By creating new forms of debt"],
+                    a: "By providing access to financial services for the unbanked",
+                    exp: "Cryptocurrencies can offer financial services like payments, savings, and loans to individuals without access to traditional banking systems."
+                },
+                {
+                    q: "What is 'blockchain for good'?",
+                    options: ["Blockchain projects that are highly profitable", "Using blockchain technology for social impact and humanitarian causes", "A marketing slogan for new cryptocurrencies", "A type of secure blockchain network"],
+                    a: "Using blockchain technology for social impact and humanitarian causes",
+                    exp: "Blockchain for good initiatives apply distributed ledger technology to areas like supply chain transparency, identity for refugees, or charitable donations."
+                },
+                {
+                    q: "What is the 'digital divide' in the context of crypto adoption?",
+                    options: ["The difference between Bitcoin and other cryptocurrencies", "The gap between those with internet access/digital literacy and those without, impacting crypto accessibility", "The divide between centralized and decentralized finance", "The generational gap in technology use"],
+                    a: "The gap between those with internet access/digital literacy and those without, impacting crypto accessibility",
+                    exp: "The digital divide highlights how unequal access to technology and education can hinder broader crypto adoption."
+                },
+                {
+                    q: "How can NFTs potentially impact creators' rights?",
+                    options: ["By making it harder to track ownership", "By allowing creators to earn royalties on secondary sales indefinitely", "By transferring all rights to the buyer upon sale", "By centralizing content distribution"],
+                    a: "By allowing creators to earn royalties on secondary sales indefinitely",
+                    exp: "NFT smart contracts can be programmed to automatically pay a percentage of future sales back to the original creator, providing a new revenue stream."
+                },
+                {
+                    q: "What is the main concern regarding crypto and illicit activities?",
+                    options: ["High transaction fees", "The perceived anonymity and borderless nature making it attractive for money laundering and crime", "Slow transaction speeds", "Lack of investment opportunities"],
+                    a: "The perceived anonymity and borderless nature making it attractive for money laundering and crime",
+                    exp: "While transparency of public ledgers aids in tracking, the decentralized and borderless nature of crypto has raised concerns about its use in illicit finance."
+                },
+                {
+                    q: "What is 'token-gated content' in Web3?",
+                    options: ["Content that is free to access for everyone", "Content that can only be accessed by holders of a specific NFT or crypto token", "Content that requires a password to view", "Content that is censored by a central authority"],
+                    a: "Content that can only be accessed by holders of a specific NFT or crypto token",
+                    exp: "Token-gated content leverages blockchain to restrict access to digital content, communities, or experiences only to those who own a particular token or NFT, fostering exclusive communities."
+                }
+            ],
+            "Crypto & Gaming": [
+                {
+                    q: "What is 'Play-to-Earn' (P2E) in blockchain gaming?",
+                    options: ["Playing games without earning anything", "A gaming model where players can earn crypto or NFTs through gameplay", "Paying to access game content", "A traditional gaming subscription model"],
+                    a: "A gaming model where players can earn crypto or NFTs through gameplay",
+                    exp: "P2E games integrate blockchain to allow players to earn real-world value assets by participating in the game economy."
+                },
+                {
+                    q: "What enables true ownership of in-game assets in blockchain games?",
+                    options: ["Game servers", "NFTs", "In-game currency", "Cloud storage"],
+                    a: "NFTs",
+                    exp: "NFTs represent unique in-game items, giving players verifiable ownership that can be traded or sold outside the game."
+                },
+                {
+                    q: "What is a 'gaming guild' in the P2E space?",
+                    options: ["A traditional gaming clan", "An organization that lends NFTs/capital to players to earn a share of their winnings", "A company that develops new games", "A group of game testers"],
+                    a: "An organization that lends NFTs/capital to players to earn a share of their winnings",
+                    exp: "Gaming guilds help new players enter P2E games by providing necessary in-game assets in exchange for a portion of the earnings, fostering community and accessibility."
+                },
+                {
+                    q: "How do blockchain games differ from traditional games regarding asset ownership?",
+                    options: ["Assets are owned by the game developers in both cases", "Blockchain games allow players to truly own and trade in-game assets outside the game, unlike traditional games", "Traditional games have more valuable assets", "Blockchain games do not have any in-game assets"],
+                    a: "Blockchain games allow players to truly own and trade in-game assets outside the game, unlike traditional games",
+                    exp: "Blockchain technology brings true digital ownership to gaming, allowing players to buy, sell, or trade their in-game items as NFTs."
+                },
+                {
+                    q: "What is 'GameFi'?",
+                    options: ["A genre of traditional video games", "The fusion of gaming and decentralized finance (DeFi) elements within blockchain games", "A financial lending protocol for game developers", "A blockchain platform for game streaming"],
+                    a: "The fusion of gaming and decentralized finance (DeFi) elements within blockchain games",
+                    exp: "GameFi combines gaming, DeFi, and NFTs to create immersive and economically rewarding virtual worlds."
+                },
+                {
+                    q: "Which concept allows players to earn by building and owning land in virtual worlds?",
+                    options: ["Cloud gaming", "Metaverse land ownership (via NFTs)", "Traditional real estate investment", "Stock market trading simulation"],
+                    a: "Metaverse land ownership (via NFTs)",
+                    exp: "Many metaverse platforms allow users to buy virtual land as NFTs, which can then be developed and monetized, offering new play-to-earn opportunities."
+                },
+                {
+                    q: "What is the primary benefit of 'on-chain gaming'?",
+                    options: ["Faster graphics", "All game logic and assets are processed and stored on the blockchain, ensuring transparency and decentralization", "Easier game development", "Requires no internet connection"],
+                    a: "All game logic and assets are processed and stored on the blockchain, ensuring transparency and decentralization",
+                    exp: "On-chain gaming means that critical game elements and logic reside directly on the blockchain, making them verifiable and resistant to manipulation."
+                }
+            ],
+            "Privacy in Crypto": [
+                {
+                    q: "Which type of coin is specifically designed to obscure transaction details?",
+                    options: ["Utility coin", "Stablecoin", "Privacy coin", "Governance coin"],
+                    a: "Privacy coin",
+                    exp: "Privacy coins like Monero (XMR) and Zcash (ZEC) use advanced cryptography to hide sender, receiver, and transaction amounts."
+                },
+                {
+                    q: "What is a 'mixing service' (or tumbler) in crypto?",
+                    options: ["A service to blend different cryptocurrencies into one", "A service to obscure the origin and destination of cryptocurrency funds by mixing them with others", "A platform for crypto trading", "A tool for generating new wallet addresses"],
+                    a: "A service to obscure the origin and destination of cryptocurrency funds by mixing them with others",
+                    exp: "Mixing services aim to enhance privacy by breaking the on-chain link between sender and receiver, but are often scrutinized by regulators."
+                },
+                {
+                    q: "Are Bitcoin transactions anonymous by default?",
+                    options: ["Yes, completely anonymous", "No, they are pseudonymous (addresses are public, identity is not directly linked)", "Only if you use a VPN", "Only if you transact small amounts"],
+                    a: "No, they are pseudonymous (addresses are public, identity is not directly linked)",
+                    exp: "Bitcoin transactions are public, and while addresses don't reveal personal identity directly, transaction history is traceable, making it pseudonymous."
+                },
+                {
+                    q: "What is 'Zero-Knowledge Proofs' (ZKPs) used for in crypto?",
+                    options: ["To prove you know the answer to a question without revealing the answer itself", "To create new types of cryptocurrencies", "To speed up blockchain transaction processing", "To provide data for smart contracts"],
+                    a: "To prove you know the answer to a question without revealing the answer itself",
+                    exp: "ZKPs allow one party to prove the truth of a statement to another without revealing any information beyond the validity of the statement itself, enhancing privacy and scalability."
+                },
+                {
+                    q: "Which privacy feature is used by Monero (XMR) to obscure transaction details?",
+                    options: ["Transparent transactions", "Ring Signatures and Stealth Addresses", "Public ledger only", "Centralized mixing"],
+                    a: "Ring Signatures and Stealth Addresses",
+                    exp: "Monero uses Ring Signatures to mix your transaction with others and Stealth Addresses to hide the recipient's address, enhancing privacy."
+                },
+                {
+                    q: "What does 'KYC' (Know Your Customer) primarily aim to prevent in crypto exchanges?",
+                    options: ["High trading fees", "Slow transaction speeds", "Money laundering and terrorist financing", "Price volatility"],
+                    a: "Money laundering and terrorist financing",
+                    exp: "KYC procedures on centralized exchanges require users to verify their identity to comply with anti-money laundering regulations."
+                },
+                {
+                    q: "Is it possible to track transactions on a public blockchain?",
+                    options: ["No, it's impossible", "Yes, all transactions are publicly viewable, though identities are pseudonymous", "Only if you are a government agency", "Only for transactions over a certain amount"],
+                    a: "Yes, all transactions are publicly viewable, though identities are pseudonymous",
+                    exp: "Public blockchains are transparent ledgers, meaning anyone can view transaction details, but without direct identity links."
+                }
+            ]
+        };
+
+        const categoriesList = Object.keys(categories);
+        let categoryQuestions = {}; // To store the shuffled questions for each category
+
+        // --- Functions ---
+        function loadHighScore() {
+            highScoreDisplay.textContent = highScore;
+        }
+
+        function saveHighScore() {
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('cryptoQuestHighScore', highScore);
+                highScoreDisplay.textContent = highScore;
+                highScoreAchievedMessage.style.display = 'block';
+            } else {
+                highScoreAchievedMessage.style.display = 'none';
+            }
+        }
+
+        function showScreen(screenId) {
+            const screens = [startScreen, quizScreen, endScreen];
+            screens.forEach(screen => {
+                if (screen.id === screenId) {
+                    screen.classList.add('active');
+                } else {
+                    screen.classList.remove('active');
+                }
+            });
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function populateCategories() {
+            categoryGrid.innerHTML = ''; // Clear previous categories
+            categoriesList.forEach(categoryName => {
+                const categoryCard = document.createElement('div');
+                categoryCard.classList.add('category-card');
+                categoryCard.textContent = categoryName;
+                categoryCard.dataset.category = categoryName;
+                categoryCard.addEventListener('click', () => selectCategory(categoryName));
+                categoryGrid.appendChild(categoryCard);
+            });
+        }
+
+        function selectCategory(categoryName) {
+            selectedCategory = categoryName;
+            currentCategoryNameDisplay.textContent = categoryName;
+            // Shuffle and select a subset of questions for the current game
+            const shuffledQuestions = shuffleArray([...categories[categoryName]]);
+            // Take up to 7 questions from the shuffled set
+            currentQuestions = shuffledQuestions.slice(0, 7); 
+            currentQuestionIndex = 0;
+            score = 0;
+            updateScoreDisplay();
+            questionArea.style.display = 'block'; // Show question area
+            quizScreen.querySelector('.category-selection').style.display = 'none'; // Hide category selection
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            feedbackMessage.textContent = '';
+            feedbackMessage.classList.remove('correct', 'incorrect');
+            nextQuestionBtn.style.display = 'none';
+            optionsContainer.innerHTML = ''; // Clear previous options
+
+            if (currentQuestionIndex < currentQuestions.length) {
+                const question = currentQuestions[currentQuestionIndex];
+                questionText.textContent = question.q;
+                questionCountDisplay.textContent = `${currentQuestionIndex + 1}/${currentQuestions.length}`;
+
+                shuffleArray(question.options).forEach(option => {
+                    const optionBtn = document.createElement('button');
+                    optionBtn.classList.add('option-btn');
+                    optionBtn.textContent = option;
+                    optionBtn.addEventListener('click', () => checkAnswer(option, question.a, question.exp));
+                    optionsContainer.appendChild(optionBtn);
+                });
+            } else {
+                endGame();
+            }
+        }
+
+        function checkAnswer(selectedOption, correctAnswer, explanation) {
+            // Disable all option buttons after selection
+            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.add('disabled'));
+
+            if (selectedOption === correctAnswer) {
+                score++;
+                feedbackMessage.textContent = 'Correct! ' + explanation;
+                feedbackMessage.classList.add('correct');
+                // Highlight correct answer
+                Array.from(optionsContainer.children).find(btn => btn.textContent === correctAnswer).classList.add('correct');
+            } else {
+                feedbackMessage.textContent = 'Incorrect. The correct answer was: ' + correctAnswer + '. ' + explanation;
+                feedbackMessage.classList.add('incorrect');
+                // Highlight correct and incorrect answers
+                Array.from(optionsContainer.children).find(btn => btn.textContent === selectedOption).classList.add('incorrect');
+                Array.from(optionsContainer.children).find(btn => btn.textContent === correctAnswer).classList.add('correct');
+            }
+            updateScoreDisplay();
+            nextQuestionBtn.style.display = 'block';
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = score;
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuestions.length) {
+                displayQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            showScreen('end-screen');
+            finalScoreDisplay.textContent = score;
+            saveHighScore();
+            // Reset state for next game
+            selectedCategory = null;
+            questionArea.style.display = 'none'; // Hide question area
+            quizScreen.querySelector('.category-selection').style.display = 'block'; // Show category selection
+        }
+
+        function resetGame() {
+            currentQuestions = [];
+            currentQuestionIndex = 0;
+            score = 0;
+            updateScoreDisplay();
+            highScoreAchievedMessage.style.display = 'none';
+            populateCategories(); // Re-populate categories for new game
+            showScreen('quiz-screen'); // Go back to category selection
+        }
+
+        // --- Event Listeners ---
+        startGameBtn.addEventListener('click', resetGame);
+        nextQuestionBtn.addEventListener('click', nextQuestion);
+        restartGameBtn.addEventListener('click', resetGame);
+
+        // Initial load
+        loadHighScore();
+        populateCategories();
+    });
+</script>
+   
     <div class="ad-banner bottom-banner">
         <!-- Bottom Content Banner (728x90) -->
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
