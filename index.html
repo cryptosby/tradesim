@@ -2616,7 +2616,910 @@
         populateCategories(); // Load categories when the page first loads
     });
 </script> 
-   
+
+    <!-- ======= SECCIÓN DEFI NAVIGATOR ======= -->
+<section class="defi-navigator-section" id="defi-navigator">
+    <div class="defi-header">
+        <h2>🧭 DeFi Navigator: El Viaje del Rendimiento</h2>
+        <p class="subtitle">Simula estrategias DeFi y aprende sobre staking, pools de liquidez y más, sin riesgo real.</p>
+    </div>
+
+    <div class="defi-container">
+        <div class="defi-stats-panel">
+            <div class="stat-card">
+                <div class="stat-value"><span id="virtual-balance">$1000.00</span></div>
+                <div class="stat-label">Saldo Virtual</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value"><span id="portfolio-value">$1000.00</span> <span id="portfolio-change" class="positive"></span></div>
+                <div class="stat-label">Valor del Portafolio</div>
+            </div>
+        </div>
+
+        <div class="defi-actions-panel">
+            <h3>Tus Acciones DeFi</h3>
+            <div class="action-buttons-grid">
+                <button class="defi-btn action-btn" id="deposit-funds-btn"><i class="fas fa-plus-circle"></i> Depositar Fondos</button>
+                
+                <!-- Staking Buttons -->
+                <button class="defi-btn action-btn" id="stake-eth-btn"><i class="fas fa-hand-holding-usd"></i> Staking ETH</button>
+                <button class="defi-btn action-btn" id="stake-sol-btn"><i class="fas fa-hand-holding-usd"></i> Staking SOL</button>
+                <button class="defi-btn action-btn" id="stake-atom-btn"><i class="fas fa-hand-holding-usd"></i> Staking ATOM</button>
+                
+                <!-- Liquidity Pool Buttons -->
+                <button class="defi-btn action-btn" id="provide-lp-ethusdc-btn"><i class="fas fa-exchange-alt"></i> LP (ETH/USDC)</button>
+                <button class="defi-btn action-btn" id="provide-lp-btcusdt-btn"><i class="fas fa-exchange-alt"></i> LP (BTC/USDT)</button>
+                <button class="defi-btn action-btn" id="provide-lp-dogeusdt-btn"><i class="fas fa-exchange-alt"></i> LP (DOGE/USDT)</button>
+                <button class="defi-btn action-btn" id="provide-lp-pepeusdt-btn"><i class="fas fa-exchange-alt"></i> LP (PEPE/USDT)</button>
+
+                <button class="defi-btn success-btn" id="claim-rewards-btn"><i class="fas fa-gift"></i> Reclamar Recompensas</button>
+                <button class="defi-btn warning-btn" id="withdraw-funds-btn"><i class="fas fa-minus-circle"></i> Retirar Todo</button>
+            </div>
+
+            <div class="action-details" id="action-details">
+                <!-- Los detalles de la acción aparecerán aquí según los clics de los botones -->
+                <p>Haz clic en una acción para ver los detalles.</p>
+            </div>
+        </div>
+
+        <div class="defi-portfolio-summary">
+            <h3>Tu Portafolio Activo</h3>
+            <div class="portfolio-item">
+                <span>Staked ETH:</span>
+                <span id="staked-eth">0.0000 ETH ($0.00)</span>
+            </div>
+            <div class="portfolio-item">
+                <span>Staked SOL:</span>
+                <span id="staked-sol">0.0000 SOL ($0.00)</span>
+            </div>
+            <div class="portfolio-item">
+                <span>Staked ATOM:</span>
+                <span id="staked-atom">0.0000 ATOM ($0.00)</span>
+            </div>
+            <div class="portfolio-item">
+                <span>LP (ETH/USDC) Tokens:</span>
+                <span id="lp-ethusdc-tokens">0.00 LP ($0.00)</span>
+            </div>
+            <div class="portfolio-item">
+                <span>LP (BTC/USDT) Tokens:</span>
+                <span id="lp-btcusdt-tokens">0.00 LP ($0.00)</span>
+            </div>
+            <div class="portfolio-item">
+                <span>LP (DOGE/USDT) Tokens:</span>
+                <span id="lp-dogeusdt-tokens">0.00 LP ($0.00)</span>
+            </div>
+            <div class="portfolio-item">
+                <span>LP (PEPE/USDT) Tokens:</span>
+                <span id="lp-pepeusdt-tokens">0.00 LP ($0.00)</span>
+            </div>
+            <div class="portfolio-item">
+                <span>Recompensas Pendientes:</span>
+                <span id="pending-rewards">$0.00</span>
+            </div>
+        </div>
+
+        <div class="defi-log-panel">
+            <h3>Registro de Actividad</h3>
+            <div class="log-container" id="defi-log">
+                <!-- Las entradas del registro de actividad aparecerán aquí -->
+            </div>
+            <button class="defi-btn secondary-btn" id="reset-defi-btn"><i class="fas fa-redo"></i> Reiniciar Simulación</button>
+        </div>
+    </div>
+</section>
+
+<!-- Font Awesome para iconos -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Google Fonts - Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+    /* Heredar estilos del body para un fondo/fuente consistentes */
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #0e1116; /* Fondo negro de tradescript.html */
+        color: #e2e8f0;
+        line-height: 1.6;
+        padding: 20px;
+    }
+
+    /* Estilos específicos de DeFi Navigator */
+    .defi-navigator-section {
+        background: #1e222d; /* Fondo gris más oscuro */
+        border-radius: 16px;
+        padding: 25px;
+        margin: 40px auto; /* Más margen para separar secciones */
+        border: 1px solid #334155;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        max-width: 1200px;
+        text-align: center;
+    }
+
+    .defi-header h2 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+        color: #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .defi-navigator-section .subtitle {
+        color: #94a3b8;
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto 25px auto;
+    }
+
+    .defi-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 30px;
+        margin-top: 30px;
+    }
+
+    @media (min-width: 768px) {
+        .defi-container {
+            grid-template-columns: 1fr 1fr; /* Dos columnas en pantallas más grandes */
+        }
+        .defi-actions-panel {
+            grid-column: 1 / 2; /* Panel principal ocupa una columna */
+        }
+        .defi-portfolio-summary {
+            grid-column: 2 / 3; /* Resumen del portafolio ocupa la otra */
+        }
+        .defi-stats-panel {
+            grid-column: 1 / -1; /* Panel de estadísticas abarca todas las columnas */
+        }
+        .defi-log-panel {
+            grid-column: 1 / -1; /* Panel de registro abarca todas las columnas */
+        }
+    }
+
+    .defi-stats-panel {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .defi-stats-panel .stat-card {
+        background: #2c313a; /* Gris oscuro para las estadísticas */
+        padding: 15px 25px;
+        border-radius: 10px;
+        border: 1px solid #334155;
+        min-width: 200px;
+        flex-grow: 1;
+        max-width: 300px;
+    }
+
+    .defi-stats-panel .stat-value {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #e2e8f0;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .defi-stats-panel .stat-label {
+        color: #94a3b8;
+        font-size: 1.1rem;
+    }
+
+    .positive {
+        color: #00ff9f; /* Verde de tradescript.html */
+    }
+    .negative {
+        color: #ff4d4d; /* Rojo de tradescript.html */
+    }
+
+    .defi-actions-panel, .defi-portfolio-summary, .defi-log-panel {
+        background: #2c313a; /* Gris oscuro para los paneles */
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid #334155;
+        text-align: left;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .defi-actions-panel h3, .defi-portfolio-summary h3, .defi-log-panel h3 {
+        color: #e2e8f0;
+        font-size: 1.8rem;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    .action-buttons-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .defi-btn {
+        background-color: #3a8dd8; /* Azul de tradescript.html */
+        color: #fff;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .defi-btn:hover {
+        background-color: #337ac4; /* Azul más oscuro */
+        transform: translateY(-2px);
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .action-btn {
+        background-color: #3a8dd8; /* Color principal del botón de acción */
+    }
+    .action-btn:hover {
+        background-color: #337ac4;
+    }
+
+    .secondary-btn {
+        background-color: #64748b; /* Color gris para acciones secundarias */
+    }
+    .secondary-btn:hover {
+        background-color: #475569;
+    }
+    
+    .defi-btn.warning-btn {
+        background-color: #ff4d4d; /* Rojo para acciones de advertencia/destructivas */
+    }
+    .defi-btn.warning-btn:hover {
+        background-color: #cc0000;
+    }
+
+    .defi-btn.success-btn {
+        background-color: #10b981; /* Verde para acciones exitosas/positivas */
+    }
+    .defi-btn.success-btn:hover {
+        background-color: #059669;
+    }
+
+    .action-details {
+        background: #1e222d; /* Coincide con el fondo de la sección principal */
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+        font-size: 1rem;
+        color: #cbd5e1;
+    }
+    .action-details input {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #475569;
+        background: #0e1116; /* Fondo negro para la entrada */
+        border-radius: 5px;
+        color: #e2e8f0;
+        font-size: 1rem;
+        outline: none;
+    }
+    .action-details button {
+        margin-right: 10px;
+    }
+    .action-details .message {
+        margin-top: 10px;
+        font-size: 0.9rem;
+        color: #94a3b8;
+    }
+
+    .portfolio-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px dashed #334155;
+        color: #cbd5e1;
+        font-size: 1.05rem;
+    }
+    .portfolio-item:last-child {
+        border-bottom: none;
+    }
+    .portfolio-item span:first-child {
+        color: #94a3b8;
+    }
+    .portfolio-item span:last-child {
+        font-weight: 600;
+    }
+
+    .defi-log-panel {
+        margin-top: 30px;
+    }
+    .log-container {
+        height: 200px; /* Altura fija para el registro desplazable */
+        overflow-y: auto;
+        background: #1e222d;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        color: #cbd5e1;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    .log-entry {
+        margin-bottom: 8px;
+        display: flex;
+        gap: 8px;
+    }
+    .log-entry.positive {
+        color: #00ff9f;
+    }
+    .log-entry.negative {
+        color: #ff4d4d;
+    }
+    .log-entry.info {
+        color: #3a8dd8;
+    }
+    .log-timestamp {
+        font-size: 0.8em;
+        color: #7b8a9c;
+        white-space: nowrap;
+    }
+
+    /* Ajustes responsivos */
+    @media (max-width: 768px) {
+        .defi-navigator-section {
+            padding: 15px;
+            margin: 20px auto;
+        }
+        .defi-header h2 {
+            font-size: 1.8rem;
+        }
+        .defi-navigator-section .subtitle {
+            font-size: 1rem;
+        }
+        .defi-stats-panel {
+            flex-direction: column;
+            gap: 15px;
+        }
+        .defi-stats-panel .stat-card {
+            min-width: unset;
+            max-width: 100%;
+        }
+        .defi-stats-panel .stat-value {
+            font-size: 1.8rem;
+        }
+        .defi-actions-panel h3, .defi-portfolio-summary h3, .defi-log-panel h3 {
+            font-size: 1.5rem;
+        }
+        .action-buttons-grid {
+            grid-template-columns: 1fr;
+        }
+        .defi-btn {
+            padding: 10px 15px;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Elementos del DOM ---
+        const virtualBalanceDisplay = document.getElementById('virtual-balance');
+        const portfolioValueDisplay = document.getElementById('portfolio-value');
+        const portfolioChangeDisplay = document.getElementById('portfolio-change');
+        const stakedEthDisplay = document.getElementById('staked-eth');
+        const stakedSolDisplay = document.getElementById('staked-sol');
+        const stakedAtomDisplay = document.getElementById('staked-atom');
+        const lpEthUsdcTokensDisplay = document.getElementById('lp-ethusdc-tokens');
+        const lpBtcUsdtTokensDisplay = document.getElementById('lp-btcusdt-tokens');
+        const lpDogeUsdtTokensDisplay = document.getElementById('lp-dogeusdt-tokens');
+        const lpPepeUsdtTokensDisplay = document.getElementById('lp-pepeusdt-tokens');
+        const pendingRewardsDisplay = document.getElementById('pending-rewards');
+        const actionDetailsPanel = document.getElementById('action-details');
+        const defiLogContainer = document.getElementById('defi-log');
+        const resetDefiBtn = document.getElementById('reset-defi-btn');
+
+        // Botones de Acción
+        const depositFundsBtn = document.getElementById('deposit-funds-btn');
+        const stakeEthBtn = document.getElementById('stake-eth-btn');
+        const stakeSolBtn = document.getElementById('stake-sol-btn');
+        const stakeAtomBtn = document.getElementById('stake-atom-btn');
+        const provideLpEthUsdcBtn = document.getElementById('provide-lp-ethusdc-btn');
+        const provideLpBtcUsdtBtn = document.getElementById('provide-lp-btcusdt-btn');
+        const provideLpDogeUsdtBtn = document.getElementById('provide-lp-dogeusdt-btn');
+        const provideLpPepeUsdtBtn = document.getElementById('provide-lp-pepeusdt-btn');
+        const claimRewardsBtn = document.getElementById('claim-rewards-btn');
+        const withdrawFundsBtn = document.getElementById('withdraw-funds-btn');
+
+        // --- Estado de la Simulación ---
+        let virtualBalance = 1000.00; // Fondos virtuales iniciales
+
+        // Precios simulados de los activos
+        let ethPrice = 3000.00;
+        let btcPrice = 65000.00;
+        let solPrice = 150.00;
+        let atomPrice = 10.00;
+        let dogePrice = 0.15;
+        let pepePrice = 0.000001; // Precio muy bajo para memecoin
+        let usdtPrice = 1.00; // Stablecoin
+        let usdcPrice = 1.00; // Stablecoin
+
+        // Cantidades en staking
+        let stakedETH = 0;
+        let stakedSOL = 0;
+        let stakedATOM = 0;
+
+        // Variables de Liquidity Pool (LP)
+        let lpEthUsdcTokens = 0;
+        let lpEthUsdcInitialEthAmount = 0;
+        let lpEthUsdcInitialUsdcAmount = 0;
+
+        let lpBtcUsdtTokens = 0;
+        let lpBtcUsdtInitialBtcAmount = 0;
+        let lpBtcUsdtInitialUsdtAmount = 0;
+
+        let lpDogeUsdtTokens = 0;
+        let lpDogeUsdtInitialDogeAmount = 0;
+        let lpDogeUsdtInitialUsdtAmount = 0;
+
+        let lpPepeUsdtTokens = 0;
+        let lpPepeUsdtInitialPepeAmount = 0;
+        let lpPepeUsdtInitialUsdtAmount = 0;
+
+        let totalRewards = 0; // Recompensas acumuladas
+
+        // APRs simuladas (porcentajes anuales de rendimiento)
+        const ethStakingAPR = 0.04; // 4% APR
+        const solStakingAPR = 0.07; // 7% APR
+        const atomStakingAPR = 0.10; // 10% APR
+        const lpEthUsdcAPR = 0.08; // 8% APR para LP ETH/USDC
+        const lpBtcUsdtAPR = 0.06; // 6% APR para LP BTC/USDT
+        const lpDogeUsdtAPR = 0.20; // 20% APR para LP DOGE/USDT (más riesgo, más recompensa simulada)
+        const lpPepeUsdtAPR = 0.30; // 30% APR para LP PEPE/USDT (aún más riesgo/recompensa simulada)
+
+        let lastUpdateTime = Date.now();
+        let portfolioInitialValue = virtualBalance; // Usado para el cálculo del cambio porcentual del portafolio
+
+        // --- Constantes para la Simulación ---
+        const SIMULATION_INTERVAL = 5000; // Actualizar cada 5 segundos para efecto visual
+        const INITIAL_DEPOSIT_AMOUNT = 500; // Cantidad de depósito predeterminada
+
+        // --- Funciones Principales ---
+
+        function updateUI() {
+            virtualBalanceDisplay.textContent = `$${virtualBalance.toFixed(2)}`;
+            stakedEthDisplay.textContent = `${stakedETH.toFixed(4)} ETH ($${(stakedETH * ethPrice).toFixed(2)})`;
+            stakedSolDisplay.textContent = `${stakedSOL.toFixed(4)} SOL ($${(stakedSOL * solPrice).toFixed(2)})`;
+            stakedAtomDisplay.textContent = `${stakedATOM.toFixed(4)} ATOM ($${(stakedATOM * atomPrice).toFixed(2)})`;
+            
+            lpEthUsdcTokensDisplay.textContent = `${lpEthUsdcTokens.toFixed(4)} LP ($${calculateLpEthUsdcValue().toFixed(2)})`;
+            lpBtcUsdtTokensDisplay.textContent = `${lpBtcUsdtTokens.toFixed(4)} LP ($${calculateLpBtcUsdtValue().toFixed(2)})`;
+            lpDogeUsdtTokensDisplay.textContent = `${lpDogeUsdtTokens.toFixed(4)} LP ($${calculateLpDogeUsdtValue().toFixed(2)})`;
+            lpPepeUsdtTokensDisplay.textContent = `${lpPepeUsdtTokens.toFixed(4)} LP ($${calculateLpPepeUsdtValue().toFixed(2)})`;
+            
+            pendingRewardsDisplay.textContent = `$${totalRewards.toFixed(2)}`;
+
+            const currentPortfolioValue = virtualBalance +
+                                         (stakedETH * ethPrice) +
+                                         (stakedSOL * solPrice) +
+                                         (stakedATOM * atomPrice) +
+                                         calculateLpEthUsdcValue() +
+                                         calculateLpBtcUsdtValue() +
+                                         calculateLpDogeUsdtValue() +
+                                         calculateLpPepeUsdtValue();
+            portfolioValueDisplay.textContent = `$${currentPortfolioValue.toFixed(2)}`;
+
+            const change = currentPortfolioValue - portfolioInitialValue;
+            if (change > 0) {
+                portfolioChangeDisplay.textContent = `(+${change.toFixed(2)})`;
+                portfolioChangeDisplay.className = 'positive';
+            } else if (change < 0) {
+                portfolioChangeDisplay.textContent = `(${change.toFixed(2)})`;
+                portfolioChangeDisplay.className = 'negative';
+            } else {
+                portfolioChangeDisplay.textContent = `(0.00)`;
+                portfolioChangeDisplay.className = '';
+            }
+        }
+
+        function addLogEntry(message, type = 'info') {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const logEntryDiv = document.createElement('div');
+            logEntryDiv.classList.add('log-entry', type);
+            logEntryDiv.innerHTML = `<span class="log-timestamp">${timeString}</span> <span class="log-message">${message}</span>`;
+            defiLogContainer.prepend(logEntryDiv); // Añadir al principio
+            // Limitar entradas de registro para mantener un buen rendimiento
+            if (defiLogContainer.children.length > 50) {
+                defiLogContainer.removeChild(defiLogContainer.lastChild);
+            }
+        }
+
+        function simulateMarketFluctuation() {
+            // Simular cambio de precio de ETH
+            ethPrice = ethPrice * (1 + (Math.random() - 0.5) * 0.02); // -1% a +1%
+            ethPrice = Math.max(1000, ethPrice); 
+            addLogEntry(`Precio de ETH fluctuó a $${ethPrice.toFixed(2)}`, 'info');
+
+            // Simular cambio de precio de BTC
+            btcPrice = btcPrice * (1 + (Math.random() - 0.5) * 0.015); // -0.75% a +0.75%
+            btcPrice = Math.max(20000, btcPrice); 
+            addLogEntry(`Precio de BTC fluctuó a $${btcPrice.toFixed(2)}`, 'info');
+
+            // Simular cambio de precio de SOL
+            solPrice = solPrice * (1 + (Math.random() - 0.5) * 0.03); // -1.5% a +1.5%
+            solPrice = Math.max(50, solPrice); 
+            addLogEntry(`Precio de SOL fluctuó a $${solPrice.toFixed(2)}`, 'info');
+
+            // Simular cambio de precio de ATOM
+            atomPrice = atomPrice * (1 + (Math.random() - 0.5) * 0.025); // -1.25% a +1.25%
+            atomPrice = Math.max(5, atomPrice); 
+            addLogEntry(`Precio de ATOM fluctuó a $${atomPrice.toFixed(2)}`, 'info');
+
+            // Simular cambio de precio de DOGE (alta volatilidad)
+            dogePrice = dogePrice * (1 + (Math.random() - 0.5) * 0.10); // -5% a +5%
+            dogePrice = Math.max(0.05, dogePrice); 
+            addLogEntry(`Precio de DOGE fluctuó a $${dogePrice.toFixed(4)}`, 'info');
+
+            // Simular cambio de precio de PEPE (alta volatilidad extrema)
+            pepePrice = pepePrice * (1 + (Math.random() - 0.5) * 0.20); // -10% a +10%
+            pepePrice = Math.max(0.0000001, pepePrice); 
+            addLogEntry(`Precio de PEPE fluctuó a $${pepePrice.toFixed(7)}`, 'info');
+
+            updateUI();
+        }
+
+        function calculateYields() {
+            const now = Date.now();
+            const timeElapsedHours = (now - lastUpdateTime) / (1000 * 60 * 60); // Convertir ms a horas
+            lastUpdateTime = now;
+
+            let currentYield = 0;
+
+            // Rendimiento de Staking (ETH)
+            currentYield += (stakedETH * ethPrice * ethStakingAPR) / (365 * 24);
+            // Rendimiento de Staking (SOL)
+            currentYield += (stakedSOL * solPrice * solStakingAPR) / (365 * 24);
+            // Rendimiento de Staking (ATOM)
+            currentYield += (stakedATOM * atomPrice * atomStakingAPR) / (365 * 24);
+
+            // Rendimiento de LP (ETH/USDC)
+            currentYield += (calculateLpEthUsdcValue() * lpEthUsdcAPR) / (365 * 24);
+            // Rendimiento de LP (BTC/USDT)
+            currentYield += (calculateLpBtcUsdtValue() * lpBtcUsdtAPR) / (365 * 24);
+            // Rendimiento de LP (DOGE/USDT)
+            currentYield += (calculateLpDogeUsdtValue() * lpDogeUsdtAPR) / (365 * 24);
+            // Rendimiento de LP (PEPE/USDT)
+            currentYield += (calculateLpPepeUsdtValue() * lpPepeUsdtAPR) / (365 * 24);
+            
+            totalRewards += currentYield;
+
+            if (currentYield > 0) {
+                addLogEntry(`Ganancia de $${currentYield.toFixed(2)} en recompensas.`, 'positive');
+            }
+
+            updateUI();
+        }
+
+        // Funciones para calcular el valor actual de los tokens LP
+        function calculateLpEthUsdcValue() {
+            if (lpEthUsdcTokens === 0) return 0;
+            // Se asume 50/50 al inicio y luego se valora con precios actuales
+            const ethValue = lpEthUsdcInitialEthAmount * ethPrice;
+            const usdcValue = lpEthUsdcInitialUsdcAmount * usdcPrice;
+            return ethValue + usdcValue;
+        }
+
+        function calculateLpBtcUsdtValue() {
+            if (lpBtcUsdtTokens === 0) return 0;
+            const btcValue = lpBtcUsdtInitialBtcAmount * btcPrice;
+            const usdtValue = lpBtcUsdtInitialUsdtAmount * usdtPrice;
+            return btcValue + usdtValue;
+        }
+
+        function calculateLpDogeUsdtValue() {
+            if (lpDogeUsdtTokens === 0) return 0;
+            const dogeValue = lpDogeUsdtInitialDogeAmount * dogePrice;
+            const usdtValue = lpDogeUsdtInitialUsdtAmount * usdtPrice;
+            return dogeValue + usdtValue;
+        }
+
+        function calculateLpPepeUsdtValue() {
+            if (lpPepeUsdtTokens === 0) return 0;
+            const pepeValue = lpPepeUsdtInitialPepeAmount * pepePrice;
+            const usdtValue = lpPepeUsdtInitialUsdtAmount * usdtPrice;
+            return pepeValue + usdtValue;
+        }
+
+        // --- Manejadores de Acción ---
+
+        function showDepositForm() {
+            actionDetailsPanel.innerHTML = `
+                <p>Deposita fondos virtuales para comenzar tu viaje DeFi.</p>
+                <input type="number" id="deposit-amount" placeholder="Cantidad a depositar (USD)" value="${INITIAL_DEPOSIT_AMOUNT}" min="1">
+                <button class="defi-btn success-btn" id="confirm-deposit-btn">Confirmar Depósito</button>
+            `;
+            document.getElementById('confirm-deposit-btn').onclick = () => {
+                const amount = parseFloat(document.getElementById('deposit-amount').value);
+                if (isNaN(amount) || amount <= 0) {
+                    addLogEntry('Cantidad de depósito inválida.', 'negative');
+                    return;
+                }
+                virtualBalance += amount;
+                portfolioInitialValue += amount; // Ajustar valor inicial para cálculo de cambio porcentual
+                addLogEntry(`Depositado $${amount.toFixed(2)}. Nuevo saldo: $${virtualBalance.toFixed(2)}`, 'positive');
+                updateUI();
+                actionDetailsPanel.innerHTML = '<p>¡Fondos depositados!</p>';
+            };
+        }
+
+        // --- Funciones para Staking ---
+        function createStakeForm(tokenName, price, stakedVar, apr) {
+            actionDetailsPanel.innerHTML = `
+                <p>Haz staking de tu ${tokenName} para ganar recompensas (APR simulado: ${(apr * 100).toFixed(1)}%).</p>
+                <p>Precio actual de ${tokenName}: $${price.toFixed(tokenName === 'PEPE' ? 7 : 2)}</p>
+                <input type="number" id="stake-amount" placeholder="Cantidad de ${tokenName} a hacer staking" min="0.0001" step="0.0001">
+                <div class="message">Costo estimado: $0.00. Tu saldo actual: $${virtualBalance.toFixed(2)}</div>
+                <button class="defi-btn action-btn" id="confirm-stake-btn">Confirmar Staking</button>
+            `;
+
+            const stakeInput = document.getElementById('stake-amount');
+            const messageDiv = actionDetailsPanel.querySelector('.message');
+
+            stakeInput.oninput = () => {
+                const amount = parseFloat(stakeInput.value);
+                const cost = amount * price;
+                messageDiv.textContent = `Costo estimado: $${cost.toFixed(2)}. Tu saldo actual: $${virtualBalance.toFixed(2)}`;
+            };
+
+            document.getElementById('confirm-stake-btn').onclick = () => {
+                const amount = parseFloat(stakeInput.value);
+                if (isNaN(amount) || amount <= 0) {
+                    addLogEntry(`Cantidad de ${tokenName} a hacer staking inválida.`, 'negative');
+                    return;
+                }
+                const cost = amount * price;
+                if (virtualBalance < cost) {
+                    addLogEntry('Saldo insuficiente para hacer staking de esta cantidad.', 'negative');
+                    return;
+                }
+                virtualBalance -= cost;
+                eval(`${stakedVar} += ${amount}`); // Actualizar la variable de staking dinámicamente
+                addLogEntry(`Staking de ${amount.toFixed(4)} ${tokenName} por $${cost.toFixed(2)}.`, 'positive');
+                updateUI();
+                actionDetailsPanel.innerHTML = `<p>¡${tokenName} en staking!</p>`;
+            };
+        }
+
+        // --- Funciones para Proveer Liquidez ---
+        function createProvideLpForm(token1Name, token1Price, token2Name, token2Price, lpApr, lpTokensVar, lpInitialToken1Var, lpInitialToken2Var) {
+            actionDetailsPanel.innerHTML = `
+                <p>Provee liquidez a un pool ${token1Name}/${token2Name} para ganar recompensas (APR simulado: ${(lpApr * 100).toFixed(1)}%).</p>
+                <p>Precio actual de ${token1Name}: $${token1Price.toFixed(token1Name === 'PEPE' ? 7 : 2)}</p>
+                <input type="number" id="lp-token1-amount" placeholder="Cantidad de ${token1Name} para LP" min="0.0001" step="0.0001">
+                <div class="message">${token2Name} requerido: ~$0.00. Tu saldo actual: $${virtualBalance.toFixed(2)}</div>
+                <button class="defi-btn action-btn" id="confirm-lp-btn">Confirmar Provisión de Liquidez</button>
+            `;
+
+            const lpToken1Input = document.getElementById('lp-token1-amount');
+            const messageDiv = actionDetailsPanel.querySelector('.message');
+
+            lpToken1Input.oninput = () => {
+                const amountToken1 = parseFloat(lpToken1Input.value);
+                const amountToken2 = amountToken1 * token1Price / token2Price; // Asumiendo división de valor 50/50
+                const totalCost = (amountToken1 * token1Price) + (amountToken2 * token2Price);
+                messageDiv.textContent = `${token2Name} requerido: ~$${amountToken2.toFixed(2)}. Costo total: $${totalCost.toFixed(2)}. Tu saldo actual: $${virtualBalance.toFixed(2)}`;
+            };
+
+            document.getElementById('confirm-lp-btn').onclick = () => {
+                const amountToken1 = parseFloat(lpToken1Input.value);
+                if (isNaN(amountToken1) || amountToken1 <= 0) {
+                    addLogEntry(`Cantidad de ${token1Name} para LP inválida.`, 'negative');
+                    return;
+                }
+                const amountToken2 = amountToken1 * token1Price / token2Price;
+                const totalCost = (amountToken1 * token1Price) + (amountToken2 * token2Price);
+
+                if (virtualBalance < totalCost) {
+                    addLogEntry('Saldo insuficiente para proveer esta liquidez.', 'negative');
+                    return;
+                }
+
+                virtualBalance -= totalCost;
+                eval(`${lpTokensVar} += (amountToken1 + amountToken2)`); // Representación simplificada de tokens LP
+                eval(`${lpInitialToken1Var} += amountToken1`);
+                eval(`${lpInitialToken2Var} += amountToken2`);
+
+                addLogEntry(`Provisión de ${amountToken1.toFixed(4)} ${token1Name} y $${amountToken2.toFixed(2)} ${token2Name} en pool de liquidez.`, 'positive');
+                updateUI();
+                actionDetailsPanel.innerHTML = '<p>¡Liquidez provista!</p>';
+            };
+        }
+
+        function claimRewards() {
+            if (totalRewards === 0) {
+                addLogEntry('No hay recompensas pendientes para reclamar.', 'info');
+                return;
+            }
+            virtualBalance += totalRewards;
+            addLogEntry(`Reclamado $${totalRewards.toFixed(2)} en recompensas.`, 'positive');
+            totalRewards = 0; // Reiniciar recompensas pendientes
+            updateUI();
+            actionDetailsPanel.innerHTML = '<p>¡Recompensas reclamadas!</p>';
+        }
+
+        function showWithdrawForm() {
+            actionDetailsPanel.innerHTML = `
+                <p>Retira tus fondos de staking y liquidez.</p>
+                <div class="message">¿Estás seguro de que quieres retirar todos los fondos? Esto calculará la pérdida impermanente (si aplica).</div>
+                <button class="defi-btn warning-btn" id="confirm-withdraw-btn">Confirmar Retiro</button>
+            `;
+            document.getElementById('confirm-withdraw-btn').onclick = () => {
+                let withdrawnValue = 0;
+
+                // Retirar Staked ETH
+                if (stakedETH > 0) {
+                    withdrawnValue += (stakedETH * ethPrice);
+                    addLogEntry(`Retirado ${stakedETH.toFixed(4)} ETH ($${(stakedETH * ethPrice).toFixed(2)}) del staking.`, 'info');
+                    stakedETH = 0;
+                }
+                // Retirar Staked SOL
+                if (stakedSOL > 0) {
+                    withdrawnValue += (stakedSOL * solPrice);
+                    addLogEntry(`Retirado ${stakedSOL.toFixed(4)} SOL ($${(stakedSOL * solPrice).toFixed(2)}) del staking.`, 'info');
+                    stakedSOL = 0;
+                }
+                // Retirar Staked ATOM
+                if (stakedATOM > 0) {
+                    withdrawnValue += (stakedATOM * atomPrice);
+                    addLogEntry(`Retirado ${stakedATOM.toFixed(4)} ATOM ($${(stakedATOM * atomPrice).toFixed(2)}) del staking.`, 'info');
+                    stakedATOM = 0;
+                }
+
+                // Retirar LP ETH/USDC
+                if (lpEthUsdcTokens > 0) {
+                    const currentLpValue = calculateLpEthUsdcValue();
+                    withdrawnValue += currentLpValue;
+                    const initialLpCombinedValue = (lpEthUsdcInitialEthAmount * 3000.00) + (lpEthUsdcInitialUsdcAmount * 1.00); // Usar precio inicial de ETH
+                    const impermanentDifference = currentLpValue - initialLpCombinedValue;
+                    if (impermanentDifference < 0) {
+                        addLogEntry(`Retirado LP ETH/USDC ($${currentLpValue.toFixed(2)}). Pérdida impermanente simulada: $${Math.abs(impermanentDifference).toFixed(2)}.`, 'negative');
+                    } else {
+                        addLogEntry(`Retirado LP ETH/USDC ($${currentLpValue.toFixed(2)}). Ganancia/Sin pérdida impermanente simulada: $${impermanentDifference.toFixed(2)}.`, impermanentDifference >= 0 ? 'positive' : 'info');
+                    }
+                    lpEthUsdcTokens = 0; lpEthUsdcInitialEthAmount = 0; lpEthUsdcInitialUsdcAmount = 0;
+                }
+
+                // Retirar LP BTC/USDT
+                if (lpBtcUsdtTokens > 0) {
+                    const currentLpValue = calculateLpBtcUsdtValue();
+                    withdrawnValue += currentLpValue;
+                    const initialLpCombinedValue = (lpBtcUsdtInitialBtcAmount * 65000.00) + (lpBtcUsdtInitialUsdtAmount * 1.00); // Usar precio inicial de BTC
+                    const impermanentDifference = currentLpValue - initialLpCombinedValue;
+                    if (impermanentDifference < 0) {
+                        addLogEntry(`Retirado LP BTC/USDT ($${currentLpValue.toFixed(2)}). Pérdida impermanente simulada: $${Math.abs(impermanentDifference).toFixed(2)}.`, 'negative');
+                    } else {
+                        addLogEntry(`Retirado LP BTC/USDT ($${currentLpValue.toFixed(2)}). Ganancia/Sin pérdida impermanente simulada: $${impermanentDifference.toFixed(2)}.`, impermanentDifference >= 0 ? 'positive' : 'info');
+                    }
+                    lpBtcUsdtTokens = 0; lpBtcUsdtInitialBtcAmount = 0; lpBtcUsdtInitialUsdtAmount = 0;
+                }
+
+                // Retirar LP DOGE/USDT
+                if (lpDogeUsdtTokens > 0) {
+                    const currentLpValue = calculateLpDogeUsdtValue();
+                    withdrawnValue += currentLpValue;
+                    const initialLpCombinedValue = (lpDogeUsdtInitialDogeAmount * 0.15) + (lpDogeUsdtInitialUsdtAmount * 1.00); // Usar precio inicial de DOGE
+                    const impermanentDifference = currentLpValue - initialLpCombinedValue;
+                    if (impermanentDifference < 0) {
+                        addLogEntry(`Retirado LP DOGE/USDT ($${currentLpValue.toFixed(2)}). Pérdida impermanente simulada: $${Math.abs(impermanentDifference).toFixed(2)}.`, 'negative');
+                    } else {
+                        addLogEntry(`Retirado LP DOGE/USDT ($${currentLpValue.toFixed(2)}). Ganancia/Sin pérdida impermanente simulada: $${impermanentDifference.toFixed(2)}.`, impermanentDifference >= 0 ? 'positive' : 'info');
+                    }
+                    lpDogeUsdtTokens = 0; lpDogeUsdtInitialDogeAmount = 0; lpDogeUsdtInitialUsdtAmount = 0;
+                }
+
+                // Retirar LP PEPE/USDT
+                if (lpPepeUsdtTokens > 0) {
+                    const currentLpValue = calculateLpPepeUsdtValue();
+                    withdrawnValue += currentLpValue;
+                    const initialLpCombinedValue = (lpPepeUsdtInitialPepeAmount * 0.000001) + (lpPepeUsdtInitialUsdtAmount * 1.00); // Usar precio inicial de PEPE
+                    const impermanentDifference = currentLpValue - initialLpCombinedValue;
+                    if (impermanentDifference < 0) {
+                        addLogEntry(`Retirado LP PEPE/USDT ($${currentLpValue.toFixed(2)}). Pérdida impermanente simulada: $${Math.abs(impermanentDifference).toFixed(2)}.`, 'negative');
+                    } else {
+                        addLogEntry(`Retirado LP PEPE/USDT ($${currentLpValue.toFixed(2)}). Ganancia/Sin pérdida impermanente simulada: $${impermanentDifference.toFixed(2)}.`, impermanentDifference >= 0 ? 'positive' : 'info');
+                    }
+                    lpPepeUsdtTokens = 0; lpPepeUsdtInitialPepeAmount = 0; lpPepeUsdtInitialUsdtAmount = 0;
+                }
+
+                // Reclamar cualquier recompensa restante
+                if (totalRewards > 0) {
+                    virtualBalance += totalRewards;
+                    addLogEntry(`Reclamado $${totalRewards.toFixed(2)} en recompensas antes de retiro final.`, 'positive');
+                    totalRewards = 0;
+                }
+
+                virtualBalance += withdrawnValue;
+                addLogEntry(`Todos los fondos retirados. Saldo final: $${virtualBalance.toFixed(2)}.`, 'info');
+                portfolioInitialValue = virtualBalance; // Restablecer la base para el cambio porcentual
+                updateUI();
+                actionDetailsPanel.innerHTML = '<p>¡Todos los fondos han sido retirados!</p>';
+            };
+        }
+
+        // --- Manejadores de Eventos ---
+        depositFundsBtn.addEventListener('click', showDepositForm);
+        stakeEthBtn.addEventListener('click', () => createStakeForm('ETH', ethPrice, 'stakedETH', ethStakingAPR));
+        stakeSolBtn.addEventListener('click', () => createStakeForm('SOL', solPrice, 'stakedSOL', solStakingAPR));
+        stakeAtomBtn.addEventListener('click', () => createStakeForm('ATOM', atomPrice, 'stakedATOM', atomStakingAPR));
+        
+        provideLpEthUsdcBtn.addEventListener('click', () => createProvideLpForm('ETH', ethPrice, 'USDC', usdcPrice, lpEthUsdcAPR, 'lpEthUsdcTokens', 'lpEthUsdcInitialEthAmount', 'lpEthUsdcInitialUsdcAmount'));
+        provideLpBtcUsdtBtn.addEventListener('click', () => createProvideLpForm('BTC', btcPrice, 'USDT', usdtPrice, lpBtcUsdtAPR, 'lpBtcUsdtTokens', 'lpBtcUsdtInitialBtcAmount', 'lpBtcUsdtInitialUsdtAmount'));
+        provideLpDogeUsdtBtn.addEventListener('click', () => createProvideLpForm('DOGE', dogePrice, 'USDT', usdtPrice, lpDogeUsdtAPR, 'lpDogeUsdtTokens', 'lpDogeUsdtInitialDogeAmount', 'lpDogeUsdtInitialUsdtAmount'));
+        provideLpPepeUsdtBtn.addEventListener('click', () => createProvideLpForm('PEPE', pepePrice, 'USDT', usdtPrice, lpPepeUsdtAPR, 'lpPepeUsdtTokens', 'lpPepeUsdtInitialPepeAmount', 'lpPepeUsdtInitialUsdtAmount'));
+
+        claimRewardsBtn.addEventListener('click', claimRewards);
+        withdrawFundsBtn.addEventListener('click', showWithdrawForm);
+
+        resetDefiBtn.addEventListener('click', () => {
+            virtualBalance = 1000.00;
+            ethPrice = 3000.00;
+            btcPrice = 65000.00;
+            solPrice = 150.00;
+            atomPrice = 10.00;
+            dogePrice = 0.15;
+            pepePrice = 0.000001;
+            usdtPrice = 1.00;
+            usdcPrice = 1.00;
+
+            stakedETH = 0;
+            stakedSOL = 0;
+            stakedATOM = 0;
+
+            lpEthUsdcTokens = 0;
+            lpEthUsdcInitialEthAmount = 0;
+            lpEthUsdcInitialUsdcAmount = 0;
+
+            lpBtcUsdtTokens = 0;
+            lpBtcUsdtInitialBtcAmount = 0;
+            lpBtcUsdtInitialUsdtAmount = 0;
+
+            lpDogeUsdtTokens = 0;
+            lpDogeUsdtInitialDogeAmount = 0;
+            lpDogeUsdtInitialUsdtAmount = 0;
+
+            lpPepeUsdtTokens = 0;
+            lpPepeUsdtInitialPepeAmount = 0;
+            lpPepeUsdtInitialUsdtAmount = 0;
+
+            totalRewards = 0;
+            lastUpdateTime = Date.now();
+            portfolioInitialValue = virtualBalance;
+            defiLogContainer.innerHTML = ''; // Limpiar registro
+            actionDetailsPanel.innerHTML = '<p>Haz clic en una acción para ver los detalles.</p>';
+            addLogEntry('Simulación DeFi reiniciada.', 'info');
+            updateUI();
+        });
+
+        // Inicialización
+        updateUI();
+        setInterval(simulateMarketFluctuation, SIMULATION_INTERVAL); // Simular cambios de mercado periódicamente
+        setInterval(calculateYields, SIMULATION_INTERVAL); // Calcular rendimientos periódicamente
+        
+        // Mensaje inicial
+        addLogEntry('Bienvenido a DeFi Navigator. ¡Comienza depositando fondos!', 'info');
+    });
+</script>
+
     <div class="ad-banner bottom-banner">
         <!-- Bottom Content Banner (728x90) -->
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
